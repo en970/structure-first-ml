@@ -92,12 +92,41 @@ different account.
 
 ## Data
 
-Dataset selection is in progress; candidates under evaluation are ZTF Data Release light curves with
-labels from the Bright Transient Survey and the ZTF periodic-variable catalogues, and Gaia DR3 epoch
-photometry for the published variable sample. The selection criteria are label quality, genuine
-sampling irregularity, multiple bands, and a download that fits comfortably on a laptop. The choice
-and its access recipe will be recorded in
-[`docs/02-data-sources.md`](../../docs/02-data-sources.md) with a runnable query.
+Two samples, chosen to test opposite halves of the prediction below. Access recipes, with the live
+test results and the one failure encountered, are in
+[`docs/02-data-sources.md`](../../docs/02-data-sources.md).
+
+**Primary — ZTF Bright Transient Survey.** 12,916 spectroscopically classified transients (SN Ia
+7,894, SN II 1,736, CV 685, AGN 404, and a tail of rarer types), with per-epoch $(t, m, \sigma,
+\text{band})$ photometry in $g$ and $r$ served by the ALeRCE broker without authentication. Sampling
+is set by weather and survey scheduling; light curves are short and sparse. Spectroscopic labels are
+the ground truth, kept strictly separate from ALeRCE's own machine classifications.
+
+**Counter-test — Gaia DR3 epoch photometry.** 9,976,881 sources with official variability
+classifications, three bands ($G$, $BP$, $RP$) sampled at genuinely different instants within each
+transit, at roughly 6 kB per source. Periodic variables, where period is the physically meaningful
+quantity.
+
+The second sample is not a robustness check. It is the case the method should handle *badly*, and
+measuring how badly is the point.
+
+## Signature implementation
+
+`src/signature.py` implements truncated signatures from scratch: each straight segment contributes
+the tensor exponential of its increment, and segments combine by Chen's identity. It is written
+rather than imported because the theory track needs access to individual tensor levels, and because
+the standard C++ backends do not install reliably across current Python versions — `iisignature`
+fails to build on Python 3.12.
+
+Correctness is verified by `src/verify_signature.py`, which checks agreement with three independent
+libraries — `esig`, `signax`, and `roughpy` (the last from the group behind SigNova) — and four
+structural identities: reparameterisation invariance, level 1 equalling the total increment, the
+shuffle identity $S_1 S_2 = S_{12} + S_{21}$, and the vanishing of the signature of a path
+concatenated with its own reversal. All sixteen checks pass, with agreement at the $10^{-13}$ level.
+
+```bash
+python3 src/verify_signature.py    # 16/16 checks
+```
 
 ## Planned method
 
