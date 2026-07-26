@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# Large, regenerable binary artifacts (reproduce by running the pipelines)
+*.npz
+*.pt
+
+# Raw downloaded observation caches (regenerable via the pipelines; large)
+**/mast_dl/
+**/mast_cache/
+**/mast/
+**/mastDownload/
+
+# Secrets — never commit credentials
+.ghtoken
+*.token
+.env
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc

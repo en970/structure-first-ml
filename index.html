@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>structure-first-ml — Structure-first machine learning for physical data</title>
+<meta name="description" content="Structure-first machine learning: path signatures for irregularly sampled light curves, topological and orbital discovery on open archives, and the theory behind them. Reproducible, with formal reports.">
+<meta name="keywords" content="path signatures, rough path theory, machine learning, applied mathematics, astronomy, astrophysics, light curves, irregular time series, ZTF, Gaia, topological data analysis, open science, Python, independent research">
+<meta name="author" content="Enes Öz">
+<meta property="og:type" content="website">
+<meta property="og:title" content="structure-first-ml — Structure-first machine learning for physical data">
+<meta property="og:description" content="Identify the mathematical object the data belongs to, then choose a representation that respects it. Path signatures, topology, and dynamics on open astronomical archives.">
+<meta property="og:url" content="https://en970.github.io/structure-first-ml/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="structure-first-ml — Structure-first machine learning for physical data">
+<meta name="twitter:description" content="Path signatures for irregularly sampled light curves, and other representations chosen for the structure they preserve.">
+<script>
+  MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']] }, svg:{fontCache:'global'} };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<style>
+  :root{--ink:#161616;--muted:#5b5b5b;--rule:#d7d7d2;--bg:#fbfbf8;--panel:#f4f4ee;--link:#1f3f7a;}
+  @media (prefers-color-scheme:dark){:root{--ink:#e7e7e2;--muted:#a6a69f;--rule:#33342f;--bg:#131412;--panel:#1c1d1a;--link:#a3bde0;}}
+  :root[data-theme="dark"]{--ink:#e7e7e2;--muted:#a6a69f;--rule:#33342f;--bg:#131412;--panel:#1c1d1a;--link:#a3bde0;}
+  :root[data-theme="light"]{--ink:#161616;--muted:#5b5b5b;--rule:#d7d7d2;--bg:#fbfbf8;--panel:#f4f4ee;--link:#1f3f7a;}
+  *{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Iowan Old Style","Times New Roman",serif;font-size:18px;line-height:1.62}
+  .wrap{max-width:860px;margin:0 auto;padding:64px 26px 96px}
+  header.paper{border-bottom:1px solid var(--rule);padding-bottom:26px;margin-bottom:34px}
+  .eyebrow{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+  h1{font-size:31px;line-height:1.2;margin:0 0 14px;font-weight:600;letter-spacing:-.01em}
+  .byline{color:var(--muted);font-size:16px;margin:0}
+  h2{font-size:21px;margin:44px 0 10px;font-weight:600}
+  p{margin:0 0 14px} a{color:var(--link);text-decoration:none;border-bottom:1px solid rgba(31,63,122,.28)}
+  @media (prefers-color-scheme:dark){a{border-bottom-color:rgba(163,189,224,.32)}}
+  a:hover{border-bottom-color:currentColor}
+  .abstract{background:var(--panel);border:1px solid var(--rule);border-radius:4px;padding:20px 22px;margin:8px 0}
+  .abstract p{margin:0;font-size:16.5px} .abstract .lab{font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+  .mono{font-family:ui-monospace,Menlo,monospace}
+  blockquote{margin:18px 0;padding:2px 0 2px 18px;border-left:3px solid var(--rule);color:var(--ink);font-style:italic}
+  .proj{border:1px solid var(--rule);border-radius:5px;padding:18px 20px;margin:16px 0;background:var(--panel)}
+  .proj h3{margin:0 0 6px;font-size:18.5px;font-weight:600}
+  .proj .tag{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border:1px solid var(--rule);border-radius:20px;color:var(--muted);margin-left:8px;vertical-align:middle;white-space:nowrap}
+  .proj p{margin:6px 0 10px;font-size:16px;color:var(--ink)}
+  .proj .links a{font-size:14.5px;margin-right:16px}
+  .running{color:#1f5f7a;border-color:#1f5f7a55}
+  @media (prefers-color-scheme:dark){.running{color:#8ec6de;border-color:#8ec6de55}}
+  .eq{overflow-x:auto;margin:16px 0}
+  table{border-collapse:collapse;width:100%;margin:18px 0;font-size:15px}
+  th,td{border:1px solid var(--rule);padding:7px 11px;text-align:left} th{background:var(--panel);font-weight:600}
+  .tblwrap{overflow-x:auto}
+  footer{border-top:1px solid var(--rule);margin-top:52px;padding-top:22px;font-size:14px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="paper">
+  <p class="eyebrow">Independent research laboratory</p>
+  <h1>structure-first-ml</h1>
+  <p class="byline">Structure-first machine learning for physical data &nbsp;·&nbsp; Enes Öz &nbsp;·&nbsp; 2026</p>
+</header>
+
+<div class="abstract">
+  <span class="lab">Premise</span>
+  <p>Most machine-learning pipelines coerce data into the shape the model expects: irregular
+  observations are interpolated onto a regular grid, point clouds are voxelised, curved domains are
+  flattened, and conserved quantities are left to be learned by accident. Every one of those steps
+  discards structure that was present in the measurement and introduces artefacts that were not.
+  This laboratory reverses the order of reasoning.</p>
+</div>
+
+<h2>Method</h2>
+<blockquote>Identify the mathematical object the data belongs to — a path, a point cloud, a section
+of a bundle, an orbit of a dynamical system — then choose a representation with the invariances that
+object actually has, and only then attach a learning algorithm. Where the representation carries a
+theorem, state the theorem and test whether its hypotheses hold on real data.</blockquote>
+
+<p>The commitment is methodological rather than stylistic, because it yields falsifiable claims. A
+representation backed by a theorem predicts <em>where</em> it should beat a baseline and, equally,
+where it should not. Both predictions are reported.</p>
+
+<h2>Tracks</h2>
+
+<div class="proj">
+  <h3>T1 — Path signatures for irregularly sampled light curves <span class="tag running">in progress</span></h3>
+  <p>Astronomical photometry is a sampled path, not a vector: observations arrive at irregular
+  times, in different bands, with gaps set by weather and scheduling. The signature of a path,
+  $S(X)=\left(1,\int dX,\iint dX\otimes dX,\dots\right)$, is a reparameterisation-invariant feature
+  map that consumes the raw $(t,\,\text{flux},\,\sigma,\,\text{band})$ stream with no interpolation
+  at all. The method is standard in finance and healthcare and has exactly one published
+  astronomical application (radio-interferometric interference detection); light-curve
+  classification is untouched. The honest question is whether it beats a mature baseline stack —
+  hand-crafted variability features, Gaussian-process augmentation, and transformer embeddings.</p>
+  <p class="links"><a href="projects/t1-signature-lightcurves/">Design &amp; code</a></p>
+</div>
+
+<div class="proj">
+  <h3>T2 — Meteoroid stream discovery <span class="tag">skeleton</span></h3>
+  <p>An openly licensed orbital archive that the machine-learning community has largely ignored,
+  approached as a clustering problem in a space where the metric is dictated by celestial mechanics
+  rather than by convenience.</p>
+  <p class="links"><a href="projects/t2-meteor-stream-discovery/">Design</a></p>
+</div>
+
+<div class="proj">
+  <h3>T3 — Truncation depth and sampling irregularity <span class="tag">skeleton</span></h3>
+  <p>The theory track. A truncated signature keeps finitely many iterated integrals; how that
+  truncation depth trades against sampling density, gap structure, and noise determines whether the
+  universality theorem has any force on real observations. Controlled synthetic experiments, built
+  to explain the behaviour measured in T1.</p>
+  <p class="links"><a href="projects/t3-signature-theory/">Design</a></p>
+</div>
+
+<h2>Repository</h2>
+<div class="tblwrap">
+<table>
+  <tr><th>Path</th><th>Contents</th></tr>
+  <tr><td class="mono">docs/</td><td>Research scan (open and under-mined archives, unapplied methods), publication pathways, data access recipes</td></tr>
+  <tr><td class="mono">projects/tN-.../</td><td>Per-track design, code, results, and report</td></tr>
+  <tr><td class="mono">reports/</td><td>Combined LaTeX technical report</td></tr>
+</table>
+</div>
+
+<p style="font-size:15.5px">
+  <b>Source code:</b> <a href="https://github.com/en970/structure-first-ml">github.com/en970/structure-first-ml</a>
+  &nbsp;·&nbsp; <b>Sibling repository:</b> <a href="https://en970.github.io/space-ml-lab/">space-ml-lab</a>
+  (discovery-oriented machine learning on open space data)
+</p>
+
+<footer>
+  structure-first-ml · An independent research project. Reported results are method-validating and
+  candidate-level; none constitute a confirmed scientific discovery. Negative results are retained
+  rather than discarded. Data courtesy of the respective open archives.
+</footer>
+
+</div>
+</body>
+</html>
