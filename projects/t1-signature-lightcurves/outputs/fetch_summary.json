@@ -1,0 +1,39 @@
+{
+  "generated_utc": "2026-07-26T19:31:26.932150+00:00",
+  "classes": [
+    "SN Ia",
+    "SN II",
+    "CV",
+    "AGN",
+    "SN IIn",
+    "SN Ic",
+    "SN Ib",
+    "SLSN-I"
+  ],
+  "per_class_cap": 500,
+  "min_detections": 10,
+  "min_per_band": 3,
+  "fetch": {
+    "requested": 2732,
+    "failed": 587,
+    "elapsed_s": 925.9
+  },
+  "quality_cuts": {
+    "objects_before": 2145,
+    "objects_after": 1891,
+    "dropped_too_few_detections": 190,
+    "dropped_single_band": 64,
+    "detections_after": 263828
+  },
+  "class_counts": {
+    "CV": 456,
+    "AGN": 376,
+    "SN Ia": 341,
+    "SN II": 250,
+    "SN IIn": 199,
+    "SN Ic": 164,
+    "SLSN-I": 105
+  },
+  "median_detections": 44,
+  "median_span_days": 190.668
+}

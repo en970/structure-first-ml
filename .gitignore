@@ -27,3 +27,7 @@ __pycache__/
 *.log
 *.out
 *.toc
+
+# Downloaded archive caches (regenerable via src/fetch_*.py)
+projects/*/data/
+*.parquet
