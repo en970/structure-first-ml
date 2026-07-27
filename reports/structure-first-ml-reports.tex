@@ -1,0 +1,289 @@
+\documentclass[11pt,a4paper]{report}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\geometry{a4paper, margin=2.5cm}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor={black!75!blue},
+  citecolor={black!70!green},
+  urlcolor={black!55!blue},
+  pdftitle={structure-first-ml -- Collected Technical Reports},
+  pdfauthor={Enes Oz}
+}
+
+\graphicspath{{figs/}}
+\captionsetup{font=small, labelfont=bf, width=0.9\textwidth}
+
+\newcommand{\sig}{\mathbf{S}}
+\newcommand{\R}{\mathbb{R}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+
+\linespread{1.05}
+\setlength{\parskip}{0.4em}
+\emergencystretch=3em
+\hbadness=10000
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+\vspace*{2.2cm}
+{\Large\scshape structure-first-ml}\\[0.6cm]
+\rule{0.72\textwidth}{0.4pt}\\[0.8cm]
+{\huge\bfseries Collected Technical Reports\par}
+\vspace{0.9cm}
+{\large Structure-first machine learning for physical data\par}
+\vspace{1.6cm}
+{\large\bfseries Enes \"Oz\par}
+\vspace{0.4cm}
+{\normalsize Independent research project\par}
+\vspace{0.3cm}
+{\normalsize Draft --- July 2026\par}
+\vspace{2.0cm}
+\begin{minipage}{0.82\textwidth}
+\small
+\noindent\textbf{Preface.} Most machine-learning pipelines coerce data into the shape the
+model expects: irregular observations are interpolated onto a regular grid, point clouds are
+voxelised, curved domains are flattened, and conserved quantities are left to be learned by
+accident. Each step discards structure that was present in the measurement and introduces
+artefacts that were not. The work collected here reverses that order of reasoning ---
+identify the mathematical object the data belongs to, choose a representation with the
+invariances that object actually has, and only then attach a learning algorithm. Where the
+representation carries a theorem, the theorem is stated and its hypotheses are tested against
+real data rather than assumed. Results are reported in both directions: the cases where the
+approach wins and the cases where it loses are given equal space, because a representation
+that is claimed to help everywhere has not been understood anywhere.
+\end{minipage}
+\vfill
+{\small Data courtesy of the Zwicky Transient Facility, the ZTF Bright Transient Survey,
+and the ALeRCE broker.\par}
+\end{titlepage}
+
+\tableofcontents
+\clearpage
+
+\chapter{Path signatures for irregularly sampled light curves}
+\label{ch:t1}
+\noindent\textit{projects/t1-signature-lightcurves}
+
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+
+A photometric light curve is a finite sample of a path, not a vector: observations arrive at
+times set by weather and scheduling, in whichever filter was in use, with per-point
+uncertainties varying by an order of magnitude. Standard pipelines destroy that structure at
+the first step by interpolating onto a regular grid. The signature transform of rough path
+theory consumes the raw stream directly and is invariant under reparameterisation of time.
+This chapter tests whether that theoretical advantage survives contact with real survey
+photometry, on 2{,}375 spectroscopically classified ZTF transients in eight classes. The
+answer is qualified, and the qualifications are the substance of the chapter.
+
+\section{Introduction}
+
+The signature of a path has been applied once in astronomy, to radio-frequency interference
+detection in interferometric visibility streams \cite{signova}. Time-domain photometric
+classification is untouched. That gap is narrow enough to be worth attempting and broad
+enough to be worth reporting either way.
+
+The incumbent methods are not weak. Hand-crafted variability features in the lineage of FATS
+and \texttt{feets} have absorbed two decades of domain knowledge; Gaussian-process
+interpolation is the principled treatment of irregular sampling; random convolutional kernel
+methods such as MiniRocket \cite{minirocket} are cheap, deterministic and strong. A new
+representation earns its place only by beating these or by adding something they lack.
+
+\section{Mathematical background}
+
+\begin{definition}[Signature]
+For a continuous path $X : [0,T] \to \R^d$ of bounded variation, the signature is the
+sequence of iterated integrals
+\[
+\sig(X) \;=\; \left(1,\; \int_{0<t<T}\!\mathrm{d}X_t,\;
+\iint_{0<s<t<T}\!\mathrm{d}X_s \otimes \mathrm{d}X_t,\; \dots \right),
+\]
+whose $k$-th term is an element of $(\R^d)^{\otimes k}$.
+\end{definition}
+
+Three properties motivate its use here.
+
+\paragraph{Reparameterisation invariance.} For any increasing reparameterisation
+$\varphi$, $\sig(X \circ \varphi) = \sig(X)$. The signature encodes the order and shape of
+what happened, not the clock on which it happened. When observation times are set by the
+weather rather than by the source, this is the correct invariance to have; interpolation-based
+pipelines must learn it from data instead.
+
+\paragraph{Faithfulness.} The signature determines the path up to tree-like equivalence,
+informally up to retracing \cite{hambly}. Nothing is discarded but the parameterisation.
+
+\paragraph{Universality.} Linear functionals of the signature approximate continuous functions
+on path space uniformly on compact sets. A linear model on signature features is therefore a
+universal approximator on paths, which converts architecture design into a question of
+truncation depth.
+
+For a piecewise-linear path the signature has a closed form. Each straight segment with
+increment $\delta$ contributes the tensor exponential $\delta^{\otimes k} / k!$ at level $k$,
+and segments concatenate by Chen's identity
+\[
+\sig(X * Y)_k \;=\; \sum_{i=0}^{k} \sig(X)_i \otimes \sig(Y)_{k-i}.
+\]
+Truncating at depth $m$ retains $\sum_{k=1}^{m} d^k$ coefficients.
+
+\subsection{Implementation and verification}
+
+The transform is implemented from scratch rather than imported, because the theory track
+requires access to individual tensor levels and because the standard C\texttt{++} backends do
+not build reliably on current Python versions. Correctness is established two ways: agreement
+with \texttt{esig}, \texttt{signax} and \texttt{roughpy} to $\sim10^{-13}$ across four path
+configurations, and four structural identities checked directly --- reparameterisation
+invariance, level one equalling the total increment, the shuffle identity
+$S_1 S_2 = S_{12} + S_{21}$, and the vanishing of the signature of a path concatenated with
+its own reversal. All sixteen checks pass.
+
+\section{Where the ordering information lives}
+\label{sec:order}
+
+Before applying the transform to real data it is worth confirming that the claimed mechanism
+exists, in a setting where the answer follows from the construction. Two classes of synthetic
+double-peaked light curve are built to differ only in which peak comes first: the peaks sit
+symmetrically about the midpoint of the window and the curve starts and ends at the same
+baseline, so one class is the exact time reverse of the other. The marginal distribution of
+magnitudes is therefore identical between classes, and so is the net change from first to last
+observation.
+
+The prediction recorded in advance was that separation would appear at depth 2, the Lévy area
+being the classical order-sensitive term. It does not.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lr}
+\toprule
+Representation & Balanced accuracy \\
+\midrule
+Order-blind summary features & 0.512 \\
+Signature depth 1 & 0.524 \\
+Signature depth 2 & 0.489 \\
+Signature depth 3 & \textbf{0.978} \\
+Signature depth 4 & 0.990 \\
+\bottomrule
+\end{tabular}
+\caption{Separation of two synthetic classes differing only in the order of two peaks.
+Chance is 0.5. Ordering becomes visible at level 3, not level 2.}
+\end{table}
+
+The reason is geometric and specific to this path construction. With channels
+$(t, m)$ the time coordinate is strictly increasing, so the antisymmetric part of level 2 ---
+the Lévy area --- reduces to $\int m \,\mathrm{d}t$ once the boundary terms vanish. That is the
+area under the light curve, which is the same whichever peak came first. A path monotone in one
+coordinate encloses no signed area that ordering can change. Ordering first becomes visible at
+level 3, in terms of the form $\iiint \mathrm{d}t\,\mathrm{d}m\,\mathrm{d}t$, which weight
+magnitude excursions by when they occurred.
+
+The practical consequence is direct: truncating at depth 2 to economise on features would
+discard precisely the information the method exists to supply, and the resulting null result
+would have been attributed to the astrophysics.
+
+\section{Data}
+
+Labels are the spectroscopic classifications of the ZTF Bright Transient Survey; per-epoch
+photometry in $g$ and $r$ is served by the ALeRCE broker. ALeRCE's own machine
+classifications are never used, since training on one classifier's output and reporting
+agreement with it measures nothing.
+
+After quality cuts requiring at least ten detections and at least three in each band, the
+sample is 2{,}375 objects with a median of 42 detections spanning a median of 122 days, in
+eight classes: CV (456), SN~II (426), SN~Ia (406), AGN (376), SN~IIn (273), SN~Ic (185),
+SN~Ib (148) and SLSN-I (105).
+
+A first version of the fetch submitted objects grouped by class while the broker's failure
+rate rose during the run, so classes submitted last lost far more objects than those submitted
+first and SN~Ib was eliminated entirely. That is a selection effect on the label rather than
+random attrition, and it would have corrupted every downstream number. After shuffling before
+any network call, lowering concurrency and adding exponential backoff, the per-class retrieval
+rate is 1.0 across all eight classes.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{fig1_lightcurves.png}
+\caption{Example light curves, one per class, drawn as points with error bars and no
+connecting line: a line between observations would assert a continuity the data does not
+contain. Note the range of durations, from 26 detections over 65 days to 356 over 2{,}500.}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{fig2_sampling.png}
+\caption{The sampling gap distribution is bimodal and spans four orders of magnitude:
+repeated exposures within a single night near $10^{-3}$ days, the main survey cadence at 1 to
+10 days, and seasonal visibility windows at 100 to 1{,}000 days. Same-night exposures occupy
+almost no arc length and so barely move the signature, whereas a fixed-grid method weights
+them like any other sample.}
+\end{figure}
+
+\section{Method}
+
+\subsection{Constructing the path}
+
+The difficult part is not the signature but deciding what the path is. Observations in
+different filters are not simultaneous, so no instant exists at which a two-band vector is
+defined, and any joint multi-channel construction embeds a choice. Three are implemented and
+compared rather than assumed: \emph{per-band}, in which each filter is its own
+two-dimensional path and the signatures are concatenated, with no cross-band information and
+no interpolation; \emph{interleaved}, in which all observations in time order form one path
+with a band indicator channel; and \emph{joint forward-fill}, a common time axis with the last
+observed magnitude carried forward, which is piecewise-constant interpolation and is labelled
+as such.
+
+\subsection{Channel preparation}
+
+How the channels are prepared turned out to matter more than which path construction was
+used. Scaling time to $[0,1]$ discards the duration of the event; centring magnitudes discards
+absolute brightness. Both are strong physical discriminants for transients, and the
+hand-crafted baseline retains them as \texttt{t\_span} and \texttt{peak\_mag}. Discarding them
+and then reporting that signatures lose would measure the preprocessing rather than the
+representation.
+
+A related fact is worth stating because it is a check on the implementation rather than a
+result: the \emph{raw} and \emph{raw time} preparations score identically to four decimal
+places. The signature depends only on increments, so a constant magnitude offset cannot change
+it. Absolute brightness can enter only through a basepoint, and when introduced that way it
+degrades performance rather than improving it.
+
+\subsection{Baselines}
+
+Every representation is evaluated on identical cross-validation folds with identical
+classifiers. The hand-crafted baseline implements the FATS and \texttt{feets} lineage from
+scratch; almost all of its features are functions of the marginal magnitude distribution and
+are therefore invariant to permuting observations in time, which is exactly the information
+signatures retain. The three ordering-sensitive features it does contain --- linear trend, rise
+and fade fractions, maximum slope --- are included deliberately, since omitting them would make
+the comparison dishonest. MiniRocket is given linearly interpolated fixed-length input, which
+is its best case; that interpolation is precisely the cost the signature approach claims to
+avoid, and granting the baseline its best case is the only way to measure that cost.
+
+\begin{thebibliography}{9}
+\bibitem{signova} Arrubarrena, P., Lemercier, M., Nikolic, B., Lyons, T. and Cass, T. (2024).
+\emph{Novelty Detection on Radio Astronomy Data using Signatures.} arXiv:2402.14892.
+\bibitem{hambly} Hambly, B. and Lyons, T. (2010). \emph{Uniqueness for the signature of a path
+of bounded variation and the reduced path group.} Annals of Mathematics 171, 109.
+\bibitem{chevyrev} Chevyrev, I. and Kormilitzin, A. (2016). \emph{A Primer on the Signature
+Method in Machine Learning.} arXiv:1603.03788.
+\bibitem{minirocket} Dempster, A., Schmidt, D. F. and Webb, G. I. (2021). \emph{MiniRocket: A
+Very Fast (Almost) Deterministic Transform for Time Series Classification.} arXiv:2012.08791.
+\end{thebibliography}
+
+\end{document}
