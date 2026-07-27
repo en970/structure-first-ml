@@ -1,22 +1,48 @@
 # T2 — Meteoroid stream discovery in an openly licensed orbital archive
 
-**Status: skeleton.** This directory contains a design and an experimental protocol. No results yet.
-Work begins after T1 reaches a reportable state.
+**Status: in progress.** Literature audit complete; data access verified live; pipeline under
+construction.
 
 ## Overview
 
 The discovery track. Where T1 asks whether a mathematically motivated representation outperforms a
-mature baseline, T2 asks a plainer question: is there anything in this archive that nobody has
-looked for?
+mature baseline, T2 asks a plainer question: is there structure in this archive that the field's
+own recommended method — which nobody has yet implemented — would surface?
 
 The Global Meteor Network is a distributed array of low-cost video cameras operated largely by
-amateurs, publishing daily trajectory and orbit solutions under a CC-BY-4.0 licence. Each detected
-meteor yields a heliocentric orbit — semi-major axis, eccentricity, inclination, argument of
-perihelion, longitude of the ascending node — together with radiant coordinates, geocentric
-velocity, and an absolute magnitude estimate. The archive is measured in gigabytes of tabular data
-rather than terabytes of imagery, and a 2026 review characterised the machine-learning work on it as
-still consisting of isolated experiments **[reported — to be verified against the primary source
-before this file leaves skeleton status]**.
+amateurs, publishing trajectory and orbit solutions under a CC-BY-4.0 licence. Each detected
+meteor yields a heliocentric orbit together with radiant coordinates, geocentric velocity with
+per-quantity uncertainties, a Tisserand parameter, convergence angle, station count, and the GMN
+pipeline's own IAU shower association. Access was verified live: monthly summary files from
+December 2018 to the current month, 86 columns, 118,023 meteors in December 2025 alone
+(~110 MB for that month), the whole archive laptop-scale.
+
+## Literature status, audited honestly
+
+An initial claim that machine learning had "barely been applied" to this archive was given to a
+falsification scout and came back **partially false** — and the corrected picture is better for
+this track than the naive claim was:
+
+- **Shober (2026, ApJ, arXiv:2602.16845)** is the strongest prior art: DBSCAN plus KDE-derived
+  sporadic-background null models and formal significance testing on 235,271 meteors from four
+  networks (52% GMN), confirming the new "rock-comet" stream M2026-A1 at 5.3σ. Cross-*network*
+  consensus, single dissimilarity metric ($D_N$).
+- **Peña-Asensio & Ferrari (2025, AJ, arXiv:2507.01501)** ran HDBSCAN on CAMS (316,235 meteors,
+  not GMN) and beat the classical look-up-table method on statistical coherence.
+- **Shober & Vaubaillon (2024, A&A, arXiv:2404.08507)** computed four D-criteria in parallel on
+  fireball data as a false-positive-rate estimator — parallel metrics, but not as a clustering
+  acceptance test, and not on GMN.
+- **Courtot, Shober & Vaubaillon (2025, arXiv:2507.19075)**, reviewing 40 papers, found most
+  D-criterion use untested and **explicitly recommends combining multiple D-criteria with density
+  clustering** — the method of this track, which no one has yet implemented.
+- The GMN team's own operational discovery method (Šegon et al. 2026, eMetN, shower M2026-E1)
+  remains classical: radiant/velocity windows plus single D-criteria, no clustering.
+
+The niche, stated precisely: **GMN-native density clustering in which a candidate must survive
+across several orbital dissimilarity criteria simultaneously ($D_{SH}$, $D_D$, $D_H$, $D_N$) to be
+accepted — cross-metric stability as the detection statistic, calibrated against a
+structure-respecting sporadic null.** Every ingredient has been separately demonstrated; the
+combination is what the field's own review is asking for.
 
 ## Why this is a structure-first problem
 
@@ -66,9 +92,10 @@ calculation is also within the scope of a Research Note of the AAS. See
 
 ## Risks recorded in advance
 
-- **The archive may be better mined than the secondary literature suggests.** The saturation claim
-  is unverified. The first task is a proper literature check, and if the answer is that this is
-  well-trodden ground, the track is abandoned and the finding recorded.
+- ~~The archive may be better mined than the secondary literature suggests.~~ **Resolved by the
+  audit above**: individual ingredients are demonstrated (most recently Shober 2026 on a
+  GMN-dominated dataset), the multi-criterion consensus combination is not. The track proceeds
+  with Shober's null-hypothesis machinery as the standard to meet, not as an unknown.
 - **Consensus across metrics may collapse to the intersection of their agreements**, which is likely
   to be exactly the set of already-catalogued showers. That would be a null result, and it would be
   reported as one.
