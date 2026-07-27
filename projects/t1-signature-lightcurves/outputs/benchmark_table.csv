@@ -1,0 +1,16 @@
+,balanced_accuracy,macro_f1,logistic_balanced_accuracy,n_features
+summary+signature-per_band-raw_time-lead_lag-d4,0.5784,0.5809,0.5444,729.0
+summary,0.5604,0.5597,0.5235,49.0
+signature-per_band-raw_time-lead_lag-d4,0.5481,0.5488,0.4943,680.0
+signature-per_band-raw-lead_lag-d4,0.5481,0.5488,0.4943,680.0
+minirocket,0.5383,0.5391,0.541,9996.0
+signature-per_band-raw_time-lead_lag-d3,0.5376,0.5369,0.5015,168.0
+signature-per_band-raw-lead_lag-d3,0.5376,0.5369,0.5015,168.0
+signature-per_band-raw_time-d4,0.5235,0.5227,0.4755,60.0
+signature-per_band-raw-d4,0.5235,0.5227,0.4755,60.0
+signature-per_band-raw-basepoint-d4,0.5119,0.5125,0.4822,60.0
+signature-per_band-raw_time-d3,0.5062,0.5049,0.4676,28.0
+signature-per_band-raw-d3,0.5062,0.5049,0.4676,28.0
+signature-per_band-raw-basepoint-d3,0.4877,0.4886,0.4469,28.0
+signature-per_band-raw_time-basepoint-d4,0.4808,0.4791,0.4544,60.0
+signature-per_band-raw_time-basepoint-d3,0.4649,0.4625,0.4197,28.0

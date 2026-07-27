@@ -1,0 +1,271 @@
+{
+  "generated_utc": "2026-07-27T07:36:56.443210+00:00",
+  "seed": 20260726,
+  "folds": 5,
+  "n_objects": 2375,
+  "class_counts": {
+    "AGN": 376,
+    "CV": 456,
+    "SLSN-I": 105,
+    "SN II": 426,
+    "SN IIn": 273,
+    "SN Ia": 406,
+    "SN Ib": 148,
+    "SN Ic": 185
+  },
+  "results": {
+    "summary": {
+      "n_features": 49,
+      "n_objects": 2375,
+      "logistic": {
+        "balanced_accuracy": 0.5235,
+        "balanced_accuracy_std": 0.0207,
+        "macro_f1": 0.5074,
+        "macro_f1_std": 0.0207
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.5604,
+        "balanced_accuracy_std": 0.0167,
+        "macro_f1": 0.5597,
+        "macro_f1_std": 0.0187
+      }
+    },
+    "signature-per_band-raw_time-d3": {
+      "n_features": 28,
+      "n_objects": 2375,
+      "logistic": {
+        "balanced_accuracy": 0.4676,
+        "balanced_accuracy_std": 0.0286,
+        "macro_f1": 0.4591,
+        "macro_f1_std": 0.0247
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.5062,
+        "balanced_accuracy_std": 0.0383,
+        "macro_f1": 0.5049,
+        "macro_f1_std": 0.0417
+      },
+      "build_seconds": 37.3
+    },
+    "signature-per_band-raw_time-d4": {
+      "n_features": 60,
+      "n_objects": 2375,
+      "logistic": {
+        "balanced_accuracy": 0.4755,
+        "balanced_accuracy_std": 0.0294,
+        "macro_f1": 0.4675,
+        "macro_f1_std": 0.0253
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.5235,
+        "balanced_accuracy_std": 0.0473,
+        "macro_f1": 0.5227,
+        "macro_f1_std": 0.0508
+      },
+      "build_seconds": 42.0
+    },
+    "signature-per_band-raw_time-basepoint-d3": {
+      "n_features": 28,
+      "n_objects": 2375,
+      "logistic": {
+        "balanced_accuracy": 0.4197,
+        "balanced_accuracy_std": 0.013,
+        "macro_f1": 0.4048,
+        "macro_f1_std": 0.0169
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.4649,
+        "balanced_accuracy_std": 0.0328,
+        "macro_f1": 0.4625,
+        "macro_f1_std": 0.0351
+      },
+      "build_seconds": 37.4
+    },
+    "signature-per_band-raw_time-basepoint-d4": {
+      "n_features": 60,
+      "n_objects": 2375,
+      "logistic": {
+        "balanced_accuracy": 0.4544,
+        "balanced_accuracy_std": 0.021,
+        "macro_f1": 0.439,
+        "macro_f1_std": 0.0177
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.4808,
+        "balanced_accuracy_std": 0.0273,
+        "macro_f1": 0.4791,
+        "macro_f1_std": 0.0296
+      },
+      "build_seconds": 48.2
+    },
+    "signature-per_band-raw_time-lead_lag-d3": {
+      "n_features": 168,
+      "n_objects": 2375,
+      "logistic": {
+        "balanced_accuracy": 0.5015,
+        "balanced_accuracy_std": 0.0225,
+        "macro_f1": 0.4959,
+        "macro_f1_std": 0.0171
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.5376,
+        "balanced_accuracy_std": 0.0426,
+        "macro_f1": 0.5369,
+        "macro_f1_std": 0.0464
+      },
+      "build_seconds": 67.2
+    },
+    "signature-per_band-raw_time-lead_lag-d4": {
+      "n_features": 680,
+      "n_objects": 2375,
+      "logistic": {
+        "balanced_accuracy": 0.4943,
+        "balanced_accuracy_std": 0.0204,
+        "macro_f1": 0.4921,
+        "macro_f1_std": 0.0161
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.5481,
+        "balanced_accuracy_std": 0.0286,
+        "macro_f1": 0.5488,
+        "macro_f1_std": 0.032
+      },
+      "build_seconds": 128.7
+    },
+    "signature-per_band-raw-d3": {
+      "n_features": 28,
+      "n_objects": 2375,
+      "logistic": {
+        "balanced_accuracy": 0.4676,
+        "balanced_accuracy_std": 0.0286,
+        "macro_f1": 0.4591,
+        "macro_f1_std": 0.0247
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.5062,
+        "balanced_accuracy_std": 0.0383,
+        "macro_f1": 0.5049,
+        "macro_f1_std": 0.0417
+      },
+      "build_seconds": 52.0
+    },
+    "signature-per_band-raw-d4": {
+      "n_features": 60,
+      "n_objects": 2375,
+      "logistic": {
+        "balanced_accuracy": 0.4755,
+        "balanced_accuracy_std": 0.0294,
+        "macro_f1": 0.4675,
+        "macro_f1_std": 0.0253
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.5235,
+        "balanced_accuracy_std": 0.0473,
+        "macro_f1": 0.5227,
+        "macro_f1_std": 0.0508
+      },
+      "build_seconds": 54.8
+    },
+    "signature-per_band-raw-basepoint-d3": {
+      "n_features": 28,
+      "n_objects": 2375,
+      "logistic": {
+        "balanced_accuracy": 0.4469,
+        "balanced_accuracy_std": 0.0099,
+        "macro_f1": 0.428,
+        "macro_f1_std": 0.0113
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.4877,
+        "balanced_accuracy_std": 0.0306,
+        "macro_f1": 0.4886,
+        "macro_f1_std": 0.0331
+      },
+      "build_seconds": 47.1
+    },
+    "signature-per_band-raw-basepoint-d4": {
+      "n_features": 60,
+      "n_objects": 2375,
+      "logistic": {
+        "balanced_accuracy": 0.4822,
+        "balanced_accuracy_std": 0.0141,
+        "macro_f1": 0.4641,
+        "macro_f1_std": 0.0116
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.5119,
+        "balanced_accuracy_std": 0.0329,
+        "macro_f1": 0.5125,
+        "macro_f1_std": 0.0352
+      },
+      "build_seconds": 53.9
+    },
+    "signature-per_band-raw-lead_lag-d3": {
+      "n_features": 168,
+      "n_objects": 2375,
+      "logistic": {
+        "balanced_accuracy": 0.5015,
+        "balanced_accuracy_std": 0.0225,
+        "macro_f1": 0.4959,
+        "macro_f1_std": 0.0171
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.5376,
+        "balanced_accuracy_std": 0.0426,
+        "macro_f1": 0.5369,
+        "macro_f1_std": 0.0464
+      },
+      "build_seconds": 65.7
+    },
+    "signature-per_band-raw-lead_lag-d4": {
+      "n_features": 680,
+      "n_objects": 2375,
+      "logistic": {
+        "balanced_accuracy": 0.4943,
+        "balanced_accuracy_std": 0.0204,
+        "macro_f1": 0.4921,
+        "macro_f1_std": 0.0161
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.5481,
+        "balanced_accuracy_std": 0.0286,
+        "macro_f1": 0.5488,
+        "macro_f1_std": 0.032
+      },
+      "build_seconds": 118.2
+    },
+    "minirocket": {
+      "n_features": 9996,
+      "n_objects": 2375,
+      "logistic": {
+        "balanced_accuracy": 0.541,
+        "balanced_accuracy_std": 0.0168,
+        "macro_f1": 0.5412,
+        "macro_f1_std": 0.0142
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.5383,
+        "balanced_accuracy_std": 0.0251,
+        "macro_f1": 0.5391,
+        "macro_f1_std": 0.0276
+      }
+    },
+    "summary+signature-per_band-raw_time-lead_lag-d4": {
+      "n_features": 729,
+      "n_objects": 2375,
+      "logistic": {
+        "balanced_accuracy": 0.5444,
+        "balanced_accuracy_std": 0.0184,
+        "macro_f1": 0.54,
+        "macro_f1_std": 0.0177
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.5784,
+        "balanced_accuracy_std": 0.0217,
+        "macro_f1": 0.5809,
+        "macro_f1_std": 0.0248
+      },
+      "note": "concatenation of the hand-crafted features with the best signature variant"
+    }
+  }
+}

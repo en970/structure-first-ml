@@ -95,10 +95,12 @@ def thin_dataset(df: pd.DataFrame, frac: float, regime: str, seed: int) -> pd.Da
               .reset_index(drop=True))
 
 
-def representations(df: pd.DataFrame, depth: int, mode: str) -> dict[str, pd.DataFrame]:
+def representations(df: pd.DataFrame, depth: int, mode: str, norm: str
+                    ) -> dict[str, pd.DataFrame]:
     reps = {
         "summary": feature_frame(df),
-        f"signature-{mode}-d{depth}": signature_feature_frame(df, depth=depth, mode=mode),
+        f"signature-{mode}-d{depth}": signature_feature_frame(
+            df, depth=depth, mode=mode, norm=norm),
     }
     mr = minirocket_features(df)
     if mr is not None:
@@ -113,6 +115,8 @@ def main() -> int:
     ap.add_argument("--folds", type=int, default=5)
     ap.add_argument("--depth", type=int, default=3)
     ap.add_argument("--mode", default="per_band")
+    ap.add_argument("--norm", default="raw_time",
+                    help="channel preparation; see features_signature.NORMALISATIONS")
     args = ap.parse_args()
 
     path = ROOT / "data" / "ztf_bts_lightcurves.parquet"
@@ -131,7 +135,7 @@ def main() -> int:
             n_med = int(thinned.groupby("oid").size().median())
             print(f"\n{regime} frac={frac:.2f}: {len(thinned)} detections "
                   f"(median {n_med} per object)")
-            reps = representations(thinned, args.depth, args.mode)
+            reps = representations(thinned, args.depth, args.mode, args.norm)
             for name, frame in reps.items():
                 (X,), y = _align(frame)
                 res = evaluate(X, y, args.folds)
@@ -158,7 +162,7 @@ def main() -> int:
     tab.to_csv(out / "ablation_sampling.csv", index=False)
     (out / "ablation_sampling.json").write_text(json.dumps({
         "generated_utc": pd.Timestamp.utcnow().isoformat(),
-        "seed": SEED, "folds": args.folds, "depth": args.depth, "mode": args.mode,
+        "seed": SEED, "folds": args.folds, "depth": args.depth, "mode": args.mode, "norm": args.norm,
         "min_keep_per_band": MIN_KEEP,
         "records": records,
     }, indent=2))

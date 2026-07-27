@@ -138,6 +138,13 @@ def main() -> int:
     ap.add_argument("--depths", type=int, nargs="+", default=[2, 3, 4])
     ap.add_argument("--folds", type=int, default=5)
     ap.add_argument("--modes", nargs="+", default=["per_band", "interleaved", "joint_ffill"])
+    ap.add_argument("--augment", nargs="+", default=["none"],
+                    choices=["none", "basepoint", "lead_lag", "both"],
+                    help="path augmentations: basepoint restores absolute brightness, "
+                         "lead_lag exposes quadratic variation")
+    ap.add_argument("--norms", nargs="+", default=["unit_time"],
+                    help="channel preparation: unit_time discards duration and absolute "
+                         "brightness, raw_time keeps duration, raw keeps both")
     args = ap.parse_args()
 
     path = ROOT / "data" / "ztf_bts_lightcurves.parquet"
@@ -161,11 +168,18 @@ def main() -> int:
 
     best_sig_key, best_sig_frame, best_score = None, None, -1.0
     for mode in args.modes:
+      for norm in args.norms:
+       for aug in args.augment:
         for depth in args.depths:
-            key = f"signature-{mode}-d{depth}"
+            suffix = "" if norm == "unit_time" else f"-{norm}"
+            suffix += "" if aug == "none" else f"-{aug}"
+            key = f"signature-{mode}{suffix}-d{depth}"
             t0 = time.time()
             try:
-                sig = signature_feature_frame(df, depth=depth, mode=mode)
+                sig = signature_feature_frame(
+                    df, depth=depth, mode=mode, norm=norm,
+                    basepoint=aug in ("basepoint", "both"),
+                    use_lead_lag=aug in ("lead_lag", "both"))
             except Exception as exc:
                 print(f"  {key} failed: {type(exc).__name__}: {exc}")
                 continue

@@ -32,29 +32,46 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from signature import add_time, lead_lag, signature, signature_dim
+from signature import add_basepoint, lead_lag, signature, signature_dim
 
-__all__ = ["build_path", "signature_features", "signature_feature_frame"]
+__all__ = ["build_path", "signature_features", "signature_feature_frame",
+           "NORMALISATIONS"]
 
 PATH_MODES = ("per_band", "interleaved", "joint_ffill")
 
 
-def _normalise(t: np.ndarray, m: np.ndarray, e: np.ndarray | None = None
-               ) -> tuple[np.ndarray, np.ndarray]:
-    """Scale time to [0, 1] and centre magnitudes on their median.
+NORMALISATIONS = ("unit_time", "raw_time", "raw")
 
-    Centring removes the object's mean brightness, which is a distance effect rather than
-    a class property; the amplitude is left intact because it is physical.
+
+def _normalise(t: np.ndarray, m: np.ndarray, how: str = "unit_time"
+               ) -> tuple[np.ndarray, np.ndarray]:
+    """Prepare the (time, magnitude) channels before the path is built.
+
+    The choice matters more than it looks, and the first version of this module got it
+    wrong. Scaling time to [0, 1] discards the duration of the event, and centring
+    magnitudes discards the absolute brightness -- and for transients both are strong
+    physical discriminants that the hand-crafted baseline keeps (as `t_span` and
+    `peak_mag`). Throwing them away and then reporting that signatures lose would be
+    measuring the preprocessing, not the representation.
+
+      unit_time  time scaled to [0, 1], magnitudes centred on the median. Pure shape.
+      raw_time   time in days from the first detection, magnitudes centred. Keeps
+                 duration, discards distance-driven brightness.
+      raw        time in days, magnitudes uncentred. Keeps everything.
     """
+    if how not in NORMALISATIONS:
+        raise ValueError(f"normalisation must be one of {NORMALISATIONS}, got {how!r}")
     span = t.max() - t.min()
-    tn = (t - t.min()) / span if span > 0 else np.zeros_like(t)
-    mn = m - np.median(m)
-    return tn, mn
+    if how == "unit_time":
+        tn = (t - t.min()) / span if span > 0 else np.zeros_like(t)
+        return tn, m - np.median(m)
+    tn = t - t.min()
+    return (tn, m - np.median(m)) if how == "raw_time" else (tn, m)
 
 
 def build_path(lc: pd.DataFrame, mode: str = "per_band",
                bands: tuple[str, ...] = ("g", "r"),
-               with_time: bool = True) -> list[np.ndarray]:
+               with_time: bool = True, norm: str = "unit_time") -> list[np.ndarray]:
     """Construct one or more paths from a single object's observations.
 
     Returns a list of paths, since `per_band` yields one per filter and the other modes
@@ -72,7 +89,7 @@ def build_path(lc: pd.DataFrame, mode: str = "per_band",
             if len(sub) < 2:
                 paths.append(np.zeros((2, 2)))
                 continue
-            tn, mn = _normalise(sub.mjd.to_numpy(), sub.mag.to_numpy())
+            tn, mn = _normalise(sub.mjd.to_numpy(), sub.mag.to_numpy(), norm)
             paths.append(np.column_stack([tn, mn]) if with_time else mn.reshape(-1, 1))
         return paths
 
@@ -80,7 +97,7 @@ def build_path(lc: pd.DataFrame, mode: str = "per_band",
         keep = lc[lc.band.isin(bands)]
         if len(keep) < 2:
             return [np.zeros((2, 3))]
-        tn, mn = _normalise(keep.mjd.to_numpy(), keep.mag.to_numpy())
+        tn, mn = _normalise(keep.mjd.to_numpy(), keep.mag.to_numpy(), norm)
         indicator = np.array([bands.index(b) for b in keep.band], dtype=float)
         cols = [tn, mn, indicator] if with_time else [mn, indicator]
         return [np.column_stack(cols)]
@@ -96,12 +113,15 @@ def build_path(lc: pd.DataFrame, mode: str = "per_band",
         if len(sub) == 0:
             cols.append(np.zeros_like(times))
             continue
-        centred = sub.mag.to_numpy() - np.median(sub.mag.to_numpy())
+        vals = sub.mag.to_numpy()
+        if norm != "raw":
+            vals = vals - np.median(vals)
         idx = np.searchsorted(sub.mjd.to_numpy(), times, side="right") - 1
         idx = np.clip(idx, 0, len(sub) - 1)
-        cols.append(centred[idx])
+        cols.append(vals[idx])
     span = times.max() - times.min()
-    tn = (times - times.min()) / span if span > 0 else np.zeros_like(times)
+    tn = ((times - times.min()) / span if span > 0 else np.zeros_like(times)) \
+        if norm == "unit_time" else times - times.min()
     stacked = [tn] + cols if with_time else cols
     return [np.column_stack(stacked)]
 
@@ -112,11 +132,22 @@ def _log_modulus(x: np.ndarray) -> np.ndarray:
 
 def signature_features(lc: pd.DataFrame, depth: int = 3, mode: str = "per_band",
                        bands: tuple[str, ...] = ("g", "r"), with_time: bool = True,
-                       use_lead_lag: bool = False) -> np.ndarray:
-    """Signature feature vector for one object."""
-    paths = build_path(lc, mode=mode, bands=bands, with_time=with_time)
+                       use_lead_lag: bool = False, norm: str = "unit_time",
+                       basepoint: bool = False) -> np.ndarray:
+    """Signature feature vector for one object.
+
+    `basepoint` matters more than it sounds. The signature depends only on increments, so
+    two light curves differing by a constant magnitude offset have identical signatures --
+    which is why the `raw` and `raw_time` preparations score identically, a fact worth
+    treating as a check on the implementation rather than a coincidence. Prepending the
+    origin restores absolute brightness, and for transients that is a real discriminant
+    the hand-crafted baseline already has as `peak_mag`.
+    """
+    paths = build_path(lc, mode=mode, bands=bands, with_time=with_time, norm=norm)
     feats = []
     for p in paths:
+        if basepoint:
+            p = add_basepoint(p)
         if use_lead_lag:
             p = lead_lag(p)
         feats.append(signature(p, depth))
@@ -139,13 +170,15 @@ def _expected_dim(depth: int, mode: str, bands: tuple[str, ...], with_time: bool
 
 def signature_feature_frame(df: pd.DataFrame, depth: int = 3, mode: str = "per_band",
                             bands: tuple[str, ...] = ("g", "r"), with_time: bool = True,
-                            use_lead_lag: bool = False) -> pd.DataFrame:
+                            use_lead_lag: bool = False, norm: str = "unit_time",
+                            basepoint: bool = False) -> pd.DataFrame:
     """Signature features for every object in a long-format photometry frame."""
     dim = _expected_dim(depth, mode, bands, with_time, use_lead_lag)
     rows, index, labels = [], [], []
     for oid, lc in df.groupby("oid", sort=True):
         v = signature_features(lc, depth=depth, mode=mode, bands=bands,
-                               with_time=with_time, use_lead_lag=use_lead_lag)
+                               with_time=with_time, use_lead_lag=use_lead_lag, norm=norm,
+                               basepoint=basepoint)
         if v.size != dim:  # guard against a silently ragged feature matrix
             raise ValueError(f"{oid}: got {v.size} features, expected {dim}")
         rows.append(v)
