@@ -275,6 +275,100 @@ the comparison dishonest. MiniRocket is given linearly interpolated fixed-length
 is its best case; that interpolation is precisely the cost the signature approach claims to
 avoid, and granting the baseline its best case is the only way to measure that cost.
 
+\section{Results}
+
+All figures are balanced accuracy under stratified cross-validation with gradient-boosted
+trees, on 2{,}375 objects in eight classes. Chance is 0.125.
+
+\subsection{Preprocessing dominated the representation}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lrr}
+\toprule
+Representation & Features & Balanced accuracy \\
+\midrule
+summary $+$ signature (lead-lag, depth 4) & 729 & \textbf{0.578} \\
+summary (hand-crafted) & 49 & 0.560 \\
+signature, per-band, raw time, lead-lag, depth 4 & 680 & 0.548 \\
+MiniRocket (interpolated grid) & 9{,}996 & 0.538 \\
+signature, per-band, raw time, depth 4 & 60 & 0.524 \\
+signature, per-band, unit time, depth 4 & 60 & 0.455 \\
+\bottomrule
+\end{tabular}
+\caption{Head-to-head comparison. The gap between the last two rows is the cost of
+discarding event duration by scaling time to $[0,1]$; the gap between rows three and five
+is the gain from the lead-lag transform.}
+\end{table}
+
+Scaling time to $[0,1]$ costs 0.069, because it discards the duration of the event, which
+the hand-crafted baseline retains as \texttt{t\_span}. The first version of this pipeline
+did exactly that, and would have reported a far worse number as a property of signatures
+rather than of the preprocessing. The lead-lag transform is worth a further 0.025, taking
+signatures past MiniRocket but not past the incumbent; it exposes quadratic variation, and
+roughly a third of the sample (AGN and CV) is stochastically variable rather than transient.
+
+A third observation is a check on the implementation rather than a result: the \emph{raw}
+and \emph{raw time} preparations score identically to four decimal places. The signature
+depends only on increments, so a constant magnitude offset cannot change it. Absolute
+brightness can enter only through a basepoint, and introduced that way it degrades
+performance rather than improving it.
+
+\subsection{Complementarity, with a matched-noise control}
+
+Signatures alone lose to a 49-feature baseline while using fourteen times as many features.
+The concatenation scores above the baseline, but by 0.015 against a fold spread of 0.020,
+which on its own establishes nothing. The question was therefore given a dedicated test:
+fifty paired folds on identical splits, a Wilcoxon signed-rank test, a bootstrap interval,
+and a control in which the signature block is replaced by Gaussian noise of identical shape
+and column variance.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lr}
+\toprule
+Feature block & Balanced accuracy \\
+\midrule
+summary $+$ signature & $\mathbf{0.5769 \pm 0.0200}$ \\
+summary & $0.5623 \pm 0.0167$ \\
+signature alone & $0.5473 \pm 0.0218$ \\
+summary $+$ matched noise & $0.5278 \pm 0.0146$ \\
+\bottomrule
+\end{tabular}
+\hspace{1em}
+\begin{tabular}{lrr}
+\toprule
+vs.\ summary & Difference & Folds improved \\
+\midrule
+$+$ signature & $+0.0147$ & 38 / 50 \\
+$+$ matched noise & $-0.0345$ & 1 / 50 \\
+\bottomrule
+\end{tabular}
+\caption{Left: mean and standard deviation across fifty paired folds. Right: paired
+differences against the baseline, with 95\% bootstrap intervals $[+0.0078, +0.0212]$ and
+$[-0.0396, -0.0297]$ respectively.}
+\end{table}
+
+The control is what makes the result readable. A gradient-boosted ensemble handed 680 extra
+candidate splits might improve for reasons unrelated to their contents; it does not. Six
+hundred and eighty columns of noise \emph{cost} 0.0345, while the same number of signature
+columns \emph{gain} 0.0147, under identical folds and identical dependence structure.
+
+One caveat belongs beside the $p$-value ($9.5 \times 10^{-5}$): repeated cross-validation
+folds reuse the same 2{,}375 objects and are not independent, so both it and the bootstrap
+interval are optimistic as formal inference. The comparison that does not rest on that
+assumption is the one against the noise control, and it is the one the conclusion leans on.
+
+\subsection{What the prediction got right and wrong}
+
+The prediction registered before any data was touched was that signatures should gain most
+where sampling is irregular. Taken alone they do not beat the incumbent, so the strong form
+of the claim fails. What survives is weaker and more interesting: signatures carry
+information the hand-crafted features do not have. Not a better representation --- a
+different one.
+
 \begin{thebibliography}{9}
 \bibitem{signova} Arrubarrena, P., Lemercier, M., Nikolic, B., Lyons, T. and Cass, T. (2024).
 \emph{Novelty Detection on Radio Astronomy Data using Signatures.} arXiv:2402.14892.
