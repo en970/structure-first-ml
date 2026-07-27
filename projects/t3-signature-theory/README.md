@@ -1,7 +1,9 @@
 # T3 — Truncation depth, sampling irregularity, and where the information lives
 
-**Status: skeleton.** This directory contains a design and an experimental protocol. No results yet.
-Work begins once T1 has produced measurements that require explanation.
+**Status: skeleton, with one result already in hand.** The design below is unchanged, but
+question 1 has been partly answered ahead of schedule by a control experiment run inside T1,
+and the answer was not the one predicted. That result is recorded here because it belongs to
+this track's subject matter, and because it changes what the remaining questions should ask.
 
 ## Overview
 
@@ -42,6 +44,46 @@ Three questions follow, none of which the theorem answers:
    standard augmentations used to break the invariance where it is unwanted — adding a time
    coordinate, the lead-lag transform, basepoint augmentation — change the noise sensitivity in ways
    that are not documented for this regime.
+
+## Result already obtained: ordering lives at depth 3, not depth 2
+
+T1's control experiment (`projects/t1-signature-lightcurves/src/order_sensitivity.py`) built
+two classes of synthetic double-peaked light curve differing *only* in which peak comes
+first — identical marginal magnitude distributions, identical net change from first to last
+observation, opposite ordering. The prediction, written down in advance, was that separation
+would appear at depth 2, the Lévy area being the classical order-sensitive term.
+
+| Representation | Balanced accuracy |
+|---|---|
+| Order-blind summary features | 0.512 |
+| Signature depth 1 | 0.524 |
+| Signature depth 2 | 0.489 |
+| Signature depth 3 | **0.978** |
+| Signature depth 4 | 0.990 |
+
+Depths 1 and 2 sit at chance. The separation appears at depth 3.
+
+**Why.** With channels $(t, m)$ the time coordinate is strictly increasing, so the
+antisymmetric part of level 2 — the Lévy area — reduces to $\int m\,\mathrm{d}t$ once the
+boundary terms vanish for a path returning to its starting magnitude. That is the area under
+the light curve, which is identical whichever peak came first. **A path monotone in one
+coordinate encloses no signed area that ordering can change.** Ordering first becomes visible
+at level 3, in terms of the form $\iiint \mathrm{d}t\,\mathrm{d}m\,\mathrm{d}t$, which weight
+magnitude excursions by when they occurred.
+
+**Why this matters beyond the experiment.** Every time-augmented signature of a time series
+has a monotone time channel — that is what time augmentation means. So this degeneracy is not
+a quirk of one synthetic construction; it is a structural property of the standard way
+signatures are applied to time series. The practical consequence is immediate: truncating at
+depth 2 to economise on features discards precisely the ordering information the method is
+supposed to supply, and any resulting null result would be misattributed to the data.
+
+This also sharpens question 1 below. The question is no longer "how does information
+distribute across depths" but the more specific: **which augmentations restore
+order-sensitivity to level 2, and at what cost?** The lead-lag transform is the obvious
+candidate, since it doubles the channels and breaks monotonicity — and T1 measured it as
+worth +0.025 on real photometry without knowing why. Establishing whether that gain is the
+same phenomenon is a concrete, bounded experiment.
 
 ## Planned method
 
