@@ -64,6 +64,59 @@ angular elements are periodic, the eccentricity is bounded, and the physically m
 proximity respects the geometry of the orbit space rather than the coordinate chart it happens to be
 written in.
 
+## The first version was wrong, and how it was caught
+
+The first complete run produced 4,517 consensus groups, of which 3,727 matched no known
+shower. Read naively that is a spectacular discovery rate. It is nothing of the kind, and
+the audit that caught it is the most useful thing this track has produced so far.
+
+Three diagnostics killed it:
+
+| Check | What it showed |
+|---|---|
+| Sporadic fraction of unmatched groups | median **1.000** — the groups were made entirely of meteors GMN calls sporadic |
+| Member counts | median 14, but maximum **5,804** in a 6,000-meteor window |
+| Distinct showers behind matched groups | 790 matched groups but only **169** distinct showers — every stream counted about five times |
+
+The largest "cluster" held 97% of its window. DBSCAN chains through a dense continuous
+background: however small the neighbourhood radius, sufficient density links everything
+into one connected component. Those objects were the sporadic complex itself, not streams
+within it. Meanwhile overlapping windows re-counted the same structures, and the novelty
+test — "is the most common label in this group the sporadic marker?" — filed any genuine
+stream that GMN had mostly left unlabelled as new.
+
+Publishing that number would have been a serious false-discovery claim. Four corrections
+follow, and they are now the substance of the method.
+
+**1. A physically valid null.** Shuffling orbital elements independently preserves every
+marginal distribution but produces orbits that cannot reach Earth. A meteoroid is only
+observable if its orbit crosses Earth's, so null orbits failing $q \le Q_\oplus$ and
+$Q \ge q_\oplus$ are rejected and redrawn. Measured effect: 4.2% of naively shuffled orbits
+are unreachable, against 0% of the real data. Without the constraint the null is dispersed
+over orbital space no meteor can occupy, its pair distances inflate, and every threshold
+derived from it is too permissive.
+
+**2. Group-level significance.** Each surviving group is tested as an object rather than
+trusted because a clustering algorithm emitted it. The statistic is a density excess: the
+group's centroid and its own radius define a ball in orbit space, and the observed count
+there is compared against what the null puts in the same ball. A chained background
+component spans a huge volume at background density and scores near zero however many
+members it holds.
+
+**3. A radius ceiling.** Significance alone was not enough — a 4,893-member component of
+radius 1.98 in $D_{SH}$ still passed at $z = 9.0$. Classical association thresholds sit at
+0.05–0.2, so a group whose 80th-percentile member distance exceeds 0.30 is not a stream by
+any accepted definition. This is deliberately conservative and it costs completeness: the
+known shower GCM was rejected at radius 0.316. Losing real showers to a strict cut is the
+right trade when the alternative is claiming false ones.
+
+**4. Both IAU lists.** Novelty is checked against the established list (113 codes) **and
+the working list of 787 candidate showers**. Checking only the established list would
+manufacture novelty out of showers other people have already reported.
+
+After these corrections the Perseid window yields one group of 3,707 members at $z = 44.8$
+and radius 0.11, entirely PER-labelled, while the chained background is rejected.
+
 ## Planned method
 
 1. **Ingest and quality-cut.** Assemble the published trajectory and orbit solutions; apply
