@@ -83,24 +83,37 @@ where it should not. Both predictions are reported.</p>
 <h2>Tracks</h2>
 
 <div class="proj">
-  <h3>T1 — Path signatures for irregularly sampled light curves <span class="tag running">in progress</span></h3>
+  <h3>T1 — Path signatures for irregularly sampled light curves <span class="tag running">result: complementary, not better</span></h3>
   <p>Astronomical photometry is a sampled path, not a vector: observations arrive at irregular
   times, in different bands, with gaps set by weather and scheduling. The signature of a path,
   $S(X)=\left(1,\int dX,\iint dX\otimes dX,\dots\right)$, is a reparameterisation-invariant feature
   map that consumes the raw $(t,\,\text{flux},\,\sigma,\,\text{band})$ stream with no interpolation
-  at all. The method is standard in finance and healthcare and has exactly one published
-  astronomical application (radio-interferometric interference detection); light-curve
-  classification is untouched. The honest question is whether it beats a mature baseline stack —
-  hand-crafted variability features, Gaussian-process augmentation, and transformer embeddings.</p>
-  <p class="links"><a href="projects/t1-signature-lightcurves/">Design &amp; code</a></p>
+  at all. Standard in finance and healthcare, it has exactly one published astronomical application
+  (radio-interferometric interference detection); light-curve classification was untouched.</p>
+  <p>On 2,375 spectroscopically classified ZTF transients in 8 classes, signatures <b>lose</b> to a
+  49-feature hand-crafted baseline (0.547 against 0.562 balanced accuracy) while using fourteen
+  times as many features. But concatenated with that baseline they reach 0.577, and a matched-noise
+  control settles what that means: 680 columns of noise <em>cost</em> 0.035, while 680 signature
+  columns <em>gain</em> 0.015, under identical folds. The information is real and it is
+  complementary. A separate synthetic control located the mechanism — ordering becomes visible at
+  truncation depth 3, not depth 2 as predicted, because a path monotone in time encloses no signed
+  area for the Lévy term to see.</p>
+  <p class="links"><a href="projects/t1-signature-lightcurves/">Design, code &amp; results</a></p>
 </div>
 
 <div class="proj">
-  <h3>T2 — Meteoroid stream discovery <span class="tag">skeleton</span></h3>
-  <p>An openly licensed orbital archive that the machine-learning community has largely ignored,
-  approached as a clustering problem in a space where the metric is dictated by celestial mechanics
-  rather than by convenience.</p>
-  <p class="links"><a href="projects/t2-meteor-stream-discovery/">Design</a></p>
+  <h3>T2 — Meteoroid stream discovery <span class="tag running">in progress</span></h3>
+  <p>2.15 million meteor orbits from the Global Meteor Network, clustered under several classical
+  orbital dissimilarity criteria at once, where a candidate must survive <em>all</em> of them.
+  The field's own 2025 methods review recommends exactly this and nobody has run it on this
+  archive.</p>
+  <p>A first pass returned 3,727 apparently novel groups. An audit showed they were the sporadic
+  background itself — DBSCAN chaining through a dense continuum, with overlapping windows counting
+  each structure five times over. Four corrections followed: a null restricted to orbits that can
+  actually reach Earth, group-level density-excess significance, a compactness ceiling, and
+  novelty checked against both the established IAU list and its 787-entry working list. The
+  Perseids now return at $z = 44.8$; the chained background does not return at all.</p>
+  <p class="links"><a href="projects/t2-meteor-stream-discovery/">Design &amp; code</a></p>
 </div>
 
 <div class="proj">

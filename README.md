@@ -34,8 +34,8 @@ document and an experimental protocol, but no results yet.
 
 | # | Track | Question | Status |
 |---|-------|----------|--------|
-| T1 | [Path signatures for irregularly sampled light curves](projects/t1-signature-lightcurves/) | Does a reparameterisation-invariant path representation beat interpolation-based features on real, gappy, multi-band photometry? | In progress |
-| T2 | [Meteoroid stream discovery](projects/t2-meteor-stream-discovery/) | Can an under-mined, openly licensed orbital archive yield new stream candidates? | Skeleton |
+| T1 | [Path signatures for irregularly sampled light curves](projects/t1-signature-lightcurves/) | Does a reparameterisation-invariant path representation beat interpolation-based features on real, gappy, multi-band photometry? | Result: no, but it is complementary |
+| T2 | [Meteoroid stream discovery](projects/t2-meteor-stream-discovery/) | Can multi-criterion consensus clustering surface stream candidates in 2.15M GMN orbits? | In progress |
 | T3 | [Truncation depth and sampling irregularity](projects/t3-signature-theory/) | How does signature truncation depth trade against sampling density, and where does the discriminative power actually come from? | Skeleton |
 
 T1 is applied mathematics on real observations. T2 is discovery on an archive that the
