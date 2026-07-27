@@ -146,6 +146,77 @@ python3 src/verify_signature.py    # 16/16 checks
    Options to be tested include error-weighted path construction and Monte Carlo perturbation of the
    input path. This is a genuine weakness of the approach and is treated as such.
 
+## Results so far
+
+All numbers are balanced accuracy under 5-fold stratified cross-validation with
+gradient-boosted trees, on 2,375 objects in 8 classes. Chance is 0.125.
+
+### The mechanism works, but not where predicted
+
+`src/order_sensitivity.py` builds two classes of synthetic double-peaked light curve that
+differ only in which peak comes first: identical marginal magnitude distributions,
+identical net change, opposite ordering.
+
+| Representation | Balanced accuracy |
+|---|---|
+| Order-blind summary features | 0.512 |
+| Signature depth 1 | 0.524 |
+| Signature depth 2 | 0.489 |
+| Signature depth 3 | **0.978** |
+| Signature depth 4 | 0.990 |
+
+The prediction written down in advance was that separation would appear at depth 2, since
+the Lévy area is the classical order-sensitive term. It does not. With channels
+$(t, m)$ the time coordinate is strictly increasing, so the antisymmetric part of level 2
+reduces to $\int m\,\mathrm{d}t$ once the boundary terms vanish — the area under the light
+curve, which is the same whichever peak came first. A path monotone in one coordinate
+encloses no signed area that ordering can change. Ordering first becomes visible at level
+3. Truncating at depth 2 to economise would have discarded exactly the information the
+method exists to provide.
+
+### On real photometry, the baseline still wins
+
+| Representation | Features | Balanced accuracy |
+|---|---|---|
+| summary + signature (lead-lag, depth 4) | 729 | **0.578** |
+| summary (hand-crafted) | 49 | 0.560 |
+| signature, per-band, raw time, lead-lag, depth 4 | 680 | 0.548 |
+| MiniRocket (interpolated grid) | 9,996 | 0.538 |
+| signature, per-band, raw time, depth 4 | 60 | 0.524 |
+| signature, per-band, unit time, depth 4 | 60 | 0.455 |
+
+Read in order, the ablation says three things.
+
+**Preprocessing mattered more than the representation.** Scaling time to $[0,1]$ costs
+0.069 — it discards the duration of the event, which the hand-crafted baseline keeps as
+`t_span`. The first version of this pipeline did exactly that and would have reported a
+much worse result as a property of signatures rather than of the preprocessing.
+
+**The lead-lag transform is worth a further 0.025**, taking signatures past MiniRocket. It
+exposes quadratic variation, and roughly a third of the sample (AGN and CV) are
+stochastically variable rather than transient, so this is the expected direction.
+
+**Absolute brightness cannot enter through the channel preparation.** The `raw` and
+`raw_time` preparations score identically to four decimal places, which is not a
+coincidence: the signature depends only on increments, so a constant magnitude offset
+cannot change it. Adding a basepoint is the only route, and it makes the result worse
+(0.512 against 0.548), so the absolute level is not being used productively.
+
+The honest summary is that signatures alone lose to a 49-feature hand-crafted baseline that
+has absorbed two decades of domain knowledge, while using fourteen times as many features.
+Whether the concatenation genuinely adds anything is a separate question with its own test
+(`src/test_complementarity.py`, 50 paired folds with a matched-noise control), because a
+gain of 0.018 against a fold spread of 0.022 establishes nothing on its own.
+
+### Sampling structure
+
+The gap distribution is bimodal: a cluster near $10^{-3}$ days from repeated exposures
+within a single night, the main survey cadence at 1 to 10 days, and a tail at 100 to 1,000
+days from seasonal visibility windows. Four orders of magnitude, which is what makes this a
+reasonable test bed. It also illustrates the invariance concretely — repeated exposures on
+the same night occupy almost no arc length, so they barely move the signature, whereas a
+fixed-grid method counts them with the same weight as any other sample.
+
 ## Risks recorded in advance
 
 - **The baselines may simply win.** `feets` features and MiniRocket are strong, and the incumbent
