@@ -1,0 +1,18 @@
+{
+  "generated_utc": "2026-07-27T19:21:04.829628+00:00",
+  "radius_dsh": 0.12,
+  "min_years": 3,
+  "min_per_year": 2,
+  "apparition_years": [
+    2018,
+    2026
+  ],
+  "z_year": 2.0,
+  "n_structures": 1249,
+  "n_known": 751,
+  "n_unmatched": 498,
+  "known_recurrence_rate": 0.9707,
+  "unmatched_recurrence_rate": 0.9257,
+  "n_candidates_after_recurrence": 461,
+  "n_candidates_after_iau_recheck": 461
+}
