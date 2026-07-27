@@ -159,6 +159,13 @@ def density_excess(members: pd.DataFrame, window: pd.DataFrame,
     d_null = to_centre(null_df)
     frac_null = float((d_null <= radius).mean())
     n_exp = frac_null * len(window)
+    # The variance floor of 1.0 has a consequence worth stating rather than hiding: when
+    # the null puts nothing in the ball, z collapses to n_obs, so in that regime the
+    # statistic ranks by member count rather than by contrast. That is defensible --
+    # observing 48 where the null expects none is genuinely extreme -- but it means z
+    # alone cannot separate a large group from a dense one, which is precisely why the
+    # radius ceiling is a separate and non-negotiable filter. Both n_obs and n_exp are
+    # returned so the regime is visible in the output rather than buried in a z-score.
     z = (n_obs - n_exp) / np.sqrt(max(n_exp, 1.0))
     return {"radius": round(radius, 5), "n_obs": n_obs,
             "n_exp": round(float(n_exp), 2), "z": round(float(z), 2)}
