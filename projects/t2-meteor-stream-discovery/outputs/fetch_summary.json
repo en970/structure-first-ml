@@ -1,0 +1,46 @@
+{
+  "generated_utc": "2026-07-27T13:20:00.630667+00:00",
+  "months": [
+    "201812",
+    "202606"
+  ],
+  "files": 91,
+  "cuts": {
+    "qc_min_deg": 15.0,
+    "radiant_sig_max_deg": 1.0,
+    "vgeo_sig_max_kms": 1.0,
+    "e_max": 1.2,
+    "q_min_au": 0.0
+  },
+  "cut_report": {
+    "removed_missing_orbit": 0,
+    "removed_qc": 320666,
+    "removed_radiant_sig": 583618,
+    "removed_vgeo_sig": 121286,
+    "removed_eccentricity": 6347,
+    "removed_perihelion": 0,
+    "rows_before": 3178785,
+    "rows_after": 2146868
+  },
+  "n_meteors": 2146868,
+  "n_sporadic": 1515803,
+  "n_shower_associated": 631065,
+  "n_distinct_showers": 426,
+  "top_showers": {
+    "PER": 88319,
+    "GEM": 82276,
+    "ORI": 39855,
+    "SDA": 26143,
+    "ETA": 24440,
+    "STA": 15608,
+    "QUA": 11515,
+    "HYD": 10876,
+    "CAP": 10107,
+    "LYR": 8982,
+    "LEO": 8726,
+    "COM": 8309,
+    "NTA": 8052,
+    "STS": 7973,
+    "NUE": 7881
+  }
+}

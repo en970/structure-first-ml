@@ -1,0 +1,67 @@
+{
+  "generated_utc": "2026-07-27T13:03:37.085210+00:00",
+  "seed": 20260726,
+  "n_objects": 2375,
+  "splits": 5,
+  "repeats": 10,
+  "signature_config": {
+    "mode": "per_band",
+    "norm": "raw_time",
+    "depth": 4,
+    "lead_lag": true
+  },
+  "per_block_mean": {
+    "summary": 0.5623,
+    "summary+signature": 0.5769,
+    "summary+noise": 0.5278,
+    "signature": 0.5473
+  },
+  "per_block_std": {
+    "summary": 0.0167,
+    "summary+signature": 0.02,
+    "summary+noise": 0.0146,
+    "signature": 0.0218
+  },
+  "summary_vs_summary_plus_signature": {
+    "mean_summary": 0.5623,
+    "mean_summary+signature": 0.5769,
+    "mean_difference": 0.0147,
+    "ci95": [
+      0.0078,
+      0.0212
+    ],
+    "wilcoxon_p": 9.47e-05,
+    "folds_improved": 38,
+    "n_folds": 50
+  },
+  "summary_vs_summary_plus_noise": {
+    "mean_summary": 0.5623,
+    "mean_summary+noise": 0.5278,
+    "mean_difference": -0.0345,
+    "ci95": [
+      -0.0396,
+      -0.0297
+    ],
+    "wilcoxon_p": 3.55e-15,
+    "folds_improved": 1,
+    "n_folds": 50
+  },
+  "summary_vs_signature_alone": {
+    "mean_summary": 0.5623,
+    "mean_signature": 0.5473,
+    "mean_difference": -0.015,
+    "ci95": [
+      -0.022,
+      -0.0082
+    ],
+    "wilcoxon_p": 0.000163,
+    "folds_improved": 13,
+    "n_folds": 50
+  },
+  "verdict": {
+    "signature_adds_over_baseline": true,
+    "noise_control_clean": true,
+    "gain_exceeds_noise_control": true,
+    "complementary": true
+  }
+}
