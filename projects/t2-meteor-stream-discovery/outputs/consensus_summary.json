@@ -1,0 +1,31 @@
+{
+  "generated_utc": "2026-07-27T14:19:21.768623+00:00",
+  "seed": 20260727,
+  "window_deg": 2.0,
+  "step_deg": 1.0,
+  "min_cluster": 8,
+  "fpr": 0.001,
+  "n_meteors": 2146868,
+  "windows_subsampled": 359,
+  "n_consensus_groups": 4517,
+  "n_matching_known_shower": 790,
+  "n_unmatched": 3727,
+  "distinct_known_showers_recovered": 169,
+  "top_recovered": {
+    "PIH": 29,
+    "PER": 26,
+    "ETA": 25,
+    "NDA": 21,
+    "ERI": 17,
+    "XVI": 17,
+    "RPU": 15,
+    "LMI": 15,
+    "ARI": 14,
+    "NPE": 13,
+    "PHE": 13,
+    "TCA": 12,
+    "ORI": 12,
+    "OMG": 12,
+    "JPE": 12
+  }
+}

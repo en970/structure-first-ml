@@ -204,9 +204,43 @@ cannot change it. Adding a basepoint is the only route, and it makes the result 
 
 The honest summary is that signatures alone lose to a 49-feature hand-crafted baseline that
 has absorbed two decades of domain knowledge, while using fourteen times as many features.
-Whether the concatenation genuinely adds anything is a separate question with its own test
-(`src/test_complementarity.py`, 50 paired folds with a matched-noise control), because a
-gain of 0.018 against a fold spread of 0.022 establishes nothing on its own.
+
+### The complementarity result, tested properly
+
+A gain of 0.018 against a fold spread of 0.022 establishes nothing on its own, so it was
+given its own test: 50 paired folds on identical splits (5-fold repeated ten times), a
+Wilcoxon signed-rank test, a bootstrap interval, and — the part that decides it — a control
+in which the signature block is replaced by Gaussian noise of identical shape and column
+variance.
+
+| Feature block | Balanced accuracy |
+|---|---|
+| summary + signature | **0.5769 ± 0.0200** |
+| summary | 0.5623 ± 0.0167 |
+| signature alone | 0.5473 ± 0.0218 |
+| summary + matched noise | 0.5278 ± 0.0146 |
+
+| Comparison against summary alone | Difference | 95% CI | Folds improved |
+|---|---|---|---|
+| + signature | **+0.0147** | [+0.0078, +0.0212] | 38 / 50 |
+| + matched noise | **−0.0345** | [−0.0396, −0.0297] | 1 / 50 |
+
+The noise control is what makes this readable. A gradient-boosted ensemble handed 680 extra
+candidate splits could improve for reasons having nothing to do with their contents — and
+the control shows it does not: 680 columns of noise *cost* 0.0345. The same number of
+signature columns *gain* 0.0147. The two differ by about 0.049, and the direction of the
+control rules out capacity as the explanation.
+
+**A caveat that belongs next to the p-value.** Repeated cross-validation folds are not
+independent — they reuse the same 2,375 objects — so the Wilcoxon p (9.5 × 10⁻⁵) and the
+bootstrap interval are optimistic as formal inference. The comparison that does not depend
+on that assumption is the one against the noise control, since both blocks face identical
+folds and identical dependence, and they land on opposite sides of zero.
+
+**What this means for the prediction.** The design predicted that signatures should gain
+where sampling is irregular. Taken alone they do not beat the incumbent. But they carry
+information the incumbent does not have, and that is a weaker and more interesting claim
+than the one originally made: not a better representation, a *different* one.
 
 ### Sampling structure
 
