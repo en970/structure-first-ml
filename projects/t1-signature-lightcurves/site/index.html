@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T1 — Path signatures for irregularly sampled light curves</title>
+<meta name="description" content="Path signatures on 2,375 spectroscopically classified ZTF transients: they lose to hand-crafted features head to head, but carry complementary information verified against a matched-noise control.">
+<meta name="keywords" content="path signatures, rough path theory, ZTF, light curves, transient classification, irregular sampling, MiniRocket, machine learning, astronomy">
+<meta name="author" content="Enes Öz">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Path signatures for irregularly sampled light curves">
+<meta property="og:description" content="Signatures lose head to head and win as a complement. Ordering lives at depth 3, not depth 2. Gap structure costs the grid-based method most.">
+<meta property="og:url" content="https://en970.github.io/structure-first-ml/projects/t1-signature-lightcurves/site/">
+<meta property="og:image" content="https://en970.github.io/structure-first-ml/projects/t1-signature-lightcurves/site/assets/fig1_lightcurves.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Path signatures for irregularly sampled light curves">
+<meta name="twitter:description" content="A registered prediction, half confirmed and half refuted, on 2,375 ZTF transients.">
+<meta name="twitter:image" content="https://en970.github.io/structure-first-ml/projects/t1-signature-lightcurves/site/assets/fig1_lightcurves.png">
+<script>
+  MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']] }, svg:{fontCache:'global'} };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<style>
+  :root{--ink:#161616;--muted:#5b5b5b;--rule:#d7d7d2;--bg:#fbfbf8;--panel:#f4f4ee;--link:#1f3f7a;}
+  @media (prefers-color-scheme:dark){:root{--ink:#e7e7e2;--muted:#a6a69f;--rule:#33342f;--bg:#131412;--panel:#1c1d1a;--link:#a3bde0;}}
+  :root[data-theme="dark"]{--ink:#e7e7e2;--muted:#a6a69f;--rule:#33342f;--bg:#131412;--panel:#1c1d1a;--link:#a3bde0;}
+  :root[data-theme="light"]{--ink:#161616;--muted:#5b5b5b;--rule:#d7d7d2;--bg:#fbfbf8;--panel:#f4f4ee;--link:#1f3f7a;}
+  *{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Iowan Old Style","Times New Roman",serif;font-size:18px;line-height:1.62}
+  .wrap{max-width:860px;margin:0 auto;padding:64px 26px 96px}
+  header.paper{border-bottom:1px solid var(--rule);padding-bottom:26px;margin-bottom:34px}
+  .eyebrow{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+  h1{font-size:30px;line-height:1.22;margin:0 0 14px;font-weight:600;letter-spacing:-.01em}
+  .byline{color:var(--muted);font-size:16px;margin:0}
+  .meta{color:var(--muted);font-size:14.5px;margin:6px 0 0}
+  h2{font-size:21px;margin:44px 0 10px;font-weight:600}
+  h3{font-size:17.5px;margin:28px 0 8px;font-weight:600}
+  p{margin:0 0 14px} a{color:var(--link);text-decoration:none;border-bottom:1px solid rgba(31,63,122,.28)}
+  @media (prefers-color-scheme:dark){a{border-bottom-color:rgba(163,189,224,.32)}}
+  a:hover{border-bottom-color:currentColor}
+  .abstract{background:var(--panel);border:1px solid var(--rule);border-radius:4px;padding:20px 22px;margin:8px 0 6px}
+  .abstract p{margin:0;font-size:16.5px} .abstract .lab{font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+  .mono{font-family:ui-monospace,Menlo,monospace}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:.86em}
+  pre{background:var(--panel);border:1px solid var(--rule);padding:12px 14px;overflow-x:auto;border-radius:4px;font-size:14px}
+  figure{margin:26px 0;text-align:center}
+  figure img{max-width:100%;height:auto;border:1px solid var(--rule);border-radius:3px}
+  figcaption{font-size:14.5px;color:var(--muted);margin-top:10px;text-align:left}
+  .tblwrap{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;margin:18px 0;font-size:15px}
+  th,td{border:1px solid var(--rule);padding:7px 11px;text-align:left} th{background:var(--panel);font-weight:600}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .kpis{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+  .kpi{flex:1 1 150px;border:1px solid var(--rule);padding:12px 14px;border-radius:4px;background:var(--panel)}
+  .kpi .n{font-size:21px;font-weight:600} .kpi .l{font-size:12.5px;text-transform:uppercase;color:var(--muted);letter-spacing:.04em}
+  .verdict{border-left:3px solid var(--rule);padding:2px 0 2px 18px;margin:18px 0}
+  .verdict b{display:block;font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:4px}
+  footer{border-top:1px solid var(--rule);margin-top:52px;padding-top:22px;font-size:14px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="paper">
+  <p class="eyebrow">T1 · Technical report</p>
+  <h1>Path signatures for irregularly sampled astronomical light curves</h1>
+  <p class="byline"><b>Enes Öz</b> · Independent research project</p>
+  <p class="meta">Draft — July 2026 · <span class="mono">projects/t1-signature-lightcurves</span> ·
+     <a href="../../../">structure-first-ml</a></p>
+</header>
+
+<div class="abstract">
+  <span class="lab">Abstract</span>
+  <p>A photometric light curve is a sampled path, not a vector. The signature transform of
+  rough path theory consumes the raw $(t, m, \sigma, \text{band})$ stream with no
+  interpolation and is invariant under reparameterisation of time. On 2,375
+  spectroscopically classified ZTF transients in eight classes, signatures <b>lose</b> to a
+  49-feature hand-crafted baseline (0.547 against 0.562 balanced accuracy) while using
+  fourteen times as many features — but concatenated with it they reach 0.577, and a
+  matched-noise control establishes that the gain is information rather than model
+  capacity. A synthetic control locates the mechanism at truncation depth 3 rather than the
+  predicted depth 2, for a reason that generalises to every time-augmented signature. A
+  sampling ablation confirms the premise the track rests on and refutes the specific
+  prediction made from it.</p>
+</div>
+
+<div class="kpis">
+  <div class="kpi"><div class="n">2,375</div><div class="l">ZTF transients, 8 classes</div></div>
+  <div class="kpi"><div class="n">+0.0147</div><div class="l">gain from adding signatures</div></div>
+  <div class="kpi"><div class="n">−0.0345</div><div class="l">same-width noise control</div></div>
+  <div class="kpi"><div class="n">32/32</div><div class="l">verification checks passed</div></div>
+</div>
+
+<h2>1. Introduction</h2>
+
+<p>Observations arrive at times set by weather and scheduling, in whichever filter the
+telescope was using, with per-point uncertainties varying by an order of magnitude. Nearly
+every machine-learning pipeline begins by destroying that structure — interpolating onto a
+regular grid, binning to fixed cadence, or fitting a Gaussian process and resampling — so
+that a convolutional or recurrent architecture can accept the result.</p>
+
+<p>The signature of a path $X:[0,T]\to\mathbb{R}^d$ is the sequence of its iterated
+integrals, $S(X)=\left(1,\int dX,\iint dX\otimes dX,\dots\right)$, with the $k$-th term in
+$(\mathbb{R}^d)^{\otimes k}$. It is invariant under increasing reparameterisation, faithful
+up to tree-like equivalence, and universal in the sense that linear functionals of it
+approximate continuous functions on path space. It accepts the raw stream directly.</p>
+
+<p><b>Prior art, stated plainly.</b> Signatures have one published astronomical
+application: SigNova (<a href="https://arxiv.org/abs/2402.14892">arXiv:2402.14892</a>),
+which detects radio-frequency interference in interferometric visibility streams. No
+application to photometric light curves, transient classification, broker feature sets or
+gravitational-wave strain was found in a targeted audit. The gap is narrow, which is what
+makes it worth attempting — and SigNova establishes that the representation survives real
+radio-astronomical noise.</p>
+
+<h2>2. Data</h2>
+
+<p>Labels are the spectroscopic classifications of the ZTF Bright Transient Survey;
+per-epoch photometry in $g$ and $r$ comes from the ALeRCE broker. ALeRCE's own machine
+classifications are never used — training on one classifier's output and reporting
+agreement with it measures nothing. After quality cuts requiring at least ten detections and
+three per band, the sample is 2,375 objects with a median of 42 detections over 122 days:
+CV (456), SN II (426), SN Ia (406), AGN (376), SN IIn (273), SN Ic (185), SN Ib (148),
+SLSN-I (105).</p>
+
+<p><b>A selection effect that had to be fixed first.</b> The first fetch submitted objects
+grouped by class while the broker's failure rate rose during the run, so classes submitted
+last lost far more objects than those submitted first — SN Ib was eliminated entirely. That
+is a selection effect on the label, not random attrition, and it would have corrupted every
+downstream number. After shuffling before any network call, lowering concurrency and adding
+exponential backoff, the per-class retrieval rate is 1.0 across all eight classes.</p>
+
+<figure>
+  <img src="assets/fig1_lightcurves.png" alt="Six example ZTF light curves, one per class, drawn as points with error bars">
+  <figcaption><b>Figure 1.</b> Example light curves, one per class, drawn as points with
+  error bars and <em>no connecting line</em> — a line between observations would assert a
+  continuity the data does not contain. Note the range of durations: 26 detections over 65
+  days for the SN Ia, 356 over 2,500 days for the AGN.</figcaption>
+</figure>
+
+<figure>
+  <img src="assets/fig2_sampling.png" alt="Histograms of sampling gaps and detections per object">
+  <figcaption><b>Figure 2.</b> The gap distribution is bimodal and spans four orders of
+  magnitude: repeated exposures within a single night near $10^{-3}$ days, the main survey
+  cadence at 1–10 days, and seasonal visibility windows at 100–1,000 days. Same-night
+  exposures occupy almost no arc length and barely move the signature, whereas a fixed-grid
+  method weights them like any other sample.</figcaption>
+</figure>
+
+<h2>3. Methods</h2>
+
+<h3>3.1 Implementation and verification</h3>
+
+<p>The transform is implemented from scratch: each straight segment contributes the tensor
+exponential of its increment, and segments combine by Chen's identity. It is written rather
+than imported because the theory track needs per-level access and because
+<code>iisignature</code> does not build on Python 3.12. Correctness is established against
+three independent libraries — <code>esig</code>, <code>signax</code> and
+<code>roughpy</code> — to $10^{-13}$, plus four structural identities: reparameterisation
+invariance, level 1 equalling the total increment, the shuffle identity
+$S_1S_2 = S_{12}+S_{21}$, and the vanishing signature of a path concatenated with its own
+reversal. All sixteen checks pass.</p>
+
+<h3>3.2 Constructing the path</h3>
+
+<p>The hard part is not the signature but deciding what the path <em>is</em>. Observations
+in different filters are not simultaneous, so no instant exists at which a two-band vector
+is defined. Three constructions are implemented and compared rather than assumed:
+<em>per-band</em> (each filter its own path, signatures concatenated, no interpolation
+anywhere), <em>interleaved</em> (one path with a band-indicator channel), and <em>joint
+forward-fill</em> (a common time axis with the last magnitude carried forward — which is
+piecewise-constant interpolation, and is labelled as such).</p>
+
+<h3>3.3 Baselines</h3>
+
+<p>Every representation is evaluated on identical folds with identical classifiers. The
+hand-crafted baseline implements the FATS/<code>feets</code> lineage from scratch; almost
+all its features are functions of the marginal magnitude distribution and so are invariant
+to permuting observations in time, which is exactly the information signatures retain. The
+three ordering-sensitive features it does contain are included deliberately — omitting them
+would make the comparison dishonest. MiniRocket receives linearly interpolated fixed-length
+input, its best case; that interpolation is precisely the cost the signature approach claims
+to avoid.</p>
+
+<h2>4. Results</h2>
+
+<h3>4.1 Where the ordering information lives</h3>
+
+<p>Before touching real data, the claimed mechanism was isolated. Two classes of synthetic
+double-peaked light curve differ <em>only</em> in which peak comes first: identical marginal
+magnitude distributions, identical net change, opposite ordering. The prediction registered
+in advance was that separation would appear at depth 2, the Lévy area being the classical
+order-sensitive term.</p>
+
+<div class="tblwrap">
+<table>
+  <tr><th>Representation</th><th class="num">Balanced accuracy</th></tr>
+  <tr><td>Order-blind summary features</td><td class="num">0.512</td></tr>
+  <tr><td>Signature depth 1</td><td class="num">0.524</td></tr>
+  <tr><td>Signature depth 2</td><td class="num">0.489</td></tr>
+  <tr><td><b>Signature depth 3</b></td><td class="num"><b>0.978</b></td></tr>
+  <tr><td>Signature depth 4</td><td class="num">0.990</td></tr>
+</table>
+</div>
+
+<p>It does not. Depths 1 and 2 sit at chance; separation appears at depth 3. With channels
+$(t,m)$ the time coordinate is strictly increasing, so the antisymmetric part of level 2 —
+the Lévy area — reduces to $\int m\,dt$ once the boundary terms vanish. That is the area
+under the light curve, identical whichever peak came first. <b>A path monotone in one
+coordinate encloses no signed area that ordering can change.</b></p>
+
+<p>This generalises beyond the experiment: every time-augmented signature of a time series
+has a monotone time channel, since that is what time augmentation means. Truncating at depth
+2 to economise on features would discard exactly the information the method exists to
+supply, and the resulting null result would have been blamed on the astrophysics.</p>
+
+<h3>4.2 Head to head on real photometry</h3>
+
+<div class="tblwrap">
+<table>
+  <tr><th>Representation</th><th class="num">Features</th><th class="num">Balanced accuracy</th></tr>
+  <tr><td>summary + signature (lead-lag, depth 4)</td><td class="num">729</td><td class="num"><b>0.578</b></td></tr>
+  <tr><td>summary (hand-crafted)</td><td class="num">49</td><td class="num">0.560</td></tr>
+  <tr><td>signature, per-band, raw time, lead-lag, depth 4</td><td class="num">680</td><td class="num">0.548</td></tr>
+  <tr><td>MiniRocket (interpolated grid)</td><td class="num">9,996</td><td class="num">0.538</td></tr>
+  <tr><td>signature, per-band, raw time, depth 4</td><td class="num">60</td><td class="num">0.524</td></tr>
+  <tr><td>signature, per-band, unit time, depth 4</td><td class="num">60</td><td class="num">0.455</td></tr>
+</table>
+</div>
+
+<p><b>Preprocessing dominated the representation.</b> Scaling time to $[0,1]$ costs 0.069,
+because it discards the duration of the event, which the baseline keeps as
+<code>t_span</code>. The first version of this pipeline did exactly that and would have
+reported a far worse number as a property of signatures rather than of the preprocessing.
+The lead-lag transform is worth a further 0.025, taking signatures past MiniRocket but not
+past the incumbent.</p>
+
+<p><b>An implementation check hidden in the numbers.</b> The <em>raw</em> and <em>raw
+time</em> preparations score identically to four decimal places. This is not coincidence:
+the signature depends only on increments, so a constant magnitude offset cannot change it.
+Absolute brightness can enter only through a basepoint, and introduced that way it makes
+things worse.</p>
+
+<figure>
+  <img src="assets/fig3_benchmark.png" alt="Horizontal bar chart comparing representation families">
+  <figcaption><b>Figure 3.</b> Best variant of each representation family, 5-fold
+  cross-validation with gradient-boosted trees. Chance for eight classes is 0.125.</figcaption>
+</figure>
+
+<h3>4.3 Complementarity, with a matched-noise control</h3>
+
+<p>The concatenation beats the baseline by 0.015 against a fold spread of 0.020, which on
+its own establishes nothing. The question was given a dedicated test: 50 paired folds on
+identical splits, a Wilcoxon signed-rank test, a bootstrap interval, and — the part that
+decides it — a control replacing the signature block with Gaussian noise of identical shape
+and column variance.</p>
+
+<div class="tblwrap">
+<table>
+  <tr><th>Feature block</th><th class="num">Balanced accuracy</th><th class="num">vs. summary</th><th class="num">Folds improved</th></tr>
+  <tr><td>summary + signature</td><td class="num"><b>0.5769 ± 0.0200</b></td><td class="num">+0.0147</td><td class="num">38 / 50</td></tr>
+  <tr><td>summary</td><td class="num">0.5623 ± 0.0167</td><td class="num">—</td><td class="num">—</td></tr>
+  <tr><td>signature alone</td><td class="num">0.5473 ± 0.0218</td><td class="num">−0.0150</td><td class="num">—</td></tr>
+  <tr><td>summary + matched noise</td><td class="num">0.5278 ± 0.0146</td><td class="num">−0.0345</td><td class="num">1 / 50</td></tr>
+</table>
+</div>
+
+<p>The control is what makes this readable. A gradient-boosted ensemble handed 680 extra
+candidate splits might improve for reasons unrelated to their contents; it does not. Noise
+<em>costs</em> 0.0345 while the same number of signature columns <em>gain</em> 0.0147, under
+identical folds. Bootstrap intervals are $[+0.0078, +0.0212]$ and $[-0.0396, -0.0297]$.</p>
+
+<p><b>Caveat beside the $p$-value</b> ($9.5\times10^{-5}$): repeated cross-validation folds
+reuse the same 2,375 objects and are not independent, so both it and the bootstrap interval
+are optimistic as formal inference. The comparison that does not rest on that assumption is
+the one against the noise control, and it is the one the conclusion leans on.</p>
+
+<h3>4.4 The sampling ablation</h3>
+
+<p>Light curves were thinned to fixed retained fractions under two regimes removing the
+<em>same number</em> of observations while destroying different structure: random thinning
+(independent drops) and blocked thinning (contiguous runs, imitating weather outages and
+seasonal windows).</p>
+
+<figure>
+  <img src="assets/fig4_ablation.png" alt="Degradation curves under random and blocked thinning">
+  <figcaption><b>Figure 4.</b> The same number of observations removed under two gap
+  structures. MiniRocket, which requires a regular grid and is given one, collapses under
+  blocked thinning (0.398 at 20% retention) while the other two degrade gently.</figcaption>
+</figure>
+
+<p>The informative quantity is the difference between regimes at matched density — the cost
+of gap <em>structure</em> with gap <em>count</em> held fixed:</p>
+
+<div class="tblwrap">
+<table>
+  <tr><th>Retained fraction</th><th class="num">summary</th><th class="num">signature</th><th class="num">MiniRocket</th></tr>
+  <tr><td>0.60</td><td class="num">−0.013</td><td class="num"><b>−0.010</b></td><td class="num">−0.024</td></tr>
+  <tr><td>0.35</td><td class="num">−0.013</td><td class="num"><b>−0.010</b></td><td class="num">−0.047</td></tr>
+  <tr><td>0.20</td><td class="num"><b>−0.016</b></td><td class="num">−0.041</td><td class="num">−0.069</td></tr>
+</table>
+</div>
+
+<div class="verdict">
+  <b>Confirmed</b>
+  Gap structure matters independently of gap count, and it costs the
+  interpolation-dependent method the most — two to four times the penalty at every density.
+  This is the premise the whole track rests on, and it was falsifiable: identical curves
+  under the two regimes would have collapsed the motivation entirely.
+</div>
+
+<div class="verdict">
+  <b>Not confirmed</b>
+  Signatures do not close the gap as data thins. The baseline-to-signature difference under
+  random thinning runs 0.023 → 0.030 → 0.036 → 0.010 from full data to 20% retention,
+  widening through the middle of the range rather than shrinking. At the sparsest setting
+  the signature's own structured-gap penalty jumps to −0.041, worse than the baseline's
+  −0.016: below about a dozen observations per object the path is too coarsely sampled for
+  iterated integrals to be estimated stably.
+</div>
+
+<h2>5. Caveats</h2>
+
+<ul>
+  <li><b>Multi-band paths are ill-posed.</b> Filters are not sampled simultaneously, so any
+  joint path embeds a choice. Three were compared; per-band won, but the choice matters at
+  the 0.02 level.</li>
+  <li><b>Photometric errors have no natural place in the construction.</b> They are
+  currently unused. Error-weighted paths and Monte Carlo perturbation remain untested — a
+  genuine weakness.</li>
+  <li><b>Reparameterisation invariance is sometimes actively harmful.</b> Period is physical
+  for variable stars, and discarding the clock discards it. Here time is re-introduced as a
+  channel, which breaks the invariance deliberately; that decision is worth 0.069.</li>
+  <li><b>The counter-test on Gaia periodic variables was designed but not run.</b> The
+  prediction — that signatures should do <em>worse</em> there, since period is the physical
+  discriminant — remains untested.</li>
+</ul>
+
+<h2>6. Reproducibility</h2>
+
+<pre><code>cd projects/t1-signature-lightcurves
+python3 src/verify_signature.py      # 16/16 checks against esig, signax, roughpy
+python3 src/order_sensitivity.py     # synthetic control: ordering appears at depth 3
+python3 src/fetch_ztf_bts.py         # BTS labels + ALeRCE photometry, cached
+python3 src/run_benchmark.py         # head-to-head comparison
+python3 src/test_complementarity.py  # 50 paired folds + matched-noise control
+python3 src/ablate_sampling.py       # random vs blocked thinning
+python3 src/make_figures.py          # figures 1-4</code></pre>
+
+<footer>
+  T1 · structure-first-ml · An independent research project. Results are method-validating;
+  none constitutes a confirmed astronomical discovery. Negative results and refuted
+  predictions are retained rather than discarded. Data courtesy of the Zwicky Transient
+  Facility, the ZTF Bright Transient Survey and the ALeRCE broker.
+</footer>
+
+</div>
+</body>
+</html>
