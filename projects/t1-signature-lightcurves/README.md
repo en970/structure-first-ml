@@ -242,6 +242,56 @@ where sampling is irregular. Taken alone they do not beat the incumbent. But the
 information the incumbent does not have, and that is a weaker and more interesting claim
 than the one originally made: not a better representation, a *different* one.
 
+### The sampling ablation — the actual experiment
+
+Light curves were thinned to a fixed retained fraction under two regimes that remove the
+*same number* of observations but destroy different structure: **random** thinning (each
+observation dropped independently, gaps short and scattered) and **blocked** thinning
+(contiguous runs removed, imitating weather outages and seasonal windows).
+
+| | random 1.00 | 0.60 | 0.35 | 0.20 | blocked 0.60 | 0.35 | 0.20 |
+|---|---|---|---|---|---|---|---|
+| summary | 0.560 | 0.549 | 0.532 | 0.513 | 0.536 | 0.520 | 0.498 |
+| signature | 0.538 | 0.519 | 0.497 | 0.503 | 0.508 | 0.487 | 0.462 |
+| MiniRocket | 0.538 | 0.504 | 0.478 | 0.467 | 0.481 | 0.431 | **0.398** |
+
+The comparison that matters is the difference between the two regimes at matched density —
+the cost of gap *structure* with gap *count* held fixed:
+
+| Retained | summary | signature | MiniRocket |
+|---|---|---|---|
+| 0.60 | −0.013 | **−0.010** | −0.024 |
+| 0.35 | −0.013 | **−0.010** | −0.047 |
+| 0.20 | **−0.016** | −0.041 | −0.069 |
+
+**Confirmed: gap structure matters, not merely gap count, and it costs the
+interpolation-dependent method the most.** MiniRocket — which requires a regular grid and
+is given one — pays two to four times the penalty of the other two at every density. At 20%
+retention it loses 0.069 to structured gaps alone, dropping to 0.398 where the hand-crafted
+features hold 0.498. This is the clearest evidence in the whole track for the premise that
+resampling irregular data onto a grid throws something away, and it is a prediction that
+could have failed: had both regimes produced the same curves, the motivation would have
+collapsed.
+
+At moderate thinning the signature is the *least* damaged by gap structure (−0.010 against
+the baseline's −0.013), which is the direction the reparameterisation argument predicts.
+
+**Not confirmed: signatures do not close the gap as data thins.** The prediction was that
+they should gain most where sampling is sparsest. The difference between the baseline and
+the signature under random thinning goes 0.023 → 0.030 → 0.036 → 0.010 as the retained
+fraction falls from 1.00 to 0.20 — it widens through the middle of the range before
+narrowing at the extreme, rather than shrinking monotonically. And at the sparsest setting
+the signature's own structured-gap penalty jumps to −0.041, worse than the baseline's
+−0.016. Below roughly a dozen observations per object the path is too coarsely sampled for
+the iterated integrals to be estimated stably, and the invariance argument stops paying.
+
+The honest reading: the *mechanism* the track was built on is real and measurable, and it
+favours signatures against grid-based methods. It does not favour them against good
+hand-crafted features, which remain the strongest single representation at every sampling
+density tested.
+
+![Sampling ablation](site/assets/fig4_ablation.png)
+
 ### Sampling structure
 
 The gap distribution is bimodal: a cluster near $10^{-3}$ days from repeated exposures

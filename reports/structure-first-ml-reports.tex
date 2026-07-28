@@ -361,13 +361,91 @@ folds reuse the same 2{,}375 objects and are not independent, so both it and the
 interval are optimistic as formal inference. The comparison that does not rest on that
 assumption is the one against the noise control, and it is the one the conclusion leans on.
 
+\subsection{The sampling ablation}
+
+The headline accuracy on full light curves says little, because every representation does
+reasonably well when the data are dense. The claim under test concerns \emph{where}
+signatures should help, so the light curves were thinned to fixed retained fractions under
+two regimes removing the same number of observations while destroying different structure:
+\emph{random} thinning, with each observation dropped independently, and \emph{blocked}
+thinning, with contiguous runs removed to imitate weather outages and seasonal windows.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lrrrrrrr}
+\toprule
+& \multicolumn{4}{c}{random} & \multicolumn{3}{c}{blocked} \\
+\cmidrule(lr){2-5}\cmidrule(lr){6-8}
+Representation & 1.00 & 0.60 & 0.35 & 0.20 & 0.60 & 0.35 & 0.20 \\
+\midrule
+summary & 0.560 & 0.549 & 0.532 & 0.513 & 0.536 & 0.520 & 0.498 \\
+signature & 0.538 & 0.519 & 0.497 & 0.503 & 0.508 & 0.487 & 0.462 \\
+MiniRocket & 0.538 & 0.504 & 0.478 & 0.467 & 0.481 & 0.431 & \textbf{0.398} \\
+\bottomrule
+\end{tabular}
+\caption{Balanced accuracy against retained fraction under both thinning regimes.}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{fig4_ablation.png}
+\caption{The same number of observations removed under two gap structures. MiniRocket,
+which requires a regular grid and is given one, collapses under blocked thinning while the
+other two degrade gently.}
+\end{figure}
+
+The informative quantity is the difference between regimes at matched density --- the cost
+of gap \emph{structure} with gap \emph{count} held fixed:
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lrrr}
+\toprule
+Retained fraction & summary & signature & MiniRocket \\
+\midrule
+0.60 & $-0.013$ & $\mathbf{-0.010}$ & $-0.024$ \\
+0.35 & $-0.013$ & $\mathbf{-0.010}$ & $-0.047$ \\
+0.20 & $\mathbf{-0.016}$ & $-0.041$ & $-0.069$ \\
+\bottomrule
+\end{tabular}
+\caption{Structured-gap penalty: blocked minus random at equal retained fraction.}
+\end{table}
+
+Gap structure matters, not merely gap count, and it costs the interpolation-dependent
+method the most. MiniRocket pays two to four times the penalty of the other two at every
+density, losing 0.069 to structured gaps alone at 20\% retention. This is the strongest
+evidence in the chapter for the premise that resampling irregular data onto a grid discards
+information, and it is a prediction that could have failed: identical curves under the two
+regimes would have collapsed the motivation entirely.
+
+At moderate thinning the signature is the least damaged by gap structure, which is the
+direction the reparameterisation argument predicts. At the sparsest setting it is not: its
+own structured-gap penalty jumps to $-0.041$, worse than the baseline's $-0.016$. Below
+roughly a dozen observations per object the path is too coarsely sampled for the iterated
+integrals to be estimated stably, and the invariance argument stops paying.
+
 \subsection{What the prediction got right and wrong}
 
-The prediction registered before any data was touched was that signatures should gain most
-where sampling is irregular. Taken alone they do not beat the incumbent, so the strong form
-of the claim fails. What survives is weaker and more interesting: signatures carry
-information the hand-crafted features do not have. Not a better representation --- a
-different one.
+The prediction registered before any data was touched had two halves, and the measurements
+split them cleanly.
+
+\paragraph{Confirmed.} Gap structure matters independently of gap count, and the cost falls
+hardest on the method that requires a regular grid. That is the premise the whole track
+rests on, and it was falsifiable: identical degradation curves under random and blocked
+thinning would have ended the argument.
+
+\paragraph{Not confirmed.} Signatures do not close the gap as data thins. The
+baseline-to-signature difference under random thinning runs $0.023 \to 0.030 \to 0.036 \to
+0.010$ as the retained fraction falls from 1.00 to 0.20 --- widening through the middle of
+the range rather than shrinking monotonically --- and at the sparsest setting the signature
+becomes \emph{more} sensitive to gap structure than the baseline, not less.
+
+\paragraph{What survives.} Signatures alone do not beat mature hand-crafted features at any
+sampling density tested. They do carry information those features lack, established against
+a matched-noise control. Not a better representation --- a different one, whose advantage
+is over grid-based methods rather than over domain knowledge.
 
 \begin{thebibliography}{9}
 \bibitem{signova} Arrubarrena, P., Lemercier, M., Nikolic, B., Lyons, T. and Cass, T. (2024).

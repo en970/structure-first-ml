@@ -1,0 +1,242 @@
+{
+  "generated_utc": "2026-07-27T22:15:06.008245+00:00",
+  "seed": 20260726,
+  "folds": 5,
+  "depth": 3,
+  "mode": "per_band",
+  "norm": "raw_time",
+  "min_keep_per_band": 6,
+  "records": [
+    {
+      "regime": "random",
+      "fraction": 1.0,
+      "representation": "summary",
+      "median_detections": 42,
+      "balanced_accuracy": 0.5604,
+      "balanced_accuracy_std": 0.0167,
+      "macro_f1": 0.5597,
+      "logistic_balanced_accuracy": 0.5235,
+      "n_features": 49
+    },
+    {
+      "regime": "random",
+      "fraction": 1.0,
+      "representation": "signature-per_band-d3",
+      "median_detections": 42,
+      "balanced_accuracy": 0.5376,
+      "balanced_accuracy_std": 0.0426,
+      "macro_f1": 0.5369,
+      "logistic_balanced_accuracy": 0.5015,
+      "n_features": 168
+    },
+    {
+      "regime": "random",
+      "fraction": 1.0,
+      "representation": "minirocket",
+      "median_detections": 42,
+      "balanced_accuracy": 0.5383,
+      "balanced_accuracy_std": 0.0251,
+      "macro_f1": 0.5391,
+      "logistic_balanced_accuracy": 0.541,
+      "n_features": 9996
+    },
+    {
+      "regime": "random",
+      "fraction": 0.6,
+      "representation": "summary",
+      "median_detections": 25,
+      "balanced_accuracy": 0.5488,
+      "balanced_accuracy_std": 0.0223,
+      "macro_f1": 0.5473,
+      "logistic_balanced_accuracy": 0.507,
+      "n_features": 49
+    },
+    {
+      "regime": "random",
+      "fraction": 0.6,
+      "representation": "signature-per_band-d3",
+      "median_detections": 25,
+      "balanced_accuracy": 0.5186,
+      "balanced_accuracy_std": 0.014,
+      "macro_f1": 0.5145,
+      "logistic_balanced_accuracy": 0.4615,
+      "n_features": 168
+    },
+    {
+      "regime": "random",
+      "fraction": 0.6,
+      "representation": "minirocket",
+      "median_detections": 25,
+      "balanced_accuracy": 0.5042,
+      "balanced_accuracy_std": 0.0215,
+      "macro_f1": 0.5001,
+      "logistic_balanced_accuracy": 0.5106,
+      "n_features": 9996
+    },
+    {
+      "regime": "random",
+      "fraction": 0.35,
+      "representation": "summary",
+      "median_detections": 15,
+      "balanced_accuracy": 0.5323,
+      "balanced_accuracy_std": 0.007,
+      "macro_f1": 0.5297,
+      "logistic_balanced_accuracy": 0.5016,
+      "n_features": 49
+    },
+    {
+      "regime": "random",
+      "fraction": 0.35,
+      "representation": "signature-per_band-d3",
+      "median_detections": 15,
+      "balanced_accuracy": 0.4967,
+      "balanced_accuracy_std": 0.0382,
+      "macro_f1": 0.4904,
+      "logistic_balanced_accuracy": 0.4444,
+      "n_features": 168
+    },
+    {
+      "regime": "random",
+      "fraction": 0.35,
+      "representation": "minirocket",
+      "median_detections": 15,
+      "balanced_accuracy": 0.4777,
+      "balanced_accuracy_std": 0.0196,
+      "macro_f1": 0.4744,
+      "logistic_balanced_accuracy": 0.4487,
+      "n_features": 9996
+    },
+    {
+      "regime": "random",
+      "fraction": 0.2,
+      "representation": "summary",
+      "median_detections": 12,
+      "balanced_accuracy": 0.5131,
+      "balanced_accuracy_std": 0.0123,
+      "macro_f1": 0.5112,
+      "logistic_balanced_accuracy": 0.484,
+      "n_features": 49
+    },
+    {
+      "regime": "random",
+      "fraction": 0.2,
+      "representation": "signature-per_band-d3",
+      "median_detections": 12,
+      "balanced_accuracy": 0.5031,
+      "balanced_accuracy_std": 0.0189,
+      "macro_f1": 0.5038,
+      "logistic_balanced_accuracy": 0.4549,
+      "n_features": 168
+    },
+    {
+      "regime": "random",
+      "fraction": 0.2,
+      "representation": "minirocket",
+      "median_detections": 12,
+      "balanced_accuracy": 0.4667,
+      "balanced_accuracy_std": 0.0239,
+      "macro_f1": 0.4651,
+      "logistic_balanced_accuracy": 0.4222,
+      "n_features": 9996
+    },
+    {
+      "regime": "blocked",
+      "fraction": 0.6,
+      "representation": "summary",
+      "median_detections": 25,
+      "balanced_accuracy": 0.5361,
+      "balanced_accuracy_std": 0.0189,
+      "macro_f1": 0.5319,
+      "logistic_balanced_accuracy": 0.4813,
+      "n_features": 49
+    },
+    {
+      "regime": "blocked",
+      "fraction": 0.6,
+      "representation": "signature-per_band-d3",
+      "median_detections": 25,
+      "balanced_accuracy": 0.5084,
+      "balanced_accuracy_std": 0.022,
+      "macro_f1": 0.5085,
+      "logistic_balanced_accuracy": 0.4518,
+      "n_features": 168
+    },
+    {
+      "regime": "blocked",
+      "fraction": 0.6,
+      "representation": "minirocket",
+      "median_detections": 25,
+      "balanced_accuracy": 0.4805,
+      "balanced_accuracy_std": 0.0256,
+      "macro_f1": 0.4791,
+      "logistic_balanced_accuracy": 0.4721,
+      "n_features": 9996
+    },
+    {
+      "regime": "blocked",
+      "fraction": 0.35,
+      "representation": "summary",
+      "median_detections": 15,
+      "balanced_accuracy": 0.5196,
+      "balanced_accuracy_std": 0.0293,
+      "macro_f1": 0.5161,
+      "logistic_balanced_accuracy": 0.44,
+      "n_features": 49
+    },
+    {
+      "regime": "blocked",
+      "fraction": 0.35,
+      "representation": "signature-per_band-d3",
+      "median_detections": 15,
+      "balanced_accuracy": 0.487,
+      "balanced_accuracy_std": 0.0257,
+      "macro_f1": 0.4817,
+      "logistic_balanced_accuracy": 0.4119,
+      "n_features": 168
+    },
+    {
+      "regime": "blocked",
+      "fraction": 0.35,
+      "representation": "minirocket",
+      "median_detections": 15,
+      "balanced_accuracy": 0.4308,
+      "balanced_accuracy_std": 0.0285,
+      "macro_f1": 0.4235,
+      "logistic_balanced_accuracy": 0.4009,
+      "n_features": 9996
+    },
+    {
+      "regime": "blocked",
+      "fraction": 0.2,
+      "representation": "summary",
+      "median_detections": 12,
+      "balanced_accuracy": 0.4976,
+      "balanced_accuracy_std": 0.0266,
+      "macro_f1": 0.4922,
+      "logistic_balanced_accuracy": 0.4101,
+      "n_features": 49
+    },
+    {
+      "regime": "blocked",
+      "fraction": 0.2,
+      "representation": "signature-per_band-d3",
+      "median_detections": 12,
+      "balanced_accuracy": 0.4619,
+      "balanced_accuracy_std": 0.0294,
+      "macro_f1": 0.4574,
+      "logistic_balanced_accuracy": 0.3999,
+      "n_features": 168
+    },
+    {
+      "regime": "blocked",
+      "fraction": 0.2,
+      "representation": "minirocket",
+      "median_detections": 12,
+      "balanced_accuracy": 0.3975,
+      "balanced_accuracy_std": 0.0116,
+      "macro_f1": 0.3867,
+      "logistic_balanced_accuracy": 0.3802,
+      "n_features": 9996
+    }
+  ]
+}
