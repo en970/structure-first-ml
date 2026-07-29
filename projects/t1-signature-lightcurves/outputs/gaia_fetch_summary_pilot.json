@@ -1,0 +1,96 @@
+{
+  "generated_utc": "2026-07-29T23:06:18.982958+00:00",
+  "classes": [
+    "ECL",
+    "RR",
+    "CEP",
+    "RS",
+    "DSCT|GDOR|SXPHE",
+    "LPV"
+  ],
+  "per_class_cap": 50,
+  "min_class_score": 0.8,
+  "min_obs_total": 30,
+  "min_per_band": 5,
+  "datalink": {
+    "data_structure": "INDIVIDUAL",
+    "format": "csv",
+    "ids_per_call": 25,
+    "workers": 12,
+    "verified_id_cap": 5000
+  },
+  "fetch": {
+    "requested": 300,
+    "fetched_this_run": 0,
+    "failed_this_run": 0,
+    "sources_on_disk": 300,
+    "elapsed_s": 0.4,
+    "sources_per_s": null,
+    "transit_rows": 14553,
+    "retrieval_rate_by_class": {
+      "CEP": 1.0,
+      "DSCT|GDOR|SXPHE": 1.0,
+      "ECL": 1.0,
+      "LPV": 1.0,
+      "RR": 1.0,
+      "RS": 1.0
+    },
+    "retrieval_rate_spread": 0.0
+  },
+  "reshape": {
+    "wide_transit_rows": 14553,
+    "long_slots_before_cuts": 43659,
+    "dropped_missing_photometry": 2290,
+    "dropped_variability_reject_flag": 1215,
+    "dropped_nonpositive_snr": 0,
+    "long_observations": 40154,
+    "observations_by_band": {
+      "G": 13881,
+      "RP": 13166,
+      "BP": 13107
+    },
+    "mjd_min": 56863.47,
+    "mjd_max": 57901.33,
+    "mjd_range_check": "passed"
+  },
+  "quality_cuts": {
+    "objects_before": 300,
+    "objects_after": 300,
+    "dropped_too_few_observations": 0,
+    "dropped_missing_a_band": 0,
+    "observations_after": 40154
+  },
+  "periods": {
+    "requested": true,
+    "match_rate_by_class": {
+      "CEP": 0.94,
+      "DSCT|GDOR|SXPHE": 0.1,
+      "ECL": 1.0,
+      "LPV": 0.38,
+      "RR": 1.0,
+      "RS": 0.0
+    },
+    "median_period_d_by_class": {
+      "CEP": 3.9384,
+      "DSCT|GDOR|SXPHE": 0.0473,
+      "ECL": 0.4736,
+      "LPV": 296.8346,
+      "RR": 0.568,
+      "RS": null
+    }
+  },
+  "class_counts": {
+    "ECL": 50,
+    "DSCT|GDOR|SXPHE": 50,
+    "CEP": 50,
+    "RS": 50,
+    "LPV": 50,
+    "RR": 50
+  },
+  "median_observations": 127,
+  "observations_p10_p90": [
+    75,
+    190
+  ],
+  "median_span_days": 961.3
+}

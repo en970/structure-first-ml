@@ -1,0 +1,14 @@
+track,representation,n_features,n_objects,balanced_accuracy,balanced_accuracy_std,macro_f1,logistic_balanced_accuracy,build_seconds
+gaia,summary,72,300,0.9533,0.0163,0.9532,0.88,5.6
+gaia,summary+signature-per_band-raw_time-lead_lag-d4,1092,300,0.9467,0.0221,0.9463,0.8167,
+gaia,signature-per_band-raw_time-lead_lag-d4,1020,300,0.79,0.0501,0.7894,0.7533,22.3
+gaia,signature-per_band-lead_lag-d4,1020,300,0.7767,0.0249,0.7766,0.61,19.6
+gaia,signature-per_band-raw_time-lead_lag-d3,252,300,0.76,0.0646,0.7578,0.69,11.3
+gaia,signature-per_band-lead_lag-d3,252,300,0.74,0.0583,0.7388,0.6067,10.3
+gaia,signature-per_band-raw_time-d4,90,300,0.66,0.0764,0.659,0.5367,8.4
+gaia,signature-per_band-raw-d4,90,300,0.66,0.0764,0.659,0.5367,8.3
+gaia,signature-per_band-raw_time-basepoint-d4,90,300,0.66,0.0544,0.6607,0.6267,8.7
+gaia,signature-per_band-d4,90,300,0.6567,0.0847,0.6578,0.4467,9.0
+gaia,signature-per_band-raw_time-d3,42,300,0.6133,0.0785,0.6143,0.4833,8.3
+gaia,signature-per_band-d3,42,300,0.57,0.0499,0.5696,0.4367,8.4
+gaia,summary-label-shuffled,72,300,0.1667,0.0483,0.1626,0.1733,
