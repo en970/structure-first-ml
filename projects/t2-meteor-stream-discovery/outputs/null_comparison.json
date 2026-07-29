@@ -1,0 +1,122 @@
+{
+  "generated_utc": "2026-07-29T10:10:18.790664+00:00",
+  "seed": 20260729,
+  "radius_dsh": 0.1,
+  "windows": [
+    140.0,
+    195.0,
+    260.0
+  ],
+  "records": [
+    {
+      "window": 140.0,
+      "null": "permutation",
+      "sporadic_median_ratio": 0.366,
+      "n_sporadic_regions": 9,
+      "stream_code": "PER",
+      "stream_ratio": 0.458,
+      "stream_n_obs": 2790,
+      "stream_n_exp": 1276.8
+    },
+    {
+      "window": 140.0,
+      "null": "kde",
+      "sporadic_median_ratio": 0.384,
+      "n_sporadic_regions": 9,
+      "stream_code": "PER",
+      "stream_ratio": 0.047,
+      "stream_n_obs": 2790,
+      "stream_n_exp": 132.0
+    },
+    {
+      "window": 140.0,
+      "null": "sideband",
+      "sporadic_median_ratio": 0.96,
+      "n_sporadic_regions": 9,
+      "stream_code": "PER",
+      "stream_ratio": 0.107,
+      "stream_n_obs": 2790,
+      "stream_n_exp": 297.6
+    },
+    {
+      "window": 195.0,
+      "null": "permutation",
+      "sporadic_median_ratio": 0.0,
+      "n_sporadic_regions": 11,
+      "stream_code": "STA",
+      "stream_ratio": 0.005,
+      "stream_n_obs": 516,
+      "stream_n_exp": 2.4
+    },
+    {
+      "window": 195.0,
+      "null": "kde",
+      "sporadic_median_ratio": 0.369,
+      "n_sporadic_regions": 11,
+      "stream_code": "STA",
+      "stream_ratio": 0.107,
+      "stream_n_obs": 516,
+      "stream_n_exp": 55.2
+    },
+    {
+      "window": 195.0,
+      "null": "sideband",
+      "sporadic_median_ratio": 0.8,
+      "n_sporadic_regions": 11,
+      "stream_code": "STA",
+      "stream_ratio": 0.553,
+      "stream_n_obs": 516,
+      "stream_n_exp": 285.6
+    },
+    {
+      "window": 260.0,
+      "null": "permutation",
+      "sporadic_median_ratio": 0.497,
+      "n_sporadic_regions": 5,
+      "stream_code": "GEM",
+      "stream_ratio": 0.529,
+      "stream_n_obs": 4676,
+      "stream_n_exp": 2472.0
+    },
+    {
+      "window": 260.0,
+      "null": "kde",
+      "sporadic_median_ratio": 0.229,
+      "n_sporadic_regions": 5,
+      "stream_code": "GEM",
+      "stream_ratio": 0.072,
+      "stream_n_obs": 4676,
+      "stream_n_exp": 336.0
+    },
+    {
+      "window": 260.0,
+      "null": "sideband",
+      "sporadic_median_ratio": 0.095,
+      "n_sporadic_regions": 5,
+      "stream_code": "GEM",
+      "stream_ratio": 0.02,
+      "stream_n_obs": 4676,
+      "stream_n_exp": 91.2
+    }
+  ],
+  "summary": [
+    {
+      "null": "kde",
+      "sporadic_ratio": 0.369,
+      "stream_ratio": 0.072,
+      "separation": 5.12
+    },
+    {
+      "null": "permutation",
+      "sporadic_ratio": 0.366,
+      "stream_ratio": 0.458,
+      "separation": 0.8
+    },
+    {
+      "null": "sideband",
+      "sporadic_ratio": 0.8,
+      "stream_ratio": 0.107,
+      "separation": 7.48
+    }
+  ]
+}

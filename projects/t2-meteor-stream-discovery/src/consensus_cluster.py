@@ -25,11 +25,16 @@ caught it is worth recording:
 
 Four changes follow from that, and they are the substance of this module.
 
-1. PHYSICALLY VALID NULL. Shuffling orbital elements independently preserves every
-   marginal but produces orbits that cannot reach Earth. A meteoroid is only observable if
-   its orbit crosses Earth's, so null orbits failing q <= Q_earth and Q >= q_earth are
-   rejected and redrawn. Without this the null is dispersed over unreachable orbital space,
-   its pair distances are inflated, and every threshold derived from it is too permissive.
+1. A NULL THAT MODELS THE SPORADIC COMPLEX. Shuffling orbital elements independently
+   preserves every marginal and destroys every correlation between them -- but the helion,
+   antihelion, apex and toroidal sources exist BECAUSE those elements are correlated. The
+   permutation null therefore describes a background that does not exist, and measurement
+   confirmed it: across three windows it predicted 0.37 of the observed count in sporadic
+   regions and 0.46 at real showers, so it could not tell a stream from ordinary background
+   structure at all. The default is now the SIDEBAND null -- real orbits borrowed from
+   solar longitudes either side of the window, with their nodes rotated to the window's
+   encounter geometry -- which reaches 0.80 in sporadic regions and 0.11 at streams, a
+   7.5-fold separation. See `compare_nulls.py`.
 
 2. GROUP-LEVEL SIGNIFICANCE. Each surviving group is tested as an object, not assumed
    real because a clustering algorithm emitted it. The statistic is a density excess: how
@@ -60,6 +65,7 @@ from sklearn.cluster import DBSCAN
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from dcriteria import d_d, d_h, d_sh  # noqa: E402
 from iau_reference import load_iau_lists, match_to_iau  # noqa: E402
+from sporadic_null import kde_null, permutation_null, sideband_null  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 SEED = 20260727
@@ -249,6 +255,9 @@ def main() -> int:
     ap.add_argument("--max-window-size", type=int, default=6000)
     ap.add_argument("--z-min", type=float, default=5.0,
                     help="minimum density-excess z for a group to be reported at all")
+    ap.add_argument("--null", default="sideband", choices=["sideband", "kde", "permutation"],
+                    help="sporadic-background model; see compare_nulls.py for the "
+                         "measurements behind the default")
     ap.add_argument("--max-radius", type=float, default=0.30,
                     help="maximum group radius in D_SH. A meteoroid stream is compact: "
                          "classical association thresholds sit at 0.05-0.2, so a group "
@@ -283,7 +292,13 @@ def main() -> int:
             win = win.sample(args.max_window_size, random_state=SEED)
             subsampled += 1
 
-        null_df = physical_null(win, rng, size=min(2500, len(win)))
+        n_null = min(2500, len(win))
+        if args.null == "sideband":
+            null_df = sideband_null(df, start + args.window / 2.0, rng, n_null)
+        elif args.null == "kde":
+            null_df = kde_null(win, rng, n_null)
+        else:
+            null_df = permutation_null(win, rng, n_null)
         thresholds = {c: calibrate_threshold(null_df, c, args.fpr) for c in CRITERIA}
         labels = consensus_labels(win, thresholds, args.min_cluster)
 
@@ -352,7 +367,7 @@ def main() -> int:
         "generated_utc": pd.Timestamp.utcnow().isoformat(),
         "seed": SEED, "window_deg": args.window, "step_deg": args.step,
         "min_cluster": args.min_cluster, "fpr": args.fpr, "z_min": args.z_min,
-        "max_radius": args.max_radius,
+        "max_radius": args.max_radius, "null_model": args.null,
         "n_meteors": int(len(df)), "windows_subsampled": subsampled,
         "n_window_groups": len(raw_groups),
         "n_distinct_structures": int(len(out_df)),

@@ -1,0 +1,10 @@
+window,null,sporadic_median_ratio,n_sporadic_regions,stream_code,stream_ratio,stream_n_obs,stream_n_exp
+140.0,permutation,0.366,9,PER,0.458,2790,1276.8
+140.0,kde,0.384,9,PER,0.047,2790,132.0
+140.0,sideband,0.96,9,PER,0.107,2790,297.6
+195.0,permutation,0.0,11,STA,0.005,516,2.4
+195.0,kde,0.369,11,STA,0.107,516,55.2
+195.0,sideband,0.8,11,STA,0.553,516,285.6
+260.0,permutation,0.497,5,GEM,0.529,4676,2472.0
+260.0,kde,0.229,5,GEM,0.072,4676,336.0
+260.0,sideband,0.095,5,GEM,0.02,4676,91.2
