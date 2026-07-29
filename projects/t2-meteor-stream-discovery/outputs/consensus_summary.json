@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-07-27T19:11:01.814432+00:00",
+  "generated_utc": "2026-07-29T10:34:13.863875+00:00",
   "seed": 20260727,
   "window_deg": 2.0,
   "step_deg": 1.5,
@@ -7,15 +7,16 @@
   "fpr": 0.001,
   "z_min": 5.0,
   "max_radius": 0.3,
+  "null_model": "sideband",
   "n_meteors": 2146868,
   "windows_subsampled": 240,
-  "n_window_groups": 2057,
-  "n_distinct_structures": 1249,
-  "n_matched_established": 188,
-  "n_matched_working_only": 516,
-  "n_gmn_code_only": 47,
-  "n_unmatched": 498,
+  "n_window_groups": 805,
+  "n_distinct_structures": 358,
+  "n_matched_established": 140,
+  "n_matched_working_only": 144,
+  "n_gmn_code_only": 18,
+  "n_unmatched": 56,
   "distinct_established_recovered": 64,
-  "unmatched_median_z": 10.0,
-  "unmatched_median_members": 15
+  "unmatched_median_z": 8.0,
+  "unmatched_median_members": 14
 }

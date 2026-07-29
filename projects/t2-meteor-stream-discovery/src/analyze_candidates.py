@@ -52,7 +52,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from consensus_cluster import physical_null  # noqa: E402
+from sporadic_null import sideband_null  # noqa: E402
 from dcriteria import d_sh  # noqa: E402
 from iau_reference import load_iau_lists, match_to_iau  # noqa: E402
 
@@ -82,15 +82,18 @@ def distances_to(frame: pd.DataFrame, row: pd.Series) -> np.ndarray:
 
 
 def per_year_excess(win: pd.DataFrame, row: pd.Series, radius: float,
-                    rng: np.random.Generator) -> tuple[dict[int, float], pd.DataFrame]:
+                    rng: np.random.Generator, archive: pd.DataFrame
+                    ) -> tuple[dict[int, float], pd.DataFrame]:
     """Density-excess z inside the candidate radius, computed year by year.
 
     The null fraction is estimated once from the whole window and then scaled by each
     year's own meteor count, so a year in which the network recorded ten times as much
     is held to a ten times larger expectation rather than credited for it.
     """
-    cols = ["q", "e", "i", "node", "peri"]
-    null_df = physical_null(win[cols], rng, size=min(2000, len(win)))
+    # Sideband null, for the reasons measured in compare_nulls.py: the permutation null
+    # cannot separate a stream from sporadic structure (separation 0.80), which is why the
+    # first version of this whole filter separated nothing.
+    null_df = sideband_null(archive, float(row.sol_lon), rng, min(2000, len(win)))
     frac_null = float((distances_to(null_df, row) <= radius).mean())
 
     near = win[distances_to(win, row) <= radius]
@@ -159,7 +162,7 @@ def main() -> int:
         win = window_of(df, row)
         if len(win) < 50:
             continue
-        z_by_year, near = per_year_excess(win, row, args.radius, rng)
+        z_by_year, near = per_year_excess(win, row, args.radius, rng, df)
         if near.empty:
             continue
         excess_years = sorted(y for y, z in z_by_year.items() if z >= args.z_year)

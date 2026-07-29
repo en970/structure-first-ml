@@ -103,17 +103,24 @@ where it should not. Both predictions are reported.</p>
 </div>
 
 <div class="proj">
-  <h3>T2 — Meteoroid stream discovery <span class="tag running">in progress</span></h3>
+  <h3>T2 — Meteoroid stream discovery <span class="tag">result: verified method, nothing new</span></h3>
   <p>2.15 million meteor orbits from the Global Meteor Network, clustered under several classical
   orbital dissimilarity criteria at once, where a candidate must survive <em>all</em> of them.
   The field's own 2025 methods review recommends exactly this and nobody has run it on this
   archive.</p>
-  <p>A first pass returned 3,727 apparently novel groups. An audit showed they were the sporadic
-  background itself — DBSCAN chaining through a dense continuum, with overlapping windows counting
-  each structure five times over. Four corrections followed: a null restricted to orbits that can
-  actually reach Earth, group-level density-excess significance, a compactness ceiling, and
-  novelty checked against both the established IAU list and its 787-entry working list. The
-  Perseids now return at $z = 44.8$; the chained background does not return at all.</p>
+  <p>A first pass returned 3,727 apparently novel groups; an audit showed they were the sporadic
+  background itself. The decisive fix was the null model, and it was diagnosed by measurement
+  rather than argument: the standard permutation null scores <em>0.80</em> on separation — it
+  predicts the same density at a real shower as in empty background, because the sporadic sources
+  exist through element correlations that shuffling destroys. A sideband null built from real
+  orbits at adjacent solar longitudes, with nodes rotated to the window's geometry, reaches
+  7.48. Swapping it cut unmatched structures from 498 to 56 with no loss of known-shower
+  recovery, and turned the recurrence filter from a 4.5-point separation into a 40.7-point one.</p>
+  <p>Of 21 candidates surviving every filter, the 8 strongest were re-checked at loose tolerance
+  against every IAU entry — and <b>8 of 8 are known showers</b>, two within 2°. The remaining
+  false positives came from the matching step, not the clustering. The method recovers 57% of the
+  established catalogue and invents nothing: a clean negative on discovery, and a quantitative
+  result on null models that stands on its own.</p>
   <p class="links"><a href="projects/t2-meteor-stream-discovery/RESULTS.md">Results (a null)</a>
      <a href="projects/t2-meteor-stream-discovery/">Code &amp; README</a></p>
 </div>
