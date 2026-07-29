@@ -70,8 +70,8 @@ approach wins and the cases where it loses are given equal space, because a repr
 that is claimed to help everywhere has not been understood anywhere.
 \end{minipage}
 \vfill
-{\small Data courtesy of the Zwicky Transient Facility, the ZTF Bright Transient Survey,
-and the ALeRCE broker.\par}
+{\small Data courtesy of the Zwicky Transient Facility, the ZTF Bright Transient Survey, the
+ALeRCE broker, the Global Meteor Network (CC~BY~4.0) and the IAU Meteor Data Center.\par}
 \end{titlepage}
 
 \tableofcontents
@@ -447,6 +447,144 @@ sampling density tested. They do carry information those features lack, establis
 a matched-noise control. Not a better representation --- a different one, whose advantage
 is over grid-based methods rather than over domain knowledge.
 
+
+\chapter{Consensus clustering for meteoroid streams}
+\label{ch:t2}
+\noindent\textit{projects/t2-meteor-stream-discovery}
+
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+
+Meteoroid stream identification is a clustering problem in which the metric is dictated by
+celestial mechanics rather than convenience, and the classical orbital dissimilarity criteria
+disagree with one another in ways that propagate into which streams get found. This chapter
+implements the procedure the field's own 2025 methods review recommends and nobody had run on
+the Global Meteor Network archive: cluster under several criteria at once and keep only what
+survives all of them. Applied to 2{,}146{,}868 orbits, it recovers 57\% of the established IAU
+catalogue and proposes nothing new. The substantive result is not the null on discovery but a
+measured demonstration that the permutation null used widely in threshold-based work cannot
+separate a stream from sporadic structure at all.
+
+\section{The archive and the criteria}
+
+The GMN publishes monthly trajectory summaries under CC~BY~4.0: 86 columns per multi-station
+meteor, with orbital elements, radiant, geocentric velocity, per-quantity uncertainties,
+convergence angle and the pipeline's own IAU shower association. After quality cuts on
+convergence angle, radiant and velocity uncertainty, 2{,}146{,}868 of 3{,}178{,}785 meteors
+remain, of which 631{,}065 carry a shower code across 426 distinct showers. The GMN
+association is used only as a control, never as an input.
+
+Four criteria are implemented: $D_{SH}$ (Southworth \& Hawkins 1963), $D_D$ (Drummond 1981),
+$D_H$ (Jopek 1993) and $D_N$ (Valsecchi, Jopek \& Fro\"eschl\'e 1999). Verification uses
+analytic special cases where each formula collapses to closed form --- orbits differing only
+in eccentricity, only in perihelion distance, only in inclination, coplanar orbits differing
+only in argument of perihelion --- plus identity, symmetry and a physical check that a Geminid
+pair falls below the conventional association threshold while a Geminid--Perseid pair falls far
+above it. All 23 checks pass.
+
+One correction inside the verification is worth recording. The closed form
+$D_D = \Delta i / \pi$ for orbits differing only in inclination holds only with the perihelion
+on the line of nodes; otherwise tilting the plane moves the perihelion direction itself. The
+first version of the test used a generic perihelion, flagged the implementation as wrong, and
+a hand computation showed the implementation was right and the expectation was not.
+
+\section{Why the null model is the whole problem}
+
+Pairwise distance over 2.1 million meteors is $4.6\times10^{12}$ pairs, so the sweep runs in
+overlapping windows of solar longitude --- physically motivated, since a stream is active over
+a bounded range and meteors months apart cannot belong to the same encounter. Within each
+window, clustering under each criterion is calibrated to a common false-positive rate against a
+null, and only structures placed together by every criterion are retained.
+
+The first complete sweep returned 1{,}249 structures of which 498 matched no IAU list, against
+64 recovered established showers. A novel-detection rate seven times the known-recovery rate is
+a method reporting its own false positives. The permutation null --- shuffling each orbital
+element independently --- was the leading suspect, and was then measured rather than assumed.
+
+A null has two jobs, pulling in opposite directions. In a region containing only sporadic
+meteors it must predict roughly the number observed (calibration); in a region containing a
+stream it must predict far fewer (discrimination). Both are measured as the ratio
+$n_{\text{exp}}/n_{\text{obs}}$ inside a $D_{SH}$ ball, with regions centred on GMN's own
+sporadic and shower labels.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lrrr}
+\toprule
+Null model & Sporadic ratio & Stream ratio & Separation \\
+\midrule
+sideband --- real orbits, adjacent $\lambda_\odot$, nodes rotated & \textbf{0.800} & 0.107 & \textbf{7.48} \\
+kde --- joint density, bandwidth above the stream scale & 0.369 & \textbf{0.072} & 5.12 \\
+permutation --- marginals only & 0.366 & 0.458 & \textbf{0.80} \\
+\bottomrule
+\end{tabular}
+\caption{Median across the Perseid, Southern Taurid and Geminid windows. A separation below
+one means the null predicts the same density at a real shower as in empty background.}
+\end{table}
+
+The permutation null scores below one. It cannot distinguish a stream from ordinary sporadic
+structure, and the reason is structural: the helion, antihelion, apex and toroidal sources
+exist \emph{because} orbital elements are correlated, so shuffling them independently models a
+background that does not exist and every real correlation registers as an excess.
+
+Two replacements were implemented so the choice would be measured rather than argued. The KDE
+null fits the joint distribution with a bandwidth chosen physically --- above the internal
+scale of a stream, below the extent of a sporadic source --- and deliberately not
+cross-validated, since a fitted bandwidth would model the streams too. The sideband null
+borrows real orbits from solar longitudes either side of the window, past a gap wider than a
+typical shower's activity. That the two agree at the streams (0.107 and 0.072) is the check on
+both.
+
+The sideband null required one correction that failed in a way resembling success. Without
+rotating the borrowed nodes it predicted zero density at sporadic regions \emph{and} zero at
+the Perseids, which reads as perfect discrimination and is total collapse. A meteoroid is only
+observable where its orbit crosses Earth's, so its ascending node is locked to the solar
+longitude of the encounter; orbits borrowed from $18^\circ$ away carry nodes $18^\circ$ away,
+outside every ball centred in the window.
+
+\section{What the corrected sweep found}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lrr}
+\toprule
+& Permutation null & Sideband null \\
+\midrule
+Distinct structures & 1{,}249 & 358 \\
+Unmatched to any IAU list & 498 & \textbf{56} \\
+Surviving density excess in $\ge 3$ apparitions & 461 & \textbf{21} \\
+Established showers recovered & 64 of 113 & 64 of 113 \\
+\bottomrule
+\end{tabular}
+\caption{Replacing the null cut unmatched structures 8.9-fold with no loss of recovery.}
+\end{table}
+
+The recurrence filter only became a filter afterwards. Requiring that meteors be
+\emph{present} near the candidate orbit in three or more years separates known from unknown by
+2.3 percentage points --- it measures nothing, because the sporadic background is present every
+year too. Requiring a density \emph{excess} under the permutation null gives 4.5 points. The
+same statistic under the sideband null gives 78.2\% against 37.5\%, a separation of 40.7
+points. With a null that cannot see streams, no statistic built on it can either.
+
+Of the 21 survivors, 8 have a median per-year $z \ge 3$ across at least five apparitions.
+Re-checked against every IAU entry at loose tolerance, \textbf{eight of eight are known
+showers}, two of them within $2^\circ$: $\epsilon$-Draconids at $1.3^\circ$ and Daytime
+$\mu$-Cancrids at $1.8^\circ$. The strict tolerance rejected them because catalogue $V_g$
+values come from different solutions than the one measured here. The remaining false positives
+therefore arise in the \emph{matching} step, not the clustering: the clustering finds real
+streams and the bookkeeping failed to recognise them.
+
+\section{Conclusion}
+
+No new stream is claimed. What stands is a verified implementation, a null result on discovery
+at 57\% completeness against the established catalogue, and a quantitative comparison of
+sporadic-background models showing that the permutation null cannot do the job it is routinely
+asked to do while a sideband null of real orbits with rotated nodes can. That last result is
+independent of whether anything new is found, and it is the part worth carrying forward.
+
+
 \begin{thebibliography}{9}
 \bibitem{signova} Arrubarrena, P., Lemercier, M., Nikolic, B., Lyons, T. and Cass, T. (2024).
 \emph{Novelty Detection on Radio Astronomy Data using Signatures.} arXiv:2402.14892.
@@ -456,6 +594,12 @@ of bounded variation and the reduced path group.} Annals of Mathematics 171, 109
 Method in Machine Learning.} arXiv:1603.03788.
 \bibitem{minirocket} Dempster, A., Schmidt, D. F. and Webb, G. I. (2021). \emph{MiniRocket: A
 Very Fast (Almost) Deterministic Transform for Time Series Classification.} arXiv:2012.08791.
+\bibitem{courtot} Courtot, A., Shober, P. and Vaubaillon, J. (2025). \emph{Orbit dissimilarity
+criteria in meteor showers: a comparative review.} arXiv:2507.19075.
+\bibitem{shober2026} Shober, P. M. (2026). \emph{Asteroidal Activity among Meteor Datasets.}
+ApJ 1000(2). arXiv:2602.16845.
+\bibitem{shober2024} Shober, P. and Vaubaillon, J. (2024). \emph{Near-Earth stream decoherence
+revisited.} A\&A. arXiv:2404.08507.
 \end{thebibliography}
 
 \end{document}
