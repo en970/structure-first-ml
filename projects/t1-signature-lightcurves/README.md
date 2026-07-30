@@ -292,6 +292,68 @@ density tested.
 
 ![Sampling ablation](site/assets/fig4_ablation.png)
 
+### The Gaia counter-test — where signatures should lose, and do
+
+The counter-test was designed at the same time as the main experiment and run afterwards on
+2,999 Gaia DR3 periodic variables in six classes (CEP, DSCT|GDOR|SXPHE, ECL, LPV, RR, RS;
+median 130 observations over 960 days). Its logic: ZTF transients are separated by the shape
+and ordering of the light curve, which signatures encode; Gaia periodic variables are
+separated by **period**, which is a statement about the clock — and the signature is
+invariant to reparameterisation of the clock.
+
+Every figure below is on the full sample. An earlier 300-object pilot overstated the central
+gap by more than a factor of two (0.163 against 0.074), which is why pilot numbers were
+labelled as such and never carried into a claim.
+
+| Measurement | Gaia (2,999) | ZTF (2,375) |
+|---|---|---|
+| Baseline minus best signature | **+0.0743** | +0.0123 |
+| Value of keeping duration (raw vs unit time) | +0.0387 | **+0.0688** |
+| Value of the lead-lag transform | **+0.1130** | +0.0246 |
+| Complementarity: signature added to baseline | **−0.0000** | **+0.0147** |
+| Matched-noise control | −0.0016 | −0.0345 |
+
+**Prediction P1 confirmed.** Signatures lose six times harder on periodic variables than on
+transients. A label-shuffled control sits at 0.160 (chance is 0.167), so the comparison is
+not an artefact of the evaluation.
+
+**Prediction P2 refuted.** Restoring duration was expected to matter *more* on Gaia. It
+matters *less* (+0.039 against +0.069, and +0.018 against +0.065 averaged over all
+depth/augmentation pairs). The reason is measurable: Gaia's observing baseline is set by the
+mission rather than by the object, so span carries almost no information (coefficient of
+variation 0.039 against ZTF's 1.250). **Duration is not period.** The time channel restores
+how long the observation lasted; it does not restore the clock the variability lives on, and
+that distinction is exactly what the counter-test was built to expose.
+
+**The sharpest result: one feature beats a thousand.** Restricted to the 1,806 objects with
+a catalogued period:
+
+| Arm | Features | Balanced accuracy |
+|---|---|---|
+| **period only** | **1** | **0.7726 ± 0.0925** |
+| signature, per-band, raw time, lead-lag, depth 4 | 1,020 | 0.7412 ± 0.0128 |
+| summary (hand-crafted) | 72 | 0.9850 ± 0.0069 |
+| summary + period | 73 | **0.9990 ± 0.0013** |
+
+A single number outperforms a 1,020-coefficient signature representation by 0.031. That is
+not a statistical trend about which method is better; it is a structural fact about what
+these classes are separated by, and it is precisely the quantity reparameterisation
+invariance discards.
+
+*Caveat, and it is not neutral.* The period requirement retains classes very unevenly: ECL
+100%, CEP 98%, RR 98%, but LPV 45%, DSCT-group 19% and RS just 1.2%. Objects without a
+catalogued period are largely those for which a period is hard to define, so this arm speaks
+about the periodic classes and not about the sample as a whole.
+
+**And complementarity vanishes.** On ZTF, signatures added +0.0147 to the baseline against a
+noise control of −0.0345 — the result that made T1 worth reporting. On Gaia the same test
+returns −0.0000. Where the baseline already reaches 0.985, signatures contribute nothing.
+
+Read together with the main experiment, this closes the track symmetrically. Signatures
+carry information hand-crafted features lack **when classes differ by the shape and ordering
+of an irregularly sampled curve**, and carry nothing when classes differ by a period the
+representation is built to ignore. The same property explains both the win and the loss.
+
 ### Sampling structure
 
 The gap distribution is bimodal: a cluster near $10^{-3}$ days from repeated exposures

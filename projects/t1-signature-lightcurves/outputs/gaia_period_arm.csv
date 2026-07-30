@@ -1,0 +1,5 @@
+,balanced_accuracy,macro_f1,n_features
+period_only,0.7726,0.7142,1.0
+summary,0.985,0.985,72.0
+signature-per_band-raw_time-lead_lag-d4,0.7412,0.7433,1020.0
+summary+period,0.999,0.999,73.0

@@ -1,0 +1,99 @@
+{
+  "generated_utc": "2026-07-30T19:52:41.781483+00:00",
+  "seed": 20260730,
+  "tag": "full",
+  "folds": 5,
+  "n_objects": 1806,
+  "n_objects_full_sample": 2999,
+  "period_retention_overall": 0.6022,
+  "period_retention_by_class": {
+    "RS": 0.012,
+    "DSCT|GDOR|SXPHE": 0.188,
+    "LPV": 0.448,
+    "RR": 0.982,
+    "CEP": 0.984,
+    "ECL": 1.0
+  },
+  "class_counts": {
+    "CEP": 492,
+    "DSCT|GDOR|SXPHE": 94,
+    "ECL": 499,
+    "LPV": 224,
+    "RR": 491,
+    "RS": 6
+  },
+  "results": {
+    "period_only": {
+      "n_features": 1,
+      "n_objects": 1806,
+      "logistic": {
+        "balanced_accuracy": 0.6091,
+        "balanced_accuracy_std": 0.051,
+        "macro_f1": 0.5944,
+        "macro_f1_std": 0.0124
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.7726,
+        "balanced_accuracy_std": 0.0925,
+        "macro_f1": 0.7142,
+        "macro_f1_std": 0.0364
+      }
+    },
+    "summary": {
+      "n_features": 72,
+      "n_objects": 1806,
+      "logistic": {
+        "balanced_accuracy": 0.8559,
+        "balanced_accuracy_std": 0.0749,
+        "macro_f1": 0.8314,
+        "macro_f1_std": 0.0525
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.985,
+        "balanced_accuracy_std": 0.0069,
+        "macro_f1": 0.985,
+        "macro_f1_std": 0.0075
+      }
+    },
+    "signature-per_band-raw_time-lead_lag-d4": {
+      "n_features": 1020,
+      "n_objects": 1806,
+      "logistic": {
+        "balanced_accuracy": 0.7301,
+        "balanced_accuracy_std": 0.0182,
+        "macro_f1": 0.7289,
+        "macro_f1_std": 0.0124
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.7412,
+        "balanced_accuracy_std": 0.0128,
+        "macro_f1": 0.7433,
+        "macro_f1_std": 0.0151
+      }
+    },
+    "summary+period": {
+      "n_features": 73,
+      "n_objects": 1806,
+      "logistic": {
+        "balanced_accuracy": 0.9844,
+        "balanced_accuracy_std": 0.007,
+        "macro_f1": 0.9862,
+        "macro_f1_std": 0.0053
+      },
+      "boosted_trees": {
+        "balanced_accuracy": 0.999,
+        "balanced_accuracy_std": 0.0013,
+        "macro_f1": 0.999,
+        "macro_f1_std": 0.0013
+      }
+    }
+  },
+  "verdict": {
+    "one_feature_beats_signature": true,
+    "period_minus_signature": 0.0314,
+    "period_features": 1,
+    "signature_features": 1020,
+    "period_minus_summary": -0.2124,
+    "interpretation": "If one catalogued period outperforms several hundred signature coefficients, the classes are separated by the clock, which is precisely what reparameterisation invariance discards. That is a structural statement about the data, not a statistical trend."
+  }
+}

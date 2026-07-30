@@ -426,6 +426,66 @@ own structured-gap penalty jumps to $-0.041$, worse than the baseline's $-0.016$
 roughly a dozen observations per object the path is too coarsely sampled for the iterated
 integrals to be estimated stably, and the invariance argument stops paying.
 
+\subsection{The Gaia counter-test}
+
+The counter-test was registered with the main experiment and run afterwards on 2{,}999 Gaia
+DR3 periodic variables in six classes. Its logic is that ZTF transients are separated by the
+shape and ordering of the light curve, which signatures encode, whereas Gaia periodic
+variables are separated by \emph{period}, which is a statement about the clock --- and the
+signature is invariant to reparameterisation of the clock.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lrr}
+\toprule
+Measurement & Gaia (2{,}999) & ZTF (2{,}375) \\
+\midrule
+Baseline minus best signature & $\mathbf{+0.0743}$ & $+0.0123$ \\
+Value of keeping duration & $+0.0387$ & $\mathbf{+0.0688}$ \\
+Value of the lead-lag transform & $\mathbf{+0.1130}$ & $+0.0246$ \\
+Complementarity: signature added to baseline & $\mathbf{-0.0000}$ & $\mathbf{+0.0147}$ \\
+Matched-noise control & $-0.0016$ & $-0.0345$ \\
+\bottomrule
+\end{tabular}
+\caption{All figures on full samples. An earlier 300-object pilot overstated the central gap
+by more than a factor of two, which is why pilot numbers were never carried into a claim.}
+\end{table}
+
+Prediction P1 is confirmed: signatures lose six times harder on periodic variables, with a
+label-shuffled control at 0.160 against a chance value of 0.167.
+
+Prediction P2 is refuted. Restoring duration was expected to matter more on Gaia and matters
+less. The cause is measurable: Gaia's observing baseline is set by the mission rather than by
+the object, so span carries almost no information (coefficient of variation 0.039 against
+ZTF's 1.250). \textbf{Duration is not period.} The time channel restores how long the
+observation lasted, not the clock the variability lives on.
+
+The sharpest form of the argument is a single feature. Restricted to the 1{,}806 objects
+carrying a catalogued period:
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lrr}
+\toprule
+Arm & Features & Balanced accuracy \\
+\midrule
+period only & \textbf{1} & $\mathbf{0.7726 \pm 0.0925}$ \\
+signature, per-band, raw time, lead-lag, depth 4 & 1{,}020 & $0.7412 \pm 0.0128$ \\
+summary (hand-crafted) & 72 & $0.9850 \pm 0.0069$ \\
+summary $+$ period & 73 & $\mathbf{0.9990 \pm 0.0013}$ \\
+\bottomrule
+\end{tabular}
+\caption{One number outperforms a 1{,}020-coefficient signature representation. The period
+requirement retains classes unevenly (ECL 100\%, CEP 98\%, RR 98\%, LPV 45\%, DSCT-group
+19\%, RS 1.2\%), so this arm speaks about the periodic classes rather than the whole sample.}
+\end{table}
+
+Complementarity also vanishes. On ZTF, signatures added $+0.0147$ against a noise control of
+$-0.0345$; on Gaia the same test returns $-0.0000$. Where the baseline already reaches 0.985,
+signatures contribute nothing.
+
 \subsection{What the prediction got right and wrong}
 
 The prediction registered before any data was touched had two halves, and the measurements
@@ -446,6 +506,14 @@ becomes \emph{more} sensitive to gap structure than the baseline, not less.
 sampling density tested. They do carry information those features lack, established against
 a matched-noise control. Not a better representation --- a different one, whose advantage
 is over grid-based methods rather than over domain knowledge.
+
+\paragraph{And the counter-test closes it symmetrically.} The property that produces the win
+produces the loss. Signatures carry information hand-crafted features lack when classes
+differ by the shape and ordering of an irregularly sampled curve, and carry nothing when
+classes differ by a period the representation is constructed to ignore --- where a single
+catalogued number outperforms a thousand signature coefficients. A representation that helped
+everywhere for the same stated reason would not have been understood; measuring where it
+fails is what makes the account testable.
 
 
 \chapter{Consensus clustering for meteoroid streams}

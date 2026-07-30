@@ -1,9 +1,10 @@
 {
-  "generated_utc": "2026-07-29T23:14:45.226832+00:00",
+  "generated_utc": "2026-07-30T15:45:56.346480+00:00",
   "seed": 20260726,
   "folds": 5,
   "stages": [
-    "benchmark"
+    "benchmark",
+    "complementarity"
   ],
   "mode": "per_band",
   "gaia": {
@@ -13,278 +14,629 @@
       "RP"
     ],
     "sample": {
-      "n_objects": 300,
-      "n_observations": 40154,
+      "n_objects": 2999,
+      "n_observations": 398233,
       "n_classes": 6,
       "class_counts": {
-        "CEP": 50,
-        "DSCT|GDOR|SXPHE": 50,
-        "ECL": 50,
-        "LPV": 50,
-        "RR": 50,
-        "RS": 50
+        "CEP": 500,
+        "DSCT|GDOR|SXPHE": 500,
+        "ECL": 499,
+        "LPV": 500,
+        "RR": 500,
+        "RS": 500
       },
-      "median_observations": 127.0,
+      "median_observations": 130.0,
       "observations_p10_p90": [
-        75.80000000000001,
-        190.10000000000002
+        74.0,
+        189.0
       ],
-      "median_span_days": 961.31,
+      "median_span_days": 960.34,
       "span_p10_p90_days": [
-        915.94,
-        994.74
+        914.28,
+        993.89
       ],
+      "span_coefficient_of_variation": 0.0372,
+      "span_ratio_p90_over_p10": 1.087,
       "observations_by_band": {
-        "BP": 13107,
-        "G": 13881,
-        "RP": 13166
+        "BP": 130382,
+        "G": 137216,
+        "RP": 130635
       },
       "chance_balanced_accuracy": 0.1667
     },
     "representations": {
       "summary": {
         "n_features": 72,
-        "n_objects": 300,
+        "n_objects": 2999,
         "logistic": {
-          "balanced_accuracy": 0.88,
-          "balanced_accuracy_std": 0.0488,
-          "macro_f1": 0.881,
-          "macro_f1_std": 0.0465
+          "balanced_accuracy": 0.9667,
+          "balanced_accuracy_std": 0.0071,
+          "macro_f1": 0.9667,
+          "macro_f1_std": 0.007
         },
         "boosted_trees": {
-          "balanced_accuracy": 0.9533,
-          "balanced_accuracy_std": 0.0163,
-          "macro_f1": 0.9532,
-          "macro_f1_std": 0.0163
+          "balanced_accuracy": 0.9833,
+          "balanced_accuracy_std": 0.0082,
+          "macro_f1": 0.9834,
+          "macro_f1_std": 0.0081
         },
-        "build_seconds": 5.6
+        "build_seconds": 24.5
       },
       "summary-label-shuffled": {
         "n_features": 72,
-        "n_objects": 300,
+        "n_objects": 2999,
         "logistic": {
-          "balanced_accuracy": 0.1733,
-          "balanced_accuracy_std": 0.0343,
-          "macro_f1": 0.1713,
-          "macro_f1_std": 0.0329
+          "balanced_accuracy": 0.1614,
+          "balanced_accuracy_std": 0.0089,
+          "macro_f1": 0.1605,
+          "macro_f1_std": 0.009
         },
         "boosted_trees": {
-          "balanced_accuracy": 0.1667,
-          "balanced_accuracy_std": 0.0483,
-          "macro_f1": 0.1626,
-          "macro_f1_std": 0.054
+          "balanced_accuracy": 0.1601,
+          "balanced_accuracy_std": 0.016,
+          "macro_f1": 0.1598,
+          "macro_f1_std": 0.0162
         }
+      },
+      "summary-offset-invariant-only": {
+        "n_features": 59,
+        "n_objects": 2999,
+        "logistic": {
+          "balanced_accuracy": 0.9217,
+          "balanced_accuracy_std": 0.0106,
+          "macro_f1": 0.9216,
+          "macro_f1_std": 0.0109
+        },
+        "boosted_trees": {
+          "balanced_accuracy": 0.963,
+          "balanced_accuracy_std": 0.0113,
+          "macro_f1": 0.963,
+          "macro_f1_std": 0.0114
+        },
+        "dropped_columns": [
+          "G_mean",
+          "G_median",
+          "G_percent_amplitude",
+          "G_peak_mag",
+          "BP_mean",
+          "BP_median",
+          "BP_percent_amplitude",
+          "BP_peak_mag",
+          "RP_mean",
+          "RP_median",
+          "RP_percent_amplitude",
+          "RP_peak_mag",
+          "colour_GBP"
+        ],
+        "note": "the hand-crafted baseline with the absolute-brightness and colour features removed, i.e. restricted to quantities a plain increment-based signature could represent"
       },
       "signature-per_band-d3": {
         "n_features": 42,
-        "n_objects": 300,
+        "n_objects": 2999,
         "logistic": {
-          "balanced_accuracy": 0.4367,
-          "balanced_accuracy_std": 0.0859,
-          "macro_f1": 0.4195,
-          "macro_f1_std": 0.0779
+          "balanced_accuracy": 0.4738,
+          "balanced_accuracy_std": 0.0073,
+          "macro_f1": 0.4521,
+          "macro_f1_std": 0.0087
         },
         "boosted_trees": {
-          "balanced_accuracy": 0.57,
-          "balanced_accuracy_std": 0.0499,
-          "macro_f1": 0.5696,
-          "macro_f1_std": 0.0516
+          "balanced_accuracy": 0.6959,
+          "balanced_accuracy_std": 0.0069,
+          "macro_f1": 0.6984,
+          "macro_f1_std": 0.0065
         },
-        "build_seconds": 8.4
+        "build_seconds": 32.9
       },
       "signature-per_band-d4": {
         "n_features": 90,
-        "n_objects": 300,
+        "n_objects": 2999,
         "logistic": {
-          "balanced_accuracy": 0.4467,
-          "balanced_accuracy_std": 0.044,
-          "macro_f1": 0.4378,
-          "macro_f1_std": 0.0347
+          "balanced_accuracy": 0.5155,
+          "balanced_accuracy_std": 0.0176,
+          "macro_f1": 0.5014,
+          "macro_f1_std": 0.0198
         },
         "boosted_trees": {
-          "balanced_accuracy": 0.6567,
-          "balanced_accuracy_std": 0.0847,
-          "macro_f1": 0.6578,
-          "macro_f1_std": 0.0857
+          "balanced_accuracy": 0.7516,
+          "balanced_accuracy_std": 0.0044,
+          "macro_f1": 0.7531,
+          "macro_f1_std": 0.0039
         },
-        "build_seconds": 9.0
+        "build_seconds": 40.0
       },
       "signature-per_band-raw_time-d3": {
         "n_features": 42,
-        "n_objects": 300,
+        "n_objects": 2999,
         "logistic": {
-          "balanced_accuracy": 0.4833,
-          "balanced_accuracy_std": 0.0691,
-          "macro_f1": 0.4738,
-          "macro_f1_std": 0.0692
+          "balanced_accuracy": 0.6138,
+          "balanced_accuracy_std": 0.0139,
+          "macro_f1": 0.611,
+          "macro_f1_std": 0.0142
         },
         "boosted_trees": {
-          "balanced_accuracy": 0.6133,
-          "balanced_accuracy_std": 0.0785,
-          "macro_f1": 0.6143,
-          "macro_f1_std": 0.0814
+          "balanced_accuracy": 0.7386,
+          "balanced_accuracy_std": 0.0104,
+          "macro_f1": 0.7404,
+          "macro_f1_std": 0.0104
         },
-        "build_seconds": 8.3
+        "build_seconds": 52.0
       },
       "signature-per_band-raw_time-d4": {
         "n_features": 90,
-        "n_objects": 300,
+        "n_objects": 2999,
         "logistic": {
-          "balanced_accuracy": 0.5367,
-          "balanced_accuracy_std": 0.0985,
-          "macro_f1": 0.5372,
-          "macro_f1_std": 0.092
+          "balanced_accuracy": 0.6952,
+          "balanced_accuracy_std": 0.0088,
+          "macro_f1": 0.6949,
+          "macro_f1_std": 0.0092
         },
         "boosted_trees": {
-          "balanced_accuracy": 0.66,
-          "balanced_accuracy_std": 0.0764,
-          "macro_f1": 0.659,
-          "macro_f1_std": 0.0761
+          "balanced_accuracy": 0.7903,
+          "balanced_accuracy_std": 0.0077,
+          "macro_f1": 0.791,
+          "macro_f1_std": 0.0074
         },
-        "build_seconds": 8.4
+        "build_seconds": 50.4
       },
       "signature-per_band-raw-d4": {
         "n_features": 90,
-        "n_objects": 300,
+        "n_objects": 2999,
         "logistic": {
-          "balanced_accuracy": 0.5367,
-          "balanced_accuracy_std": 0.0985,
-          "macro_f1": 0.5372,
-          "macro_f1_std": 0.092
+          "balanced_accuracy": 0.6952,
+          "balanced_accuracy_std": 0.0088,
+          "macro_f1": 0.6949,
+          "macro_f1_std": 0.0092
         },
         "boosted_trees": {
-          "balanced_accuracy": 0.66,
-          "balanced_accuracy_std": 0.0764,
-          "macro_f1": 0.659,
-          "macro_f1_std": 0.0761
+          "balanced_accuracy": 0.7903,
+          "balanced_accuracy_std": 0.0077,
+          "macro_f1": 0.791,
+          "macro_f1_std": 0.0074
         },
-        "build_seconds": 8.3
+        "build_seconds": 63.0
       },
       "signature-per_band-raw_time-basepoint-d4": {
         "n_features": 90,
-        "n_objects": 300,
+        "n_objects": 2999,
         "logistic": {
-          "balanced_accuracy": 0.6267,
-          "balanced_accuracy_std": 0.0523,
-          "macro_f1": 0.6241,
-          "macro_f1_std": 0.0494
+          "balanced_accuracy": 0.7463,
+          "balanced_accuracy_std": 0.0101,
+          "macro_f1": 0.747,
+          "macro_f1_std": 0.0109
         },
         "boosted_trees": {
-          "balanced_accuracy": 0.66,
-          "balanced_accuracy_std": 0.0544,
-          "macro_f1": 0.6607,
-          "macro_f1_std": 0.0533
+          "balanced_accuracy": 0.834,
+          "balanced_accuracy_std": 0.0112,
+          "macro_f1": 0.834,
+          "macro_f1_std": 0.0111
         },
-        "build_seconds": 8.7
+        "build_seconds": 52.2
       },
       "signature-per_band-lead_lag-d3": {
         "n_features": 252,
-        "n_objects": 300,
+        "n_objects": 2999,
         "logistic": {
-          "balanced_accuracy": 0.6067,
-          "balanced_accuracy_std": 0.0638,
-          "macro_f1": 0.6041,
-          "macro_f1_std": 0.0634
+          "balanced_accuracy": 0.7686,
+          "balanced_accuracy_std": 0.0061,
+          "macro_f1": 0.7695,
+          "macro_f1_std": 0.0058
         },
         "boosted_trees": {
-          "balanced_accuracy": 0.74,
-          "balanced_accuracy_std": 0.0583,
-          "macro_f1": 0.7388,
-          "macro_f1_std": 0.0613
+          "balanced_accuracy": 0.8673,
+          "balanced_accuracy_std": 0.0054,
+          "macro_f1": 0.8676,
+          "macro_f1_std": 0.0054
         },
-        "build_seconds": 10.3
+        "build_seconds": 59.0
       },
       "signature-per_band-lead_lag-d4": {
         "n_features": 1020,
-        "n_objects": 300,
+        "n_objects": 2999,
         "logistic": {
-          "balanced_accuracy": 0.61,
-          "balanced_accuracy_std": 0.0359,
-          "macro_f1": 0.6063,
-          "macro_f1_std": 0.0357
+          "balanced_accuracy": 0.8083,
+          "balanced_accuracy_std": 0.0072,
+          "macro_f1": 0.8082,
+          "macro_f1_std": 0.0072
         },
         "boosted_trees": {
-          "balanced_accuracy": 0.7767,
-          "balanced_accuracy_std": 0.0249,
-          "macro_f1": 0.7766,
-          "macro_f1_std": 0.0231
+          "balanced_accuracy": 0.909,
+          "balanced_accuracy_std": 0.006,
+          "macro_f1": 0.9091,
+          "macro_f1_std": 0.006
         },
-        "build_seconds": 19.6
+        "build_seconds": 115.7
       },
       "signature-per_band-raw_time-lead_lag-d3": {
         "n_features": 252,
-        "n_objects": 300,
+        "n_objects": 2999,
         "logistic": {
-          "balanced_accuracy": 0.69,
-          "balanced_accuracy_std": 0.0309,
-          "macro_f1": 0.6835,
-          "macro_f1_std": 0.0311
+          "balanced_accuracy": 0.8246,
+          "balanced_accuracy_std": 0.0128,
+          "macro_f1": 0.8245,
+          "macro_f1_std": 0.0129
         },
         "boosted_trees": {
-          "balanced_accuracy": 0.76,
-          "balanced_accuracy_std": 0.0646,
-          "macro_f1": 0.7578,
-          "macro_f1_std": 0.0704
+          "balanced_accuracy": 0.8653,
+          "balanced_accuracy_std": 0.0074,
+          "macro_f1": 0.8655,
+          "macro_f1_std": 0.0073
         },
-        "build_seconds": 11.3
+        "build_seconds": 62.0
       },
       "signature-per_band-raw_time-lead_lag-d4": {
         "n_features": 1020,
-        "n_objects": 300,
+        "n_objects": 2999,
         "logistic": {
-          "balanced_accuracy": 0.7533,
-          "balanced_accuracy_std": 0.0386,
-          "macro_f1": 0.7487,
-          "macro_f1_std": 0.0387
+          "balanced_accuracy": 0.8676,
+          "balanced_accuracy_std": 0.0124,
+          "macro_f1": 0.8678,
+          "macro_f1_std": 0.0123
         },
         "boosted_trees": {
-          "balanced_accuracy": 0.79,
-          "balanced_accuracy_std": 0.0501,
-          "macro_f1": 0.7894,
-          "macro_f1_std": 0.048
+          "balanced_accuracy": 0.9033,
+          "balanced_accuracy_std": 0.0073,
+          "macro_f1": 0.9036,
+          "macro_f1_std": 0.0071
         },
-        "build_seconds": 22.3
+        "build_seconds": 112.2
       },
       "_best_signature": {
-        "key": "signature-per_band-raw_time-lead_lag-d4",
-        "balanced_accuracy": 0.79
+        "key": "signature-per_band-lead_lag-d4",
+        "balanced_accuracy": 0.909
       },
-      "summary+signature-per_band-raw_time-lead_lag-d4": {
+      "summary+signature-per_band-lead_lag-d4": {
         "n_features": 1092,
-        "n_objects": 300,
+        "n_objects": 2999,
         "logistic": {
-          "balanced_accuracy": 0.8167,
-          "balanced_accuracy_std": 0.0408,
-          "macro_f1": 0.8142,
-          "macro_f1_std": 0.0396
+          "balanced_accuracy": 0.9623,
+          "balanced_accuracy_std": 0.0089,
+          "macro_f1": 0.9624,
+          "macro_f1_std": 0.0089
         },
         "boosted_trees": {
-          "balanced_accuracy": 0.9467,
-          "balanced_accuracy_std": 0.0221,
-          "macro_f1": 0.9463,
-          "macro_f1_std": 0.0222
+          "balanced_accuracy": 0.9827,
+          "balanced_accuracy_std": 0.007,
+          "macro_f1": 0.9827,
+          "macro_f1_std": 0.007
         },
         "note": "concatenation of the hand-crafted features with the best signature variant"
+      },
+      "minirocket": {
+        "n_features": 9996,
+        "n_objects": 2999,
+        "logistic": {
+          "balanced_accuracy": 0.88,
+          "balanced_accuracy_std": 0.0107,
+          "macro_f1": 0.8801,
+          "macro_f1_std": 0.011
+        },
+        "boosted_trees": {
+          "balanced_accuracy": 0.8736,
+          "balanced_accuracy_std": 0.0138,
+          "macro_f1": 0.8739,
+          "macro_f1_std": 0.0139
+        },
+        "build_seconds": 677.0
       }
     },
     "headline": {
-      "baseline_balanced_accuracy": 0.9533,
-      "best_signature_key": "signature-per_band-raw_time-lead_lag-d4",
-      "best_signature_balanced_accuracy": 0.79,
-      "gap_baseline_minus_best_signature": 0.1633,
+      "baseline_balanced_accuracy": 0.9833,
+      "best_signature_key": "signature-per_band-lead_lag-d4",
+      "best_signature_balanced_accuracy": 0.909,
+      "gap_baseline_minus_best_signature": 0.0743,
       "time_channel": {
         "unit_time_key": "signature-per_band-d4",
-        "unit_time_balanced_accuracy": 0.6567,
+        "unit_time_balanced_accuracy": 0.7516,
         "raw_time_key": "signature-per_band-raw_time-d4",
-        "raw_time_balanced_accuracy": 0.66,
-        "value_of_keeping_duration": 0.0033
+        "raw_time_balanced_accuracy": 0.7903,
+        "value_of_keeping_duration": 0.0387,
+        "all_pairs": {
+          "d3-none": 0.0427,
+          "d4-none": 0.0387,
+          "d3-lead_lag": -0.002,
+          "d4-lead_lag": -0.0057
+        },
+        "all_pairs_mean": 0.0184,
+        "all_pairs_max": 0.0427
+      },
+      "baseline_without_absolute_photometry": {
+        "balanced_accuracy": 0.963,
+        "cost_of_removing_it": 0.0203,
+        "gap_against_best_signature": 0.054,
+        "what_it_tests": "whether the baseline's advantage is ordering information or absolute photometry the signature is blind to by construction"
+      },
+      "value_of_lead_lag": {
+        "with_lead_lag_key": "signature-per_band-raw_time-lead_lag-d4",
+        "with_lead_lag_balanced_accuracy": 0.9033,
+        "without_key": "signature-per_band-raw_time-d4",
+        "without_balanced_accuracy": 0.7903,
+        "value": 0.113
       },
       "increment_invariance_check": {
-        "raw_balanced_accuracy": 0.66,
-        "raw_time_balanced_accuracy": 0.66,
+        "raw_balanced_accuracy": 0.7903,
+        "raw_time_balanced_accuracy": 0.7903,
         "absolute_difference": 0.0,
         "verdict": "passed",
         "what_it_tests": "a signature depends only on increments, so centring the magnitudes cannot change it; a non-zero difference here would mean the path construction is wrong"
+      }
+    },
+    "complementarity": {
+      "n_objects": 2999,
+      "splits": 5,
+      "repeats": 10,
+      "signature_config": {
+        "mode": "per_band",
+        "norm": "raw_time",
+        "depth": 4,
+        "lead_lag": true
+      },
+      "n_summary_features": 72,
+      "n_signature_features": 1020,
+      "elapsed_s": 4957.4,
+      "per_block_mean": {
+        "summary": 0.9833,
+        "summary+signature": 0.9832,
+        "summary+noise": 0.9817,
+        "signature": 0.9036
+      },
+      "per_block_std": {
+        "summary": 0.0053,
+        "summary+signature": 0.005,
+        "summary+noise": 0.0053,
+        "signature": 0.0108
+      },
+      "summary_vs_summary_plus_signature": {
+        "mean_summary": 0.9833,
+        "mean_summary+signature": 0.9832,
+        "mean_difference": -0.0,
+        "ci95": [
+          -0.0011,
+          0.001
+        ],
+        "wilcoxon_p": 0.822,
+        "folds_improved": 22,
+        "n_folds": 50
+      },
+      "summary_vs_summary_plus_noise": {
+        "mean_summary": 0.9833,
+        "mean_summary+noise": 0.9817,
+        "mean_difference": -0.0016,
+        "ci95": [
+          -0.0023,
+          -0.001
+        ],
+        "wilcoxon_p": 0.000147,
+        "folds_improved": 9,
+        "n_folds": 50
+      },
+      "summary_vs_signature_alone": {
+        "mean_summary": 0.9833,
+        "mean_signature": 0.9036,
+        "mean_difference": -0.0796,
+        "ci95": [
+          -0.0828,
+          -0.0763
+        ],
+        "wilcoxon_p": 7.54e-10,
+        "folds_improved": 0,
+        "n_folds": 50
+      },
+      "paired_gap_baseline_minus_signature": 0.0796,
+      "verdict": {
+        "signature_adds_over_baseline": false,
+        "noise_control_clean": true,
+        "gain_exceeds_noise_control": true,
+        "complementary": false
+      },
+      "_fold_scores": {
+        "summary": [
+          0.981667,
+          0.978333,
+          0.993333,
+          0.991667,
+          0.97165,
+          0.983333,
+          0.975,
+          0.981667,
+          0.991667,
+          0.985,
+          0.98,
+          0.978333,
+          0.99,
+          0.983333,
+          0.985,
+          0.988333,
+          0.988333,
+          0.978333,
+          0.985,
+          0.983333,
+          0.985,
+          0.97,
+          0.986667,
+          0.986667,
+          0.984983,
+          0.983333,
+          0.978333,
+          0.988333,
+          0.986667,
+          0.981667,
+          0.981667,
+          0.976667,
+          0.991667,
+          0.981667,
+          0.985,
+          0.981667,
+          0.988333,
+          0.986667,
+          0.978333,
+          0.983333,
+          0.986667,
+          0.976667,
+          0.986667,
+          0.971667,
+          0.99,
+          0.983333,
+          0.985,
+          0.986667,
+          0.975,
+          0.981667
+        ],
+        "summary+signature": [
+          0.985,
+          0.978333,
+          0.986667,
+          0.993333,
+          0.97165,
+          0.981667,
+          0.983333,
+          0.975,
+          0.99,
+          0.986667,
+          0.98,
+          0.978333,
+          0.99,
+          0.983333,
+          0.983333,
+          0.991667,
+          0.983333,
+          0.978333,
+          0.98,
+          0.988333,
+          0.983333,
+          0.98,
+          0.985,
+          0.993333,
+          0.983316,
+          0.988333,
+          0.976667,
+          0.981667,
+          0.983333,
+          0.983333,
+          0.98,
+          0.976667,
+          0.985,
+          0.983333,
+          0.986667,
+          0.981667,
+          0.988333,
+          0.978333,
+          0.98,
+          0.983333,
+          0.985,
+          0.983333,
+          0.988333,
+          0.968333,
+          0.99,
+          0.985,
+          0.98,
+          0.986667,
+          0.98,
+          0.985
+        ],
+        "summary+noise": [
+          0.983333,
+          0.978333,
+          0.988333,
+          0.988333,
+          0.969983,
+          0.98,
+          0.976667,
+          0.981667,
+          0.986667,
+          0.986667,
+          0.98,
+          0.975,
+          0.988333,
+          0.98,
+          0.984983,
+          0.99,
+          0.986667,
+          0.978333,
+          0.978333,
+          0.981667,
+          0.985,
+          0.971667,
+          0.981667,
+          0.986667,
+          0.98165,
+          0.981667,
+          0.978333,
+          0.985,
+          0.986667,
+          0.978333,
+          0.978333,
+          0.971667,
+          0.986667,
+          0.981667,
+          0.985,
+          0.98,
+          0.988333,
+          0.981667,
+          0.973333,
+          0.983333,
+          0.988333,
+          0.975,
+          0.986667,
+          0.968333,
+          0.988333,
+          0.981667,
+          0.981667,
+          0.988333,
+          0.978333,
+          0.976667
+        ],
+        "signature": [
+          0.91,
+          0.895,
+          0.901667,
+          0.913333,
+          0.896515,
+          0.908333,
+          0.89,
+          0.886667,
+          0.92,
+          0.904865,
+          0.895,
+          0.906667,
+          0.893333,
+          0.915,
+          0.906532,
+          0.895,
+          0.89,
+          0.903333,
+          0.906667,
+          0.903182,
+          0.906667,
+          0.893333,
+          0.926667,
+          0.883333,
+          0.894865,
+          0.893333,
+          0.905,
+          0.915,
+          0.916667,
+          0.898131,
+          0.885,
+          0.895,
+          0.9,
+          0.893333,
+          0.921549,
+          0.916667,
+          0.891667,
+          0.895,
+          0.921667,
+          0.901599,
+          0.923333,
+          0.916667,
+          0.896667,
+          0.923333,
+          0.899916,
+          0.905,
+          0.91,
+          0.908333,
+          0.905,
+          0.898199
+        ]
       }
     }
   },
@@ -301,17 +653,401 @@
       "noise_cost": -0.0345
     }
   },
+  "ztf": {
+    "bands": [
+      "g",
+      "r"
+    ],
+    "sample": {
+      "n_objects": 2375,
+      "n_observations": 291339,
+      "n_classes": 8,
+      "class_counts": {
+        "AGN": 376,
+        "CV": 456,
+        "SLSN-I": 105,
+        "SN II": 426,
+        "SN IIn": 273,
+        "SN Ia": 406,
+        "SN Ib": 148,
+        "SN Ic": 185
+      },
+      "median_observations": 42.0,
+      "observations_p10_p90": [
+        15.0,
+        348.1999999999998
+      ],
+      "median_span_days": 121.72,
+      "span_p10_p90_days": [
+        36.94,
+        2694.45
+      ],
+      "span_coefficient_of_variation": 1.2497,
+      "span_ratio_p90_over_p10": 72.933,
+      "observations_by_band": {
+        "g": 140488,
+        "i": 4224,
+        "r": 146627
+      },
+      "chance_balanced_accuracy": 0.125
+    },
+    "representations": {
+      "summary": {
+        "n_features": 49,
+        "n_objects": 2375,
+        "logistic": {
+          "balanced_accuracy": 0.5235,
+          "balanced_accuracy_std": 0.0207,
+          "macro_f1": 0.5074,
+          "macro_f1_std": 0.0207
+        },
+        "boosted_trees": {
+          "balanced_accuracy": 0.5604,
+          "balanced_accuracy_std": 0.0167,
+          "macro_f1": 0.5597,
+          "macro_f1_std": 0.0187
+        },
+        "build_seconds": 154.1
+      },
+      "summary-label-shuffled": {
+        "n_features": 49,
+        "n_objects": 2375,
+        "logistic": {
+          "balanced_accuracy": 0.131,
+          "balanced_accuracy_std": 0.0147,
+          "macro_f1": 0.1142,
+          "macro_f1_std": 0.0132
+        },
+        "boosted_trees": {
+          "balanced_accuracy": 0.1075,
+          "balanced_accuracy_std": 0.0062,
+          "macro_f1": 0.0985,
+          "macro_f1_std": 0.0069
+        }
+      },
+      "summary-offset-invariant-only": {
+        "n_features": 40,
+        "n_objects": 2375,
+        "logistic": {
+          "balanced_accuracy": 0.4823,
+          "balanced_accuracy_std": 0.0316,
+          "macro_f1": 0.4724,
+          "macro_f1_std": 0.0291
+        },
+        "boosted_trees": {
+          "balanced_accuracy": 0.5468,
+          "balanced_accuracy_std": 0.0281,
+          "macro_f1": 0.544,
+          "macro_f1_std": 0.0341
+        },
+        "dropped_columns": [
+          "g_mean",
+          "g_median",
+          "g_percent_amplitude",
+          "g_peak_mag",
+          "r_mean",
+          "r_median",
+          "r_percent_amplitude",
+          "r_peak_mag",
+          "colour_gr"
+        ],
+        "note": "the hand-crafted baseline with the absolute-brightness and colour features removed, i.e. restricted to quantities a plain increment-based signature could represent"
+      },
+      "signature-per_band-d3": {
+        "n_features": 28,
+        "n_objects": 2375,
+        "logistic": {
+          "balanced_accuracy": 0.3884,
+          "balanced_accuracy_std": 0.0256,
+          "macro_f1": 0.3733,
+          "macro_f1_std": 0.0207
+        },
+        "boosted_trees": {
+          "balanced_accuracy": 0.4062,
+          "balanced_accuracy_std": 0.0215,
+          "macro_f1": 0.4025,
+          "macro_f1_std": 0.0232
+        },
+        "build_seconds": 80.7
+      },
+      "signature-per_band-d4": {
+        "n_features": 60,
+        "n_objects": 2375,
+        "logistic": {
+          "balanced_accuracy": 0.4446,
+          "balanced_accuracy_std": 0.0208,
+          "macro_f1": 0.4316,
+          "macro_f1_std": 0.0197
+        },
+        "boosted_trees": {
+          "balanced_accuracy": 0.4547,
+          "balanced_accuracy_std": 0.0154,
+          "macro_f1": 0.4547,
+          "macro_f1_std": 0.0168
+        },
+        "build_seconds": 94.7
+      },
+      "signature-per_band-raw_time-d3": {
+        "n_features": 28,
+        "n_objects": 2375,
+        "logistic": {
+          "balanced_accuracy": 0.4676,
+          "balanced_accuracy_std": 0.0286,
+          "macro_f1": 0.4591,
+          "macro_f1_std": 0.0247
+        },
+        "boosted_trees": {
+          "balanced_accuracy": 0.5062,
+          "balanced_accuracy_std": 0.0383,
+          "macro_f1": 0.5049,
+          "macro_f1_std": 0.0417
+        },
+        "build_seconds": 88.7
+      },
+      "signature-per_band-raw_time-d4": {
+        "n_features": 60,
+        "n_objects": 2375,
+        "logistic": {
+          "balanced_accuracy": 0.4755,
+          "balanced_accuracy_std": 0.0294,
+          "macro_f1": 0.4675,
+          "macro_f1_std": 0.0253
+        },
+        "boosted_trees": {
+          "balanced_accuracy": 0.5235,
+          "balanced_accuracy_std": 0.0473,
+          "macro_f1": 0.5227,
+          "macro_f1_std": 0.0508
+        },
+        "build_seconds": 138.9
+      },
+      "signature-per_band-raw-d4": {
+        "n_features": 60,
+        "n_objects": 2375,
+        "logistic": {
+          "balanced_accuracy": 0.4755,
+          "balanced_accuracy_std": 0.0294,
+          "macro_f1": 0.4675,
+          "macro_f1_std": 0.0253
+        },
+        "boosted_trees": {
+          "balanced_accuracy": 0.5235,
+          "balanced_accuracy_std": 0.0473,
+          "macro_f1": 0.5227,
+          "macro_f1_std": 0.0508
+        },
+        "build_seconds": 101.3
+      },
+      "signature-per_band-raw_time-basepoint-d4": {
+        "n_features": 60,
+        "n_objects": 2375,
+        "logistic": {
+          "balanced_accuracy": 0.4544,
+          "balanced_accuracy_std": 0.021,
+          "macro_f1": 0.439,
+          "macro_f1_std": 0.0177
+        },
+        "boosted_trees": {
+          "balanced_accuracy": 0.4808,
+          "balanced_accuracy_std": 0.0273,
+          "macro_f1": 0.4791,
+          "macro_f1_std": 0.0296
+        },
+        "build_seconds": 161.2
+      },
+      "signature-per_band-lead_lag-d3": {
+        "n_features": 168,
+        "n_objects": 2375,
+        "logistic": {
+          "balanced_accuracy": 0.4913,
+          "balanced_accuracy_std": 0.0184,
+          "macro_f1": 0.4812,
+          "macro_f1_std": 0.0153
+        },
+        "boosted_trees": {
+          "balanced_accuracy": 0.4737,
+          "balanced_accuracy_std": 0.0228,
+          "macro_f1": 0.4697,
+          "macro_f1_std": 0.0261
+        },
+        "build_seconds": 211.8
+      },
+      "signature-per_band-lead_lag-d4": {
+        "n_features": 680,
+        "n_objects": 2375,
+        "logistic": {
+          "balanced_accuracy": 0.521,
+          "balanced_accuracy_std": 0.0292,
+          "macro_f1": 0.5154,
+          "macro_f1_std": 0.0263
+        },
+        "boosted_trees": {
+          "balanced_accuracy": 0.5194,
+          "balanced_accuracy_std": 0.0242,
+          "macro_f1": 0.5223,
+          "macro_f1_std": 0.0273
+        },
+        "build_seconds": 413.5
+      },
+      "signature-per_band-raw_time-lead_lag-d3": {
+        "n_features": 168,
+        "n_objects": 2375,
+        "logistic": {
+          "balanced_accuracy": 0.5015,
+          "balanced_accuracy_std": 0.0225,
+          "macro_f1": 0.4959,
+          "macro_f1_std": 0.0171
+        },
+        "boosted_trees": {
+          "balanced_accuracy": 0.5376,
+          "balanced_accuracy_std": 0.0426,
+          "macro_f1": 0.5369,
+          "macro_f1_std": 0.0464
+        },
+        "build_seconds": 152.2
+      },
+      "signature-per_band-raw_time-lead_lag-d4": {
+        "n_features": 680,
+        "n_objects": 2375,
+        "logistic": {
+          "balanced_accuracy": 0.4943,
+          "balanced_accuracy_std": 0.0204,
+          "macro_f1": 0.4921,
+          "macro_f1_std": 0.0161
+        },
+        "boosted_trees": {
+          "balanced_accuracy": 0.5481,
+          "balanced_accuracy_std": 0.0286,
+          "macro_f1": 0.5488,
+          "macro_f1_std": 0.032
+        },
+        "build_seconds": 195.6
+      },
+      "_best_signature": {
+        "key": "signature-per_band-raw_time-lead_lag-d4",
+        "balanced_accuracy": 0.5481
+      },
+      "summary+signature-per_band-raw_time-lead_lag-d4": {
+        "n_features": 729,
+        "n_objects": 2375,
+        "logistic": {
+          "balanced_accuracy": 0.5444,
+          "balanced_accuracy_std": 0.0184,
+          "macro_f1": 0.54,
+          "macro_f1_std": 0.0177
+        },
+        "boosted_trees": {
+          "balanced_accuracy": 0.5784,
+          "balanced_accuracy_std": 0.0217,
+          "macro_f1": 0.5809,
+          "macro_f1_std": 0.0248
+        },
+        "note": "concatenation of the hand-crafted features with the best signature variant"
+      }
+    },
+    "headline": {
+      "baseline_balanced_accuracy": 0.5604,
+      "best_signature_key": "signature-per_band-raw_time-lead_lag-d4",
+      "best_signature_balanced_accuracy": 0.5481,
+      "gap_baseline_minus_best_signature": 0.0123,
+      "time_channel": {
+        "unit_time_key": "signature-per_band-d4",
+        "unit_time_balanced_accuracy": 0.4547,
+        "raw_time_key": "signature-per_band-raw_time-d4",
+        "raw_time_balanced_accuracy": 0.5235,
+        "value_of_keeping_duration": 0.0688,
+        "all_pairs": {
+          "d3-none": 0.1,
+          "d4-none": 0.0688,
+          "d3-lead_lag": 0.0639,
+          "d4-lead_lag": 0.0287
+        },
+        "all_pairs_mean": 0.0654,
+        "all_pairs_max": 0.1
+      },
+      "baseline_without_absolute_photometry": {
+        "balanced_accuracy": 0.5468,
+        "cost_of_removing_it": 0.0136,
+        "gap_against_best_signature": -0.0013,
+        "what_it_tests": "whether the baseline's advantage is ordering information or absolute photometry the signature is blind to by construction"
+      },
+      "value_of_lead_lag": {
+        "with_lead_lag_key": "signature-per_band-raw_time-lead_lag-d4",
+        "with_lead_lag_balanced_accuracy": 0.5481,
+        "without_key": "signature-per_band-raw_time-d4",
+        "without_balanced_accuracy": 0.5235,
+        "value": 0.0246
+      },
+      "increment_invariance_check": {
+        "raw_balanced_accuracy": 0.5235,
+        "raw_time_balanced_accuracy": 0.5235,
+        "absolute_difference": 0.0,
+        "verdict": "passed",
+        "what_it_tests": "a signature depends only on increments, so centring the magnitudes cannot change it; a non-zero difference here would mean the path construction is wrong"
+      }
+    }
+  },
   "comparison": {
     "note": "Every entry is a within-sample margin measured on identical folds. Absolute balanced accuracies are not compared across samples, because the Gaia curves are denser and roughly an order of magnitude longer-baselined than the ZTF curves.",
     "gap_baseline_minus_best_signature": {
-      "gaia": 0.1633,
-      "gaia_best_signature": "signature-per_band-raw_time-lead_lag-d4",
-      "ztf_published": 0.0123
+      "gaia": 0.0743,
+      "gaia_best_signature": "signature-per_band-lead_lag-d4",
+      "ztf_published": 0.0123,
+      "gaia_gap_with_baseline_stripped_of_absolute_photometry": 0.054,
+      "ztf_gap_with_baseline_stripped_of_absolute_photometry": -0.0013,
+      "ztf_remeasured": 0.0123,
+      "ztf_best_signature": "signature-per_band-raw_time-lead_lag-d4",
+      "gaia_minus_ztf": 0.062,
+      "P1_gap_larger_on_gaia": true
     },
     "value_of_explicit_time_channel": {
-      "gaia": 0.0033,
+      "gaia": 0.0387,
+      "gaia_all_pairs": {
+        "d3-none": 0.0427,
+        "d4-none": 0.0387,
+        "d3-lead_lag": -0.002,
+        "d4-lead_lag": -0.0057
+      },
+      "gaia_all_pairs_mean": 0.0184,
+      "gaia_all_pairs_max": 0.0427,
+      "ztf_remeasured": 0.0688,
+      "ztf_all_pairs": {
+        "d3-none": 0.1,
+        "d4-none": 0.0688,
+        "d3-lead_lag": 0.0639,
+        "d4-lead_lag": 0.0287
+      },
+      "ztf_all_pairs_mean": 0.0654,
+      "gaia_minus_ztf": -0.0301,
+      "P2_time_channel_worth_more_on_gaia": false,
+      "P2_on_pair_means": false,
       "ztf_published_readme": 0.069,
-      "what_is_compared": "norm='raw_time' minus norm='unit_time' at per-band depth 4 with no augmentation; unit_time rescales each object's time axis to [0, 1] and so discards duration, raw_time keeps it in days"
+      "what_is_compared": "norm='raw_time' minus norm='unit_time' at per-band depth 4 with no augmentation; unit_time rescales each object's time axis to [0, 1] and so discards duration, raw_time keeps it in days",
+      "span_coefficient_of_variation": {
+        "gaia": 0.0372,
+        "ztf": 1.2497,
+        "why_it_matters": "unit_time can only destroy information if the observed baseline differs between objects; on a survey whose window is set by the mission rather than by the star, it does not"
+      }
+    },
+    "value_of_lead_lag": {
+      "gaia": 0.113,
+      "ztf_remeasured": 0.0246,
+      "gaia_minus_ztf": 0.0884,
+      "what_is_compared": "use_lead_lag=True minus use_lead_lag=False at per-band raw_time depth 4"
+    },
+    "complementarity": {
+      "gaia_signature_gain": -0.0,
+      "gaia_signature_gain_ci95": [
+        -0.0011,
+        0.001
+      ],
+      "gaia_noise_cost": -0.0016,
+      "gaia_paired_gap_baseline_minus_signature": 0.0796,
+      "ztf_signature_gain": 0.0147,
+      "ztf_noise_cost": -0.0345,
+      "ztf_paired_gap_baseline_minus_signature": 0.015,
+      "gaia_complementary": false,
+      "P1_paired_gap_larger_on_gaia": true
     }
   }
 }
