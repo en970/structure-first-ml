@@ -21,7 +21,7 @@ worked on a laptop or a free-tier Colab session?
 |---|---|---|---|
 | Rubin / LSST alert stream | Public via community brokers since 2026-02-24 **[reported]** | Low on real alerts | Yes, filtered |
 | Rubin DP1 / DP2 images | Data-rights restricted; public DR postponed to ~2028 **[reported]** | n/a | No — access-gated |
-| Euclid Q1 | Public since 2025-03-19; DR1 scheduled 2026-11 **[reported]** | High for strong lensing, lower for low-surface-brightness structure | Yes, via TAP subsets |
+| Euclid Q1 | Public since 2025-03-19; DR1 scheduled 2026-11 **[reported]** | High for strong lensing, and **corrected 2026-07-30: also high for low-surface-brightness structure** | Yes, via TAP subsets |
 | SPHEREx QR2 | Weekly public releases; IRSA and AWS Open Data **[reported]** | Low | Yes, per-tile |
 | Gaia DR4 | Not yet released; announced for 2026-12-02 **[reported]** | Unmined by construction | Later |
 | DESI DR1 | Public since March 2025, ~19M spectra | Medium; only a small subset mined | Yes, via SPARCL |
@@ -177,6 +177,30 @@ distribution shifts as sampling becomes sparser and gappier, is a question that 
 experiments can answer and real data cannot.
 
 ---
+
+## Correction log
+
+**2026-07-30 — Euclid low-surface-brightness structure is not an opening.** The table above
+originally recorded LSB structure as less saturated than strong lensing, on the strength of a
+first-pass scan. A later scout, briefed to find image-processing openings, found the opposite:
+the Euclid Consortium runs its own Strong Lensing Discovery Engine (arXiv:2503.15324 and
+2503.15325, 497 candidates over 63 deg²), and the LSB regime already carries a UDG
+cross-survey domain-adaptation paper (arXiv:2605.13842), ERO dwarf-galaxy work
+(arXiv:2405.13502) and tidal-stream analysis inside the footprint (arXiv:2411.09608). This is
+a large, funded, actively staffed area, not a gap. An unaffiliated researcher is not first
+here.
+
+A related figure that circulated through the first scan — that Euclid lens-finder
+completeness drops from about 92% on simulations to about 50% on real Q1 data — **could not be
+traced to either consortium paper and is withdrawn as unverified.** It was never used in any
+result, but it was quoted as motivation and should not have been without a source. The
+underlying concern (a sim-to-real domain gap) remains plausible and is indirectly supported by
+the pipeline needing deep learning, citizen-science review and expert vetting stacked together
+to reach usable purity, but the numbers are not established.
+
+The thinner sub-area, if any, is tidal-feature and intracluster-light *morphology* as opposed
+to detection, where the scan found only pre-Euclid CNN work (arXiv:2404.06487) anticipating
+Euclid rather than using Q1.
 
 ## Part V — On tooling
 
