@@ -1,0 +1,96 @@
+{
+  "generated_utc": "2026-07-30T10:11:26.065317+00:00",
+  "classes": [
+    "ECL",
+    "RR",
+    "CEP",
+    "RS",
+    "DSCT|GDOR|SXPHE",
+    "LPV"
+  ],
+  "per_class_cap": 500,
+  "min_class_score": 0.8,
+  "min_obs_total": 30,
+  "min_per_band": 5,
+  "datalink": {
+    "data_structure": "INDIVIDUAL",
+    "format": "csv",
+    "ids_per_call": 25,
+    "workers": 4,
+    "verified_id_cap": 5000
+  },
+  "fetch": {
+    "requested": 3000,
+    "fetched_this_run": 2010,
+    "failed_this_run": 0,
+    "sources_on_disk": 3000,
+    "elapsed_s": 1392.5,
+    "sources_per_s": 1.443,
+    "transit_rows": 143564,
+    "retrieval_rate_by_class": {
+      "CEP": 1.0,
+      "DSCT|GDOR|SXPHE": 1.0,
+      "ECL": 1.0,
+      "LPV": 1.0,
+      "RR": 1.0,
+      "RS": 1.0
+    },
+    "retrieval_rate_spread": 0.0
+  },
+  "reshape": {
+    "wide_transit_rows": 143564,
+    "long_slots_before_cuts": 430692,
+    "dropped_missing_photometry": 20431,
+    "dropped_variability_reject_flag": 11999,
+    "dropped_nonpositive_snr": 0,
+    "long_observations": 398262,
+    "observations_by_band": {
+      "G": 137237,
+      "RP": 130639,
+      "BP": 130386
+    },
+    "mjd_min": 56863.47,
+    "mjd_max": 57901.34,
+    "mjd_range_check": "passed"
+  },
+  "quality_cuts": {
+    "objects_before": 3000,
+    "objects_after": 2999,
+    "dropped_too_few_observations": 1,
+    "dropped_missing_a_band": 0,
+    "observations_after": 398233
+  },
+  "periods": {
+    "requested": true,
+    "match_rate_by_class": {
+      "CEP": 0.984,
+      "DSCT|GDOR|SXPHE": 0.188,
+      "ECL": 1.0,
+      "LPV": 0.448,
+      "RR": 0.982,
+      "RS": 0.012
+    },
+    "median_period_d_by_class": {
+      "CEP": 3.9752,
+      "DSCT|GDOR|SXPHE": 0.0688,
+      "ECL": 0.4951,
+      "LPV": 265.3959,
+      "RR": 0.5416,
+      "RS": 4.4794
+    }
+  },
+  "class_counts": {
+    "RR": 500,
+    "DSCT|GDOR|SXPHE": 500,
+    "RS": 500,
+    "LPV": 500,
+    "CEP": 500,
+    "ECL": 499
+  },
+  "median_observations": 130,
+  "observations_p10_p90": [
+    74,
+    189
+  ],
+  "median_span_days": 960.3
+}

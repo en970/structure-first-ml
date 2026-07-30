@@ -36,11 +36,14 @@ document and an experimental protocol, but no results yet.
 |---|-------|----------|--------|
 | T1 | [Path signatures for irregularly sampled light curves](projects/t1-signature-lightcurves/) | Does a reparameterisation-invariant path representation beat interpolation-based features on real, gappy, multi-band photometry? | Result: no, but it is complementary |
 | T2 | [Meteoroid stream discovery](projects/t2-meteor-stream-discovery/) | Can multi-criterion consensus clustering surface stream candidates in 2.15M GMN orbits? | In progress |
-| T3 | [Truncation depth and sampling irregularity](projects/t3-signature-theory/) | How does signature truncation depth trade against sampling density, and where does the discriminative power actually come from? | Skeleton |
+| T3 | [Truncation depth and sampling irregularity](projects/t3-signature-theory/) | Which augmentations restore order-sensitivity to signature level 2, and at what cost? | Result: lead-lag refuted, causal channels work |
+| T4 | [Plate topology](projects/t4-plate-topology/) | Does sublevel-set persistent homology on century-old photographic plates see sky structure rather than emulsion grain? | Premise tested, survives weakly |
 
 T1 is applied mathematics on real observations. T2 is discovery on an archive that the
 machine-learning community has largely ignored. T3 is method theory, using controlled synthetic
-data to explain the behaviour observed in T1.
+data to explain the behaviour observed in T1. T4 moves from time series to images, and reuses a
+method this repository had already rejected once — persistent homology, which is intractable on
+high-dimensional point clouds and near-linear on a pixel grid.
 
 ## Documents
 

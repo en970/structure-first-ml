@@ -1,0 +1,117 @@
+{
+  "n_plates": 12,
+  "offset_deg": 0.5,
+  "plates": [
+    {
+      "id": "a02042",
+      "epoch": "1896-09-04T06:50:38Z"
+    },
+    {
+      "id": "a02056",
+      "epoch": "1896-09-08T08:52:31.8Z"
+    },
+    {
+      "id": "a02115",
+      "epoch": "1896-10-02T03:43:12Z"
+    },
+    {
+      "id": "a02149",
+      "epoch": "1896-10-28T01:32:09.6Z"
+    },
+    {
+      "id": "a02150",
+      "epoch": "1896-10-29T02:34:04.8Z"
+    },
+    {
+      "id": "a02183",
+      "epoch": "1896-11-25T01:49:26.4Z"
+    },
+    {
+      "id": "a02187",
+      "epoch": "1896-11-30T00:10:43.4Z"
+    },
+    {
+      "id": "a02189",
+      "epoch": "1896-12-02T01:50:33.9Z"
+    },
+    {
+      "id": "a02793",
+      "epoch": "1897-10-05T03:27:21.6Z"
+    },
+    {
+      "id": "a02879",
+      "epoch": "1897-11-16T02:46:26.7Z"
+    },
+    {
+      "id": "a02881",
+      "epoch": "1897-11-17T01:29:42.7Z"
+    },
+    {
+      "id": "a02882",
+      "epoch": "1897-11-18T00:43:53.7Z"
+    }
+  ],
+  "T3_grain_control": {
+    "real_median_n": 5779.0,
+    "shuffled_median_n": 7316.0,
+    "real_median_max_persistence": 1853.0,
+    "shuffled_median_max_persistence": 1820.0,
+    "real_median_total_persistence": 526917.0,
+    "shuffled_median_total_persistence": 1114570.0,
+    "median_bottleneck_real_vs_shuffled": 643.0,
+    "bottleneck_over_persistence_scale": 0.347,
+    "total_persistence_ratio_shuffled_over_real": 2.115,
+    "passes": true
+  },
+  "T1_signal_vs_blank": {
+    "n_patches": 36,
+    "source_fraction_poor": [
+      0.00221,
+      0.00276,
+      0.00276,
+      0.00313,
+      0.00375,
+      0.00386,
+      0.0041,
+      0.00447,
+      0.00504
+    ],
+    "source_fraction_rich": [
+      0.0528,
+      0.05338,
+      0.06006,
+      0.0609,
+      0.06201,
+      0.06348,
+      0.06441,
+      0.0667,
+      0.07307
+    ],
+    "poor_median_total_persistence": 395376.0,
+    "rich_median_total_persistence": 381511.0,
+    "poor_median_n_significant": 496.0,
+    "rich_median_n_significant": 418.0,
+    "poor_median_max_persistence": 715.0,
+    "rich_median_max_persistence": 2295.0,
+    "source_content_separated": true,
+    "passes": true
+  },
+  "T2_epoch_reproducibility": {
+    "n_pairs_within": 15,
+    "n_pairs_between": 36,
+    "median_bottleneck_within_field": 1156.9999999999995,
+    "median_bottleneck_between_fields": 1182.9999999999998,
+    "note": "WCS-aligned: cutouts requested by RA/Dec, not pixel windows",
+    "passes": true
+  },
+  "verdict": {
+    "T1_passes": true,
+    "T2_passes": true,
+    "T3_passes": true,
+    "premise_survives": true,
+    "interpretation": "T3 is the hard floor: a pixel-shuffled image must not look like a real one. T1 is the minimum useful signal: persistence must respond to source content. T2 is now a real WCS-aligned test rather than a proxy, since cutouts are requested by sky position."
+  },
+  "generated_utc": "2026-07-30T10:24:59.905008+00:00",
+  "seed": 20260730,
+  "patch_pixels": 256
+}
