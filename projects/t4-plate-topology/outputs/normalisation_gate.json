@@ -1,0 +1,165 @@
+{
+  "generated_utc": "2026-08-02T21:38:47.654753+00:00",
+  "seed": 20260803,
+  "patch_pixels": 256,
+  "offset_deg": 0.5,
+  "plate_heterogeneity": {
+    "n_plates": 14,
+    "epoch_range": [
+      "1896-10-02T03:43:12Z",
+      "1899-09-29T03:40:19.2Z"
+    ],
+    "mad_cv": 0.483,
+    "median_cv": 0.245,
+    "source_fraction_cv": 1.644
+  },
+  "plates": [
+    {
+      "plate_id": "a02115",
+      "epoch": "1896-10-02T03:43:12Z",
+      "exposure_length": 65,
+      "source_fraction": 0.00522,
+      "median": 6774.0,
+      "mad": 72.0
+    },
+    {
+      "plate_id": "a02149",
+      "epoch": "1896-10-28T01:32:09.6Z",
+      "exposure_length": 132,
+      "source_fraction": 0.05948,
+      "median": 4329.0,
+      "mad": 78.0
+    },
+    {
+      "plate_id": "a02183",
+      "epoch": "1896-11-25T01:49:26.4Z",
+      "exposure_length": 138,
+      "source_fraction": 0.05885,
+      "median": 4464.0,
+      "mad": 118.0
+    },
+    {
+      "plate_id": "a02187",
+      "epoch": "1896-11-30T00:10:43.4Z",
+      "exposure_length": null,
+      "source_fraction": 0.04443,
+      "median": 5544.0,
+      "mad": 210.0
+    },
+    {
+      "plate_id": "a02189",
+      "epoch": "1896-12-02T01:50:33.9Z",
+      "exposure_length": 210,
+      "source_fraction": 0.05139,
+      "median": 5776.0,
+      "mad": 166.0
+    },
+    {
+      "plate_id": "a02793",
+      "epoch": "1897-10-05T03:27:21.6Z",
+      "exposure_length": 10,
+      "source_fraction": 0.00574,
+      "median": 4217.0,
+      "mad": 44.0
+    },
+    {
+      "plate_id": "a03307",
+      "epoch": "1898-09-16T04:08:40.2Z",
+      "exposure_length": 30,
+      "source_fraction": 0.21811,
+      "median": 4268.0,
+      "mad": 144.0
+    },
+    {
+      "plate_id": "a03393",
+      "epoch": "1898-11-11T02:41:16.8Z",
+      "exposure_length": 300,
+      "source_fraction": 0.02669,
+      "median": 6183.0,
+      "mad": 261.0
+    },
+    {
+      "plate_id": "a03986",
+      "epoch": "1899-09-29T00:12:57.6Z",
+      "exposure_length": 45,
+      "source_fraction": 0.00274,
+      "median": 3558.0,
+      "mad": 116.0
+    },
+    {
+      "plate_id": "a03987",
+      "epoch": "1899-09-29T01:00:28.8Z",
+      "exposure_length": 40,
+      "source_fraction": 0.00337,
+      "median": 3583.0,
+      "mad": 89.0
+    },
+    {
+      "plate_id": "a03988",
+      "epoch": "1899-09-29T01:43:40.8Z",
+      "exposure_length": 35,
+      "source_fraction": 0.00303,
+      "median": 3597.0,
+      "mad": 87.0
+    },
+    {
+      "plate_id": "a03989",
+      "epoch": "1899-09-29T02:22:33.6Z",
+      "exposure_length": 35,
+      "source_fraction": 0.00321,
+      "median": 3653.0,
+      "mad": 86.0
+    },
+    {
+      "plate_id": "a03990",
+      "epoch": "1899-09-29T03:00:00Z",
+      "exposure_length": 35,
+      "source_fraction": 0.00303,
+      "median": 3469.0,
+      "mad": 118.0
+    },
+    {
+      "plate_id": "a03991",
+      "epoch": "1899-09-29T03:40:19.2Z",
+      "exposure_length": 40,
+      "source_fraction": 0.00401,
+      "median": 3685.0,
+      "mad": 100.0
+    }
+  ],
+  "results": {
+    "none": {
+      "n_within": 91,
+      "n_between": 196,
+      "median_within": 1038.0,
+      "median_between": 1377.0,
+      "relative_separation": 0.3266,
+      "mean_diagram_size": 5441.0
+    },
+    "zscore": {
+      "n_within": 91,
+      "n_between": 196,
+      "median_within": 9.73064,
+      "median_between": 15.8375,
+      "relative_separation": 0.6276,
+      "mean_diagram_size": 5441.0
+    },
+    "rank": {
+      "n_within": 91,
+      "n_between": 196,
+      "median_within": 0.122087,
+      "median_between": 0.120714,
+      "relative_separation": -0.0112,
+      "mean_diagram_size": 5466.9
+    }
+  },
+  "verdict": {
+    "best_normalisation": "zscore",
+    "relative_separation_none": 0.3266,
+    "relative_separation_best": 0.6276,
+    "improvement": 0.301,
+    "threshold": 0.15,
+    "gate_passes": true,
+    "interpretation": "Sublevel-set persistence depends only on the order pixels enter the filtration, so a rank transform is the canonical representative of the monotone class the method is already shape-invariant to. If even that fails to separate same-field from different-field diagrams, the topology of these plates is dominated by grain and defects whose ordering also varies plate to plate, and no monotone correction can repair it."
+  }
+}

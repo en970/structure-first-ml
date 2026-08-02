@@ -30,9 +30,28 @@ Three normalisations, and one of them is principled rather than merely conventio
               Emulsion response is monotone but not linear in exposure, so this removes a
               real nuisance rather than an imagined one.
 
-If the rank transform does not open the gap, the failure is not calibration: it means the
-topology of these plates is dominated by grain and defects whose ordering also differs
-plate to plate, and no monotone correction can repair that.
+MEASURED OUTCOME, AND THE ARGUMENT IT REFUTED. The rank transform came LAST, not first:
+
+    none     within 1038.0000   between 1377.0000   relative separation +0.3266
+    zscore   within    9.7306   between   15.8375   relative separation +0.6276
+    rank     within    0.1221   between    0.1207   relative separation -0.0112
+
+The reasoning above for preferring the rank transform is wrong, and the error is worth
+keeping because it is subtle. Persistent homology is invariant to monotone reparameterisation
+in the sense that the SHAPE of the diagram -- which features exist and how they nest -- is
+determined by the order pixels enter the filtration. But the diagram's COORDINATES, the birth
+and death values, are the filtration values themselves, and bottleneck distance is computed
+on those coordinates. Rank normalisation forces every patch to a uniform distribution on
+[0,1], so all diagrams end up occupying the same narrow coordinate range regardless of what
+is in them. It preserves the topology and destroys the metric.
+
+The absolute scale of the filtration therefore carries information, and the correct
+normalisation is one that equalises nuisance offsets while keeping that scale -- which is
+what the z-score does. The invariance argument applied to the wrong object.
+
+A second correction: the unnormalised separation here is +0.3266, against +0.022 in the
+five-plate falsification run that motivated this gate. That earlier flatness was a
+small-sample effect, not a property of the data.
 
 Run:  python3 src/normalisation_gate.py [--n-plates 14] [--offset 0.5]
 """

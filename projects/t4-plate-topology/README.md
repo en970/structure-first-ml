@@ -130,16 +130,63 @@ another. Any comparison across epochs therefore needs **plate-level normalisatio
 topology is computed, not after. Without it, the century-long time axis that motivates this
 whole track is unusable.
 
+## The normalisation gate: passed, and it refuted my own argument
+
+`src/normalisation_gate.py`, 14 plates spanning 1896–1899, WCS-aligned cutouts,
+`outputs/normalisation_gate.json`.
+
+| Normalisation | Within field | Between fields | Relative separation |
+|---|---|---|---|
+| none | 1038.0 | 1377.0 | +0.327 |
+| **zscore** | 9.73 | 15.84 | **+0.628** |
+| rank | 0.1221 | 0.1207 | **−0.011** |
+
+Threshold was fixed at 0.15 **before** the run. The gate passes on z-score normalisation,
+which nearly doubles the separation over raw pixels.
+
+**Two things I had written down were wrong.**
+
+*First, the rank transform came last, not first.* The module argued at length that rank
+normalisation was the principled choice, because sublevel-set persistence depends only on the
+order in which pixels enter the filtration, making rank the canonical representative of the
+monotone-transform class. That reasoning applies to the wrong object. Persistence is
+invariant to monotone reparameterisation in the sense that the **shape** of the diagram —
+which features exist and how they nest — is fixed by the ordering. But the diagram's
+**coordinates**, the birth and death values, *are* the filtration values, and bottleneck
+distance is computed on those coordinates. Forcing every patch to a uniform distribution on
+$[0,1]$ makes all diagrams occupy the same narrow coordinate range whatever is in them. Rank
+normalisation preserves the topology and destroys the metric. The absolute scale of the
+filtration carries information, and the right correction removes nuisance offsets while
+keeping that scale — which is what the z-score does.
+
+*Second, the flatness that motivated this gate was a small-sample effect.* Unnormalised
+separation here is **+0.327**, against +0.022 in the five-plate falsification run. Fourteen
+plates instead of five was enough to open it. The earlier number was not a property of the
+data, and the gate was built on a premise that was itself partly an artefact — though the
+normalisation it prompted still turns out to be worth 0.30 on top.
+
+Plate heterogeneity is real and large: across these 14 plates the robust scatter varies with
+CV 0.48, the background level with CV 0.25, and the measured source fraction with CV **1.64**.
+Exposure times run from 10 s to 300 s, and source fractions from 0.003 to 0.218 — a factor of
+seventy. That is the nuisance z-score normalisation removes.
+
 ## Verdict, and what would kill this
 
 The premise survives: persistence on calibrated plate cutouts does see astrophysical
 structure rather than emulsion grain. But it survives on one statistic, and the
 epoch-comparison test — the one the track's central idea depends on — is essentially flat.
 
-**The next step is not the science, it is the normalisation.** Equalising plate depth
-(matching limiting magnitude, background scale and PSF width across plates) and then
-re-running T2 is the gate. If T2 stays flat after normalisation, the temporal-topology idea
-fails and the track should close with that finding recorded.
+**The gate is passed, so the track continues.** Z-score normalisation before topology gives a
+0.628 relative separation between same-field and different-field diagrams, comfortably above
+the 0.15 threshold fixed in advance. The century-long time axis is usable.
+
+**What would still kill it.** Separating one field from another is necessary and not
+sufficient: the actual goal is detecting *change* in the same field over decades. The next
+gate is whether a field with a known change — a nova, a variable, a proper-motion star —
+separates from its own earlier epochs by more than two fields separate from each other. If
+epoch-to-epoch distance within a changing field does not exceed the field-to-field baseline
+of 0.628, the method distinguishes places but not times, and the temporal premise fails on a
+second and stricter test.
 
 ## Reproducibility
 
