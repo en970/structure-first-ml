@@ -88,7 +88,7 @@
   <div class="kpi"><div class="n">2,375</div><div class="l">ZTF transients, 8 classes</div></div>
   <div class="kpi"><div class="n">+0.0147</div><div class="l">gain from adding signatures</div></div>
   <div class="kpi"><div class="n">−0.0345</div><div class="l">same-width noise control</div></div>
-  <div class="kpi"><div class="n">32/32</div><div class="l">verification checks passed</div></div>
+  <div class="kpi"><div class="n">1 vs 1,020</div><div class="l">period beats signature on Gaia</div></div>
 </div>
 
 <h2>1. Introduction</h2>
@@ -319,6 +319,78 @@ of gap <em>structure</em> with gap <em>count</em> held fixed:</p>
   iterated integrals to be estimated stably.
 </div>
 
+<h3>4.5 The Gaia counter-test: where signatures should lose, and do</h3>
+
+<p>The counter-test was registered alongside the main experiment and run afterwards on
+2,999 Gaia DR3 periodic variables in six classes (median 130 observations over 960 days).
+Its logic: ZTF transients are separated by the shape and ordering of the light curve, which
+signatures encode; Gaia periodic variables are separated by <b>period</b>, which is a
+statement about the clock — and the signature is invariant to reparameterisation of the
+clock.</p>
+
+<p>Every figure below is on the full sample. An earlier 300-object pilot overstated the
+central gap by more than a factor of two (0.163 against 0.074), which is why pilot numbers
+were labelled provisional and never carried into a claim.</p>
+
+<div class="tblwrap">
+<table>
+  <tr><th>Measurement</th><th class="num">Gaia (2,999)</th><th class="num">ZTF (2,375)</th></tr>
+  <tr><td>Baseline minus best signature</td><td class="num"><b>+0.0743</b></td><td class="num">+0.0123</td></tr>
+  <tr><td>Value of keeping duration</td><td class="num">+0.0387</td><td class="num"><b>+0.0688</b></td></tr>
+  <tr><td>Value of the lead-lag transform</td><td class="num"><b>+0.1130</b></td><td class="num">+0.0246</td></tr>
+  <tr><td>Complementarity: signature added</td><td class="num"><b>−0.0000</b></td><td class="num"><b>+0.0147</b></td></tr>
+  <tr><td>Matched-noise control</td><td class="num">−0.0016</td><td class="num">−0.0345</td></tr>
+</table>
+</div>
+
+<div class="verdict">
+  <b>P1 confirmed</b>
+  Signatures lose six times harder on periodic variables than on transients. A
+  label-shuffled control sits at 0.160 against a chance value of 0.167, so the comparison is
+  not an artefact of the evaluation.
+</div>
+
+<div class="verdict">
+  <b>P2 refuted, with a measurable cause</b>
+  Restoring duration was predicted to matter <em>more</em> on Gaia. It matters <em>less</em>
+  (+0.039 against +0.069; +0.018 against +0.065 averaged over all depth and augmentation
+  pairs). Gaia's observing baseline is set by the mission rather than by the object, so span
+  carries almost no information — coefficient of variation 0.039 against ZTF's 1.250.
+  <b>Duration is not period.</b> The time channel restores how long the observation lasted,
+  not the clock the variability lives on.
+</div>
+
+<p><b>The sharpest form: one feature beats a thousand.</b> Restricted to the 1,806 objects
+carrying a catalogued period:</p>
+
+<div class="tblwrap">
+<table>
+  <tr><th>Arm</th><th class="num">Features</th><th class="num">Balanced accuracy</th></tr>
+  <tr><td><b>period only</b></td><td class="num"><b>1</b></td><td class="num"><b>0.7726 ± 0.0925</b></td></tr>
+  <tr><td>signature, per-band, raw time, lead-lag, depth 4</td><td class="num">1,020</td><td class="num">0.7412 ± 0.0128</td></tr>
+  <tr><td>summary (hand-crafted)</td><td class="num">72</td><td class="num">0.9850 ± 0.0069</td></tr>
+  <tr><td>summary + period</td><td class="num">73</td><td class="num"><b>0.9990 ± 0.0013</b></td></tr>
+</table>
+</div>
+
+<p>A single number outperforms a 1,020-coefficient signature representation by 0.031. That is
+not a trend about which method is better; it is a structural fact about what separates these
+classes, and precisely the quantity reparameterisation invariance discards.</p>
+
+<p><em>Caveat, and it is not neutral.</em> The period requirement retains classes very
+unevenly — ECL 100%, CEP 98%, RR 98%, but LPV 45%, DSCT-group 19% and RS just 1.2%. Objects
+without a catalogued period are largely those for which a period is hard to define, so this
+arm speaks about the periodic classes rather than the sample as a whole.</p>
+
+<p><b>And complementarity vanishes.</b> On ZTF, signatures added +0.0147 against a noise
+control of −0.0345 — the result that made this track worth reporting. On Gaia the same test
+returns −0.0000. Where the baseline already reaches 0.985, there is nothing left to add.</p>
+
+<p>Read with the main experiment, this closes the track symmetrically: <b>the property that
+produces the win produces the loss</b>. Signatures carry information hand-crafted features
+lack when classes differ by the shape and ordering of an irregularly sampled curve, and carry
+nothing when classes differ by a period the representation is built to ignore.</p>
+
 <h2>5. Caveats</h2>
 
 <ul>
@@ -331,9 +403,9 @@ of gap <em>structure</em> with gap <em>count</em> held fixed:</p>
   <li><b>Reparameterisation invariance is sometimes actively harmful.</b> Period is physical
   for variable stars, and discarding the clock discards it. Here time is re-introduced as a
   channel, which breaks the invariance deliberately; that decision is worth 0.069.</li>
-  <li><b>The counter-test on Gaia periodic variables was designed but not run.</b> The
-  prediction — that signatures should do <em>worse</em> there, since period is the physical
-  discriminant — remains untested.</li>
+  <li><b>The period arm is restricted and the restriction is not neutral.</b> Only 1,806 of
+  2,999 objects carry a catalogued period, and retention varies from 100% (ECL) to 1.2% (RS).
+  Objects without one are largely those for which a period is hard to define.</li>
 </ul>
 
 <h2>6. Reproducibility</h2>
@@ -345,6 +417,9 @@ python3 src/fetch_ztf_bts.py         # BTS labels + ALeRCE photometry, cached
 python3 src/run_benchmark.py         # head-to-head comparison
 python3 src/test_complementarity.py  # 50 paired folds + matched-noise control
 python3 src/ablate_sampling.py       # random vs blocked thinning
+python3 src/fetch_gaia_variables.py  # Gaia DR3 counter-test sample
+python3 src/run_gaia_countertest.py --tag full   # P1/P2 + complementarity
+python3 src/run_gaia_period_arm.py   # the one-feature period test
 python3 src/make_figures.py          # figures 1-4</code></pre>
 
 <footer>

@@ -83,7 +83,7 @@ where it should not. Both predictions are reported.</p>
 <h2>Tracks</h2>
 
 <div class="proj">
-  <h3>T1 — Path signatures for irregularly sampled light curves <span class="tag running">result: complementary, not better</span></h3>
+  <h3>T1 — Path signatures for irregularly sampled light curves <span class="tag running">closed: complementary on transients, useless on periodics</span></h3>
   <p>Astronomical photometry is a sampled path, not a vector: observations arrive at irregular
   times, in different bands, with gaps set by weather and scheduling. The signature of a path,
   $S(X)=\left(1,\int dX,\iint dX\otimes dX,\dots\right)$, is a reparameterisation-invariant feature
@@ -98,6 +98,13 @@ where it should not. Both predictions are reported.</p>
   complementary. A separate synthetic control located the mechanism — ordering becomes visible at
   truncation depth 3, not depth 2 as predicted, because a path monotone in time encloses no signed
   area for the Lévy term to see.</p>
+  <p>A counter-test on 2,999 Gaia periodic variables closes the track symmetrically. There
+  signatures lose six times harder (baseline gap 0.074 against ZTF's 0.012), the
+  complementarity that made the ZTF result worth reporting vanishes entirely (−0.0000 against
+  +0.0147), and — the sharpest form of it — <b>a single catalogued period beats a
+  1,020-coefficient signature</b> (0.773 against 0.741). Period is a statement about the
+  clock, and the clock is exactly what reparameterisation invariance discards. The property
+  that produces the win produces the loss.</p>
   <p class="links"><a href="projects/t1-signature-lightcurves/site/">Read the report</a>
      <a href="projects/t1-signature-lightcurves/">Code &amp; README</a></p>
 </div>
@@ -126,12 +133,35 @@ where it should not. Both predictions are reported.</p>
 </div>
 
 <div class="proj">
-  <h3>T3 — Truncation depth and sampling irregularity <span class="tag">skeleton</span></h3>
-  <p>The theory track. A truncated signature keeps finitely many iterated integrals; how that
-  truncation depth trades against sampling density, gap structure, and noise determines whether the
-  universality theorem has any force on real observations. Controlled synthetic experiments, built
-  to explain the behaviour measured in T1.</p>
-  <p class="links"><a href="projects/t3-signature-theory/">Design</a></p>
+  <h3>T3 — Where ordering lives in the signature <span class="tag running">result: prediction refuted at proof strength</span></h3>
+  <p>The theory track, built to explain T1's numbers. Ordering information turns out to appear at
+  truncation depth 3, not depth 2 as predicted, and the reason is structural: with a monotone time
+  channel the level-2 Lévy area reduces to the area under the curve, which is identical whichever
+  event came first. Since every time-augmented signature of a time series has a monotone time
+  channel, this is a property of the standard construction rather than a quirk.</p>
+  <p>The follow-up prediction — that the lead-lag transform restores ordering to level 2 — is
+  <b>refuted exactly</b>: on time-reversed pairs the level-2 tensors agree to 1.2e-15, because
+  lead-lag's entire depth-≤2 content is quadratic variation, which is order-blind by construction.
+  What does work is a causal, memory-carrying channel: a running maximum reaches at level 2 what
+  the plain path only reaches at level 3. Every verification check was deliberately broken to
+  confirm it could fail.</p>
+  <p class="links"><a href="projects/t3-signature-theory/">Design, code &amp; results</a></p>
+</div>
+
+<div class="proj">
+  <h3>T4 — Plate topology: a century of sky as image structure <span class="tag running">premise tested, gate pending</span></h3>
+  <p>From time series to images, and a deliberate reuse: persistent homology was <em>rejected</em>
+  earlier in this repository because degree-1 Vietoris–Rips on Gaia phase-space point clouds is
+  intractable. On a pixel grid the natural construction is a cubical complex with a sublevel-set
+  filtration — near-linear, four million cells in seconds. The same mathematics that was unusable
+  on a point cloud is routine on an image.</p>
+  <p>The archive is the Harvard plate collection: 429,274 plates, 1880s–1990s, digitisation
+  completed 2024, and a century-long time axis no modern survey has. Of twenty papers using it,
+  eighteen extract point-source light curves and nobody treats a plate series as an
+  $(x, y, \text{epoch})$ object. Three falsification tests ran before any pipeline was built;
+  the premise survives, but on one statistic, and the epoch-comparison test came out essentially
+  flat — which makes plate-level normalisation a gate rather than a refinement.</p>
+  <p class="links"><a href="projects/t4-plate-topology/">Design, code &amp; falsification</a></p>
 </div>
 
 <h2>Repository</h2>
