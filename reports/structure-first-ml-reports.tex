@@ -12,6 +12,8 @@
 \usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage{microtype}
+\usepackage{textcomp}
+\providecommand{\arcsec}{\ensuremath{^{\prime\prime}}}
 \usepackage[hidelinks]{hyperref}
 
 \geometry{a4paper, margin=2.5cm}
@@ -651,6 +653,189 @@ at 57\% completeness against the established catalogue, and a quantitative compa
 sporadic-background models showing that the permutation null cannot do the job it is routinely
 asked to do while a sideband null of real orbits with rotated nodes can. That last result is
 independent of whether anything new is found, and it is the part worth carrying forward.
+
+
+
+\chapter{Where ordering lives in the signature}
+\label{ch:t3}
+\noindent\textit{projects/t3-signature-theory}
+
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+
+The theory track exists because Chapter~\ref{ch:t1} produces numbers that do not explain
+themselves. Two questions were asked and both answers contradicted the prediction registered
+for them. Ordering information appears at truncation depth three rather than depth two, for a
+reason that holds for every time-augmented signature of a time series and not merely for the
+construction tested. And the lead-lag transform, the obvious candidate for repairing that,
+does not repair it --- the refutation is exact rather than statistical. A different family of
+augmentations does work, and the mechanism is identifiable.
+
+\section{The degeneracy at level two}
+
+Two classes of synthetic double-peaked curve were built to differ \emph{only} in which peak
+comes first: identical marginal magnitude distributions, identical net change from first to
+last observation, opposite ordering. Any order-blind representation must fail on them by
+construction.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lr}
+\toprule
+Representation & Balanced accuracy \\
+\midrule
+Order-blind summary features & 0.512 \\
+Signature depth 1 & 0.524 \\
+Signature depth 2 & 0.489 \\
+Signature depth 3 & \textbf{0.978} \\
+Signature depth 4 & 0.990 \\
+\bottomrule
+\end{tabular}
+\caption{Chance is 0.5. Depths 1 and 2 sit at it; separation appears at depth 3.}
+\end{table}
+
+The prediction was depth 2, the L\'evy area being the classical order-sensitive term. The
+reason it fails is geometric. With channels $(t, m)$ the time coordinate is strictly
+increasing, so the antisymmetric part of level 2 reduces to $\int m\,\mathrm{d}t$ once the
+boundary terms vanish for a path returning to its starting magnitude. That is the area under
+the curve, identical whichever peak came first. \textbf{A path monotone in one coordinate
+encloses no signed area that ordering can change.}
+
+This generalises: every time-augmented signature of a time series has a monotone time
+channel, because that is what time augmentation means. Truncating at depth 2 to economise on
+features therefore discards precisely the ordering information the method exists to supply,
+and the resulting null result would be misattributed to the data.
+
+\section{Lead-lag does not repair it}
+
+The lead-lag transform doubles the channels and breaks monotonicity, so it was the obvious
+candidate --- and Chapter~\ref{ch:t1} had measured it as worth $+0.025$ on real photometry
+without knowing why. On exact time-reversed pairs, the maximum absolute difference between
+the two classes' signature tensors:
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Augmentation & Level 1 & Level 2 & Level 3 & Level 4 \\
+\midrule
+time-augmented & $5.6\times10^{-17}$ & $2.2\times10^{-16}$ & 0.360 & 0.546 \\
+lead-lag $+$ time & $5.6\times10^{-17}$ & 0.0136 & 0.277 & 0.486 \\
+lead-lag, magnitude only & 0.0 & $5.1\times10^{-16}$ & 0.102 & 0.147 \\
+cumulative integral & $5.6\times10^{-17}$ & 0.0601 & 0.360 & 0.546 \\
+running maximum & $5.6\times10^{-17}$ & \textbf{0.2739} & 0.420 & 0.599 \\
+\bottomrule
+\end{tabular}
+\caption{Lead-lag's level-2 content on magnitude alone is zero to machine precision. Its
+entire depth-$\leq 2$ content is quadratic variation, which is invariant under permutation of
+increments and therefore order-blind by construction.}
+\end{table}
+
+What does work is a \emph{causal, memory-carrying} channel. A running maximum reaches at
+level 2 what the plain path only reaches at level 3. These channels are not
+reparameterisation-invariant and are not meant to be: they encode what had happened by now,
+which is exactly the ordering content level 2 cannot otherwise see. The result is
+candidate-level and synthetic; no photometry was touched.
+
+\section{Making the checks capable of failing}
+
+Every verification was deliberately broken to confirm it could fail. The correct level-2
+computation gives $8.9\times10^{-16}$; zeroing the $Q_{tm}$ term gives 0.044, zeroing
+$Q_{tt}$ and $Q_{mm}$ gives 2.00, transposing the tensor index gives 0.082, and an arbitrary
+non-symmetric sampling grid gives 0.160. A test that passes while measuring nothing is worse
+than no test, and this repository had already produced one --- a contrast check that returned
+the same number under three different conditions before the construction was corrected.
+
+
+\chapter{Plate topology: a century of sky as image structure}
+\label{ch:t4}
+\noindent\textit{projects/t4-plate-topology}
+
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+
+This chapter moves from time series to images, and reuses a method the repository had already
+rejected. Persistent homology was dismissed for Gaia phase space because degree-1
+Vietoris--Rips is intractable on high-dimensional point clouds. On a pixel grid the natural
+construction is a cubical complex with a sublevel-set filtration, which is near-linear: four
+million cells in seconds. The same mathematics that was unusable on a point cloud is routine
+on an image. The premise was tested before any pipeline was built; it survives, on one
+statistic, and the test the track's central idea depends on came out flat enough to make
+normalisation a gate rather than a refinement.
+
+\section{The archive and the opening}
+
+The Harvard plate collection covers the sky from the 1880s to the 1990s --- 429{,}274 plates,
+digitisation completed in 2024 --- and carries what no modern survey has, a century-long time
+axis on the same patches of sky. Of twenty arXiv papers using it, eighteen extract
+point-source light curves and the remaining two touch plate imagery only inside the reduction
+pipeline's own defect handling. Nobody appears to treat a plate series as an
+$(x, y, \text{epoch})$ object.
+
+Access was verified live with no authentication: 9{,}036 plate identifiers from one
+coordinate search, metadata from 1896 onward, 4.8~MB binned mosaics with real WCS, and
+calibrated $835\times835$ cutouts at any position.
+
+\section{A data-product error that would have read as a method failure}
+
+The first falsification run used 16$\times$-binned whole-plate mosaics and failed with every
+patch reporting a bright-pixel fraction of exactly zero. Measured on the same field:
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lrr}
+\toprule
+Product & Background MAD & Fraction above 5 MAD \\
+\midrule
+16$\times$-binned mosaic & 833.0 & 0.00000 \\
+Calibrated cutout (1.44\arcsec/px) & 72.0 & 0.00522 \\
+\bottomrule
+\end{tabular}
+\caption{Binning collapses stellar profiles below one pixel and folds the vignetting gradient
+into the scatter, inflating the robust deviation elevenfold.}
+\end{table}
+
+The mosaic is the right product for locating a plate and the wrong one for analysing
+structure on it. Unchecked, this would have been recorded as a failure of persistent
+homology rather than of the product choice.
+
+\section{Falsification results}
+
+On calibrated cutouts, 36 patches from 12 plates. Persistence responds to source content:
+patches separated twentyfold in measured source fraction differ by a factor of 3.2 in maximum
+persistence (715 against 2295). But total persistence and the count of significant features
+are flat or slightly inverted --- \emph{one} summary statistic carries the signal, and a
+careless choice would have missed it or reported the opposite sign.
+
+Against pixel-shuffled controls with identical histograms, real fields give 5{,}779
+components against 7{,}316 and half the total persistence, with a bottleneck distance 0.347 of
+the diagrams' own scale.
+
+A registered expectation was wrong here too. The original criterion required real fields to
+show \emph{longer} lifetimes. Shuffling preserves the histogram, so bright pixels survive but
+scatter into isolation, and an isolated bright pixel on a flat background is long-lived, while
+real sources cohere into fewer components. Lifetime direction is not the discriminant;
+separability is. The criterion was restated and the original expectation left on the record,
+because a criterion rewritten after seeing the data has to show its working.
+
+\section{The gate}
+
+The epoch-comparison test is the one the track depends on, and it came out at 2.2\%:
+within-field bottleneck 1{,}157 against between-field 1{,}183, WCS-aligned. Plate-to-plate
+variation in emulsion, exposure and limiting magnitude is comparable to the difference between
+one patch of sky and another. Measured directly on the plates used here, exposure times of
+65~s and 132~s give source fractions of 0.005 and 0.059 --- an order of magnitude.
+
+Normalisation is therefore a gate, not a refinement. Sublevel-set persistence depends only on
+the order in which pixels enter the filtration, so a rank transform is the canonical
+representative of the monotone class the method is already shape-invariant to, and it is the
+principled correction rather than merely a conventional one. If even that fails to separate
+same-field from different-field diagrams, the topology of these plates is dominated by grain
+and defects whose ordering also varies plate to plate, no monotone correction can repair it,
+and the temporal-topology premise fails.
 
 
 \begin{thebibliography}{9}
