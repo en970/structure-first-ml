@@ -1,9 +1,10 @@
 # T4 — Plate topology: a century of sky as image structure
 
-**Status: premise tested before building, and it survives weakly.** Three falsification
-tests were run before any pipeline existed. Two pass convincingly, one passes on a margin so
-thin it should be read as a warning rather than a result. The honest position is recorded
-below, including what would kill the track.
+**Status: closed, negative.** Four experiments, no pipeline built. The premise survived
+three of them and failed the one it depended on: persistence diagrams of photographic plates
+distinguish one patch of sky from another, but do not distinguish a patch of sky from its own
+past — not even across the eruption of one of the brightest novae on record. The track closes
+with that recorded.
 
 ## The opening
 
@@ -170,23 +171,61 @@ CV 0.48, the background level with CV 0.25, and the measured source fraction wit
 Exposure times run from 10 s to 300 s, and source fractions from 0.003 to 0.218 — a factor of
 seventy. That is the nuisance z-score normalisation removes.
 
+## The temporal gate: failed, and the track closes
+
+`src/temporal_gate.py`, GK Persei (Nova Persei 1901), 14 plates from 1900–1904 bracketing the
+February 1901 eruption, control field 0.8° away on the same plates, 91 pairs each.
+
+| | Median | Mean | Std | Min |
+|---|---|---|---|---|
+| Target field (contains GK Per) | **1.944** | 7.090 | 9.169 | 0.644 |
+| Control field | **3.234** | 6.348 | 7.485 | 0.000 |
+
+Change signal **−0.399** against a threshold of +0.314 fixed before the run. **The gate
+fails**, and it fails in the wrong direction: the field containing one of the brightest novae
+on record is *more* self-consistent across epochs than a field with no such source.
+
+**An audit of the test itself, which does not rescue it.** The distributions are extremely
+skewed — standard deviation comparable to the mean — and median and mean point opposite ways
+(the target's mean is higher, 7.09 against 6.35, while its median is lower). The control also
+contains pairs at exactly 0.000, meaning some cutouts produced identical or empty diagrams.
+So the median-based criterion is fragile on this data, and a different summary statistic
+would have given a different verdict.
+
+That fragility is a reason to distrust the number, not a reason to overturn it. The criterion
+was fixed in advance precisely so it could not be renegotiated after seeing the result, and
+nothing in the audit suggests the target field separates its own epochs *better* than the
+control — only that the margin is noisier than a single median conveys. A method whose
+verdict flips with the choice of summary statistic is not detecting a nova that brightened by
+thirteen magnitudes.
+
+**Conclusion: the topology distinguishes places, not times.** Gate 1 established that
+z-score-normalised diagrams separate one field from another (0.628), and that separation is
+evidently driven by which stars sit in a field — a property that does not change with epoch.
+Gate 2 asked the question the track actually depends on and got no signal.
+
 ## Verdict, and what would kill this
 
 The premise survives: persistence on calibrated plate cutouts does see astrophysical
 structure rather than emulsion grain. But it survives on one statistic, and the
 epoch-comparison test — the one the track's central idea depends on — is essentially flat.
 
-**The gate is passed, so the track continues.** Z-score normalisation before topology gives a
-0.628 relative separation between same-field and different-field diagrams, comfortably above
-the 0.15 threshold fixed in advance. The century-long time axis is usable.
+**The track closes.** Gate 1 passed and gate 2 failed, which is the informative combination:
+the method works and the premise does not. Whole-field persistence diagrams are dominated by
+the population of sources in a field, and a single nova — even one that brightened from
+magnitude 13 to 0.2 — is one object among thousands and does not move the diagram.
 
-**What would still kill it.** Separating one field from another is necessary and not
-sufficient: the actual goal is detecting *change* in the same field over decades. The next
-gate is whether a field with a known change — a nova, a variable, a proper-motion star —
-separates from its own earlier epochs by more than two fields separate from each other. If
-epoch-to-epoch distance within a changing field does not exceed the field-to-field baseline
-of 0.628, the method distinguishes places but not times, and the temporal premise fails on a
-second and stricter test.
+**What it would take to revive it, and why that is a different project.** The failure points
+at scale, not at topology. A method that localises the comparison — persistence computed on
+small windows around individual candidate positions rather than on whole 256-pixel fields —
+might see a nova, because the changing object would no longer be diluted. But that is a
+matched-filter search with topological features, not the structural-characterisation idea
+this track was opened to test, and it would need its own premise test before any pipeline.
+
+**What stands.** A verified DASCH image-access module, a falsification suite that caught a
+data-product error before it was mistaken for a method failure, a measured comparison of
+three normalisations that refuted the argument written for the principled one, and a clean
+negative on the temporal premise obtained in four experiments rather than a built pipeline.
 
 ## Reproducibility
 
