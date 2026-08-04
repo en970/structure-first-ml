@@ -761,9 +761,10 @@ rejected. Persistent homology was dismissed for Gaia phase space because degree-
 Vietoris--Rips is intractable on high-dimensional point clouds. On a pixel grid the natural
 construction is a cubical complex with a sublevel-set filtration, which is near-linear: four
 million cells in seconds. The same mathematics that was unusable on a point cloud is routine
-on an image. The premise was tested before any pipeline was built; it survives, on one
-statistic, and the test the track's central idea depends on came out flat enough to make
-normalisation a gate rather than a refinement.
+on an image. The premise was tested before any pipeline was built. It survives three
+experiments and fails the fourth: these diagrams distinguish one patch of sky from another
+but not a patch of sky from its own past, not even across the eruption of one of the
+brightest novae on record.
 
 \section{The archive and the opening}
 
@@ -821,22 +822,91 @@ real sources cohere into fewer components. Lifetime direction is not the discrim
 separability is. The criterion was restated and the original expectation left on the record,
 because a criterion rewritten after seeing the data has to show its working.
 
-\section{The gate}
+\section{Two gates, and the one that closed the track}
 
-The epoch-comparison test is the one the track depends on, and it came out at 2.2\%:
-within-field bottleneck 1{,}157 against between-field 1{,}183, WCS-aligned. Plate-to-plate
-variation in emulsion, exposure and limiting magnitude is comparable to the difference between
-one patch of sky and another. Measured directly on the plates used here, exposure times of
-65~s and 132~s give source fractions of 0.005 and 0.059 --- an order of magnitude.
+The epoch-comparison test in the falsification run came out at 2.2\%: within-field bottleneck
+1{,}157 against between-field 1{,}183. Plate-to-plate variation in emulsion, exposure and
+limiting magnitude looked comparable to the difference between one patch of sky and another.
+Measured directly on the plates used, exposure times of 10~s and 300~s give source fractions
+of 0.003 and 0.218 --- a factor of seventy.
 
-Normalisation is therefore a gate, not a refinement. Sublevel-set persistence depends only on
-the order in which pixels enter the filtration, so a rank transform is the canonical
-representative of the monotone class the method is already shape-invariant to, and it is the
-principled correction rather than merely a conventional one. If even that fails to separate
-same-field from different-field diagrams, the topology of these plates is dominated by grain
-and defects whose ordering also varies plate to plate, no monotone correction can repair it,
-and the temporal-topology premise fails.
+\subsection{Gate one: normalisation, passed, with a refuted argument}
 
+Three normalisations were compared on 14 plates spanning 1896--1899, with the threshold fixed
+at 0.15 before the run.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lrrr}
+\toprule
+Normalisation & Within field & Between fields & Relative separation \\
+\midrule
+none & 1038.0 & 1377.0 & $+0.327$ \\
+\textbf{zscore} & 9.73 & 15.84 & $\mathbf{+0.628}$ \\
+rank & 0.1221 & 0.1207 & $\mathbf{-0.011}$ \\
+\bottomrule
+\end{tabular}
+\caption{The rank transform, argued in advance to be the principled choice, came last.}
+\end{table}
+
+Two things written down in advance were wrong. The module had argued at length that rank
+normalisation was principled: sublevel-set persistence depends only on the order in which
+pixels enter the filtration, so rank is the canonical representative of the monotone class.
+That reasoning applies to the wrong object. Persistence is monotone-invariant in the
+\emph{shape} of the diagram --- which features exist and how they nest. But the diagram's
+\emph{coordinates} are the filtration values themselves, and bottleneck distance is computed
+on those coordinates. Rank forces every patch to a uniform distribution on $[0,1]$, so all
+diagrams occupy the same narrow range whatever is in them: it preserves the topology and
+destroys the metric.
+
+Second, the flatness that motivated the gate was a small-sample effect. Unnormalised
+separation is $+0.327$ here against $+0.022$ in the five-plate run; fourteen plates opened it.
+
+\subsection{Gate two: temporal change, failed}
+
+Separating one field from another is necessary and not sufficient. The track depends on
+detecting \emph{change} in one field across decades, so the second gate ran on GK Persei ---
+which erupted in February 1901 from magnitude 13 to 0.2 --- using 14 plates from 1900--1904
+and a control field $0.8^\circ$ away on the same plates, 91 pairs each.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lrrr}
+\toprule
+Field & Median & Mean & Std \\
+\midrule
+Target (contains GK Per) & \textbf{1.944} & 7.090 & 9.169 \\
+Control & \textbf{3.234} & 6.348 & 7.485 \\
+\bottomrule
+\end{tabular}
+\caption{Change signal $-0.399$ against a threshold of $+0.314$ fixed before the run.}
+\end{table}
+
+The gate fails, and in the wrong direction: the field containing one of the brightest novae
+on record is \emph{more} self-consistent across epochs than a field without one. An audit is
+recorded and does not rescue it --- the distributions are extremely skewed, median and mean
+point opposite ways, and the control contains pairs at exactly zero where cutouts gave
+identical or empty diagrams. That is a reason to distrust the number rather than to overturn
+it: the criterion was fixed in advance precisely so it could not be renegotiated afterwards,
+and nothing in the audit shows the target separating its own epochs better than the control.
+A method whose verdict flips with the choice of summary statistic is not detecting a
+thirteen-magnitude nova.
+
+\subsection{Diagnosis and closure}
+
+The failure is dilution, not topology. Gate one's separation is driven by which stars sit in
+a field, a property that does not change with epoch, and one nova among thousands of sources
+does not move a whole-field diagram. Localised persistence computed around individual
+candidate positions might see it, but that is a matched-filter search using topological
+features rather than the structural-characterisation idea this track was opened to test, and
+it would need its own premise test.
+
+The track closes. What stands is a verified DASCH access module, a falsification suite that
+caught a data-product error before it could be mistaken for a method failure, a normalisation
+comparison that refuted its own principled argument, and a clean negative reached in four
+experiments rather than a built pipeline.
 
 \begin{thebibliography}{9}
 \bibitem{signova} Arrubarrena, P., Lemercier, M., Nikolic, B., Lyons, T. and Cass, T. (2024).

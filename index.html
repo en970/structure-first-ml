@@ -149,7 +149,7 @@ where it should not. Both predictions are reported.</p>
 </div>
 
 <div class="proj">
-  <h3>T4 — Plate topology: a century of sky as image structure <span class="tag running">premise tested, gate pending</span></h3>
+  <h3>T4 — Plate topology: a century of sky as image structure <span class="tag">closed: distinguishes places, not times</span></h3>
   <p>From time series to images, and a deliberate reuse: persistent homology was <em>rejected</em>
   earlier in this repository because degree-1 Vietoris–Rips on Gaia phase-space point clouds is
   intractable. On a pixel grid the natural construction is a cubical complex with a sublevel-set
@@ -158,9 +158,16 @@ where it should not. Both predictions are reported.</p>
   <p>The archive is the Harvard plate collection: 429,274 plates, 1880s–1990s, digitisation
   completed 2024, and a century-long time axis no modern survey has. Of twenty papers using it,
   eighteen extract point-source light curves and nobody treats a plate series as an
-  $(x, y, \text{epoch})$ object. Three falsification tests ran before any pipeline was built;
-  the premise survives, but on one statistic, and the epoch-comparison test came out essentially
-  flat — which makes plate-level normalisation a gate rather than a refinement.</p>
+  $(x, y, \text{epoch})$ object.</p>
+  <p><b>Four experiments, no pipeline, and a clean negative.</b> The premise survived three of
+  them. Z-score normalisation opened field-to-field separation to 0.628 — and refuted the
+  argument written in advance for the rank transform, which came last because it preserves the
+  topology and destroys the metric the comparison uses. The fourth experiment is the one the
+  track depended on: does a field containing GK Persei, which erupted in 1901 from magnitude 13
+  to 0.2, separate from its own earlier epochs? It does not — change signal <b>−0.399</b>
+  against a threshold of +0.314 fixed beforehand, and in the wrong direction. The diagnosis is
+  dilution: whole-field diagrams are driven by which stars sit in the field, and one nova among
+  thousands does not move them.</p>
   <p class="links"><a href="projects/t4-plate-topology/">Design, code &amp; falsification</a></p>
 </div>
 
