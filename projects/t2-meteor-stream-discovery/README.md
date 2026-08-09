@@ -1,7 +1,7 @@
 # T2 — Meteoroid stream discovery in an openly licensed orbital archive
 
-**Status: in progress.** Literature audit complete; data access verified live; pipeline under
-construction.
+**Status: complete, negative.** The method works and there is nothing new in this archive.
+Results below.
 
 ## Overview
 
@@ -117,7 +117,48 @@ manufacture novelty out of showers other people have already reported.
 After these corrections the Perseid window yields one group of 3,707 members at $z = 44.8$
 and radius 0.11, entirely PER-labelled, while the chained background is rejected.
 
-## Planned method
+## Result
+
+Run over **2,146,868 GMN orbits**. The consensus clustering recovers **64 distinct established
+showers**, which is 57% completeness against the established catalogue — the method works.
+
+**Replacing the null was the decisive step.** Unmatched structures fell from **498 to 56**, an
+8.9-fold reduction, with no change to known-shower recovery. That is what a false-positive
+problem looks like when it is fixed rather than thresholded away. The recurrence filter, which
+separated known from unknown by **4.5 points** under the permutation null, separates them by
+**40.7 points** under the sideband null (78.2% against 37.5%) — the same statistic, a better
+null underneath. With a null that cannot see streams, no statistic built on it can either.
+
+Of 21 candidates surviving the recurrence filter, 8 have median per-year z ≥ 3 across ≥ 5
+apparitions. Re-checked against every IAU entry at loose tolerance, **eight of eight are known
+showers**:
+
+| z | Shower | Separation |
+|---|---|---|
+| 13.0 | FSL February sigma-Leonids | 3.9° |
+| 8.5 | ACP alpha-Cepheids | 9.6° |
+| 8.4 | EUM epsilon-Ursae Majorids | 8.0° |
+| 7.4 | EDR epsilon-Draconids | 1.3° |
+| 7.0 | ALA alpha-Lacertids (est.) | 2.6° |
+| 5.7 | JES June epsilon-Serpentids | 8.4° |
+| 3.4 | TAH tau-Herculids (est.) | 10.9° |
+| 3.3 | DMC Daytime mu-Cancrids | 1.8° |
+
+At 1.3° and 1.8° there is no ambiguity. The strict tolerance rejected these because catalogue
+Vg values come from different solutions than the one measured here — the epsilon-Draconids
+differ by 13% in Vg, inside the tolerance, and were excluded by the solar-longitude cut
+instead. **So the surviving false positives come from the matching step, not the clustering:**
+the clustering finds real streams and the bookkeeping failed to recognise them.
+
+**No new stream is claimed.** What stands is a verified implementation; a measured comparison of
+three sporadic-background models, showing that the permutation null widely used in
+threshold-based work cannot separate streams from sporadic structure while a sideband null of
+real orbits with rotated nodes can; and a null result on discovery at 57% completeness.
+
+Unlike the first version of this track's results, this is a negative that survived having its
+own null model replaced.
+
+## Method
 
 1. **Ingest and quality-cut.** Assemble the published trajectory and orbit solutions; apply
    convergence-angle, residual and station-count cuts to remove poorly constrained solutions. Record

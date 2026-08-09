@@ -35,7 +35,7 @@ document and an experimental protocol, but no results yet.
 | # | Track | Question | Status |
 |---|-------|----------|--------|
 | T1 | [Path signatures for irregularly sampled light curves](projects/t1-signature-lightcurves/) | Does a reparameterisation-invariant path representation beat interpolation-based features on real, gappy, multi-band photometry? | Result: no, but it is complementary |
-| T2 | [Meteoroid stream discovery](projects/t2-meteor-stream-discovery/) | Can multi-criterion consensus clustering surface stream candidates in 2.15M GMN orbits? | In progress |
+| T2 | [Meteoroid stream discovery](projects/t2-meteor-stream-discovery/) | Can multi-criterion consensus clustering surface stream candidates in 2.15M GMN orbits? | Result: no new stream; the null model was the finding |
 | T3 | [Truncation depth and sampling irregularity](projects/t3-signature-theory/) | Which augmentations restore order-sensitivity to signature level 2, and at what cost? | Result: lead-lag refuted, causal channels work |
 | T4 | [Plate topology](projects/t4-plate-topology/) | Does sublevel-set persistent homology on century-old photographic plates see sky structure rather than emulsion grain? | Premise tested, survives weakly |
 
