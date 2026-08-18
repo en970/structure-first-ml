@@ -41,6 +41,9 @@ PREDICTIONS, FIXED HERE BEFORE THE FIRST FOLD RUNS
     P-B  At depth 2, plain+Q beats plain, interval excluding zero, and beats plain+noise(9).
          If nine informative scalars cannot beat nine noise columns, the depth-2 arm is too
          insensitive to test anything and Q1 is reported as unresolved rather than passed.
+         (Written for gaia, which has nine (co)variation scalars. ztf has six, and the noise
+         control is matched to whatever the track has; the count in the output JSON is the
+         one that was actually used.)
     P-C  At depth 4, the fraction of the lead-lag margin recovered by Q is reported with an
          interval. No threshold is pre-set for "large", because the interesting quantity is
          the number itself; but the sign and the interval are pre-committed as the headline.
@@ -153,7 +156,7 @@ CONTRASTS = {
 }
 
 
-def verdicts(r: dict) -> dict:
+def verdicts(r: dict, n_q: int) -> dict:
     spans_zero = lambda k: r[k]["ci95"][0] <= 0 <= r[k]["ci95"][1]  # noqa: E731
 
     q_d2 = r["d2__Q_over_plain"]["mean_difference"]
@@ -174,10 +177,13 @@ def verdicts(r: dict) -> dict:
         "P_B_depth2_arm_is_sensitive": {
             "Q_over_plain": q_d2, "noise_over_plain": noise_d2,
             "passes": bool(r["d2__Q_over_plain"]["ci95"][0] > 0 and q_d2 > noise_d2),
-            "meaning": ("the depth-2 arm can resolve nine informative columns from nine noise "
-                        "columns, so P-A is a real test"
+            # The count is read from the track rather than written into the prose: gaia has
+            # nine quadratic-variation scalars and ztf has six, and a sentence that says
+            # "nine" on both contradicts n_quadratic_variation_scalars in the same file.
+            "meaning": (f"the depth-2 arm can resolve {n_q} informative columns from {n_q} "
+                        "noise columns, so P-A is a real test"
                         if r["d2__Q_over_plain"]["ci95"][0] > 0 and q_d2 > noise_d2 else
-                        "the depth-2 arm cannot resolve nine informative columns from nine "
+                        f"the depth-2 arm cannot resolve {n_q} informative columns from {n_q} "
                         "noise columns; P-A is UNRESOLVED, not passed"),
         },
         "P_C_depth4_fraction_recovered": {
@@ -215,7 +221,7 @@ def main() -> int:
         print(f"    {name:18s} {s.mean():.4f} +- {s.std():.4f}")
 
     results = {name: compare(scores, a, b) for name, (a, b) in CONTRASTS.items()}
-    verdict = verdicts(results)
+    verdict = verdicts(results, meta["n_quadratic_variation_scalars"])
 
     print(f"\n[{args.track}] contrasts (95% bootstrap CI on {n_folds} paired folds):")
     for name, r in results.items():
